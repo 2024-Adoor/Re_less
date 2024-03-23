@@ -6,7 +6,11 @@ public class Script : MonoBehaviour
 {
     public float speed;
     public float jumpPower;
-    public Transform respawnPoint; // 리스폰 지점
+    public Transform StartPoint;    // 시작 리스폰 지점
+    public Vector3 StartOffset;     // 시작 리스폰 지점 오프셋
+    public Transform respawnPoint;  // 재리스폰 지점
+    public Vector3 RespawnOffset;     // 시작 리스폰 지점 오프셋
+
 
     float hAxis;
     float vAxis;
@@ -25,7 +29,12 @@ public class Script : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>(); 
         anim = GetComponentInChildren<Animator>();    
+
+        // 시작 리스폰 위치 설정
+        if (respawnPoint != null)
+            transform.position = respawnPoint.position + StartOffset;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -106,6 +115,6 @@ public class Script : MonoBehaviour
 
     void respawn()
     {
-        transform.position = respawnPoint.position;
+        transform.position = respawnPoint.position + RespawnOffset;
     }
 }

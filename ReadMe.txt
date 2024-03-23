@@ -9,3 +9,9 @@
   : Check 'WalkAxes.png'
 - File > Build Settings > Add Open Scenes > Build All Scenes 
   : Check 'BuildScenes.png' 
+
+24-03-24 Commit 
+[1] Assets > Scene > VR Room 추가 
+[2] Assets > Modleing > fbx 추가 
+
+*몇몇 메쉬가 깨지는 모델들이 있어서 수정 후 추가할 예정 
