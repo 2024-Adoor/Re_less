@@ -15,3 +15,7 @@
 [2] Assets > Modleing > fbx 추가 
 
 *몇몇 메쉬가 깨지는 모델들이 있어서 수정 후 추가할 예정 
+
+24-03-24 19:30 Commit 
+[1] Assets > Scene > 안쓰는 씬들 삭제 
+[2] Assets > Modeling > 매쉬 깨졌던 모델들(SmallBookcase, Bed, Mirror, SmallTable) 추가 
