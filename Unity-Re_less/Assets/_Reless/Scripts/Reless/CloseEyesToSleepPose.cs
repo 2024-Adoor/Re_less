@@ -102,7 +102,7 @@ public class CloseEyesToSleepPose : MonoBehaviour
         var normalSequence = transform.Find("NormalSequence").GetComponent<Sequence>();
         tooCloseSequence ??= transform.Find("TooCloseSequence").GetComponent<Sequence>();
 
-        // 인스펙터에서 fadeDuration과 fadeDurationWhenTooClose가 바뀔 때 그에 맞추어 시퀀스의 Max Step Time을 조정합니다.
+        // 인스펙터에서 fadeDuration과 fadeDurationWhenTooClose가 바뀔 때 그에 맞추어 시퀀스를 조정합니다.
         // NOTE: Sequence.InjectOptionalStepsToActivate 메서드를 사용할 수도 있었지만 이상하게도 Sequence.ActivationStep 클래스는
         //       생성자를 통해 생성하면 Active State가 인스펙터에 표시되지 않아 부득이하게 Reflection을 사용합니다.
         {
@@ -112,10 +112,10 @@ public class CloseEyesToSleepPose : MonoBehaviour
                     typeof(Sequence).GetField("_stepsToActivate", BindingFlags.NonPublic | BindingFlags.Instance);
                 var stepToActivateValue = stepToActivateInfo?.GetValue(normalSequence) as Sequence.ActivationStep[];
 
-                FieldInfo maxStepTimeInfo =
-                    typeof(Sequence.ActivationStep).GetField("_maxStepTime",
+                FieldInfo minActiveTime =
+                    typeof(Sequence.ActivationStep).GetField("_minStepTime",
                         BindingFlags.NonPublic | BindingFlags.Instance);
-                maxStepTimeInfo?.SetValue(stepToActivateValue?[0], fadeDuration);
+                minActiveTime?.SetValue(stepToActivateValue?[0], fadeDuration);
             }
 
             // tooCloseSequence

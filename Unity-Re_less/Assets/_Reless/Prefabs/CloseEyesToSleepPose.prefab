@@ -275,8 +275,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stepsToActivate:
   - _activeState: {fileID: 412623643238825458}
-    _minActiveTime: 0
-    _maxStepTime: 2
+    _minActiveTime: 2
+    _maxStepTime: 0
   _remainActiveWhile: {fileID: 0}
   _remainActiveCooldown: 1
 --- !u!1 &2801786731544088951
