@@ -303,7 +303,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Vector1_3940489a9bc944d5a0b7be38da69b7c5",
     "m_StageCapability": 3,
-    "m_Value": 0.05000000074505806,
+    "m_Value": 0.019999999552965165,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -626,7 +626,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Vector1_7a6c350161234a40bf79658a22f7398b",
     "m_StageCapability": 2,
-    "m_Value": 2.990000009536743,
+    "m_Value": 1.6399999856948853,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
