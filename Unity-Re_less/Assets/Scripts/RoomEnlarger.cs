@@ -1,8 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
-using Reless;
-using UnityEditor;
+using NaughtyAttributes;
 
 namespace Reless
 {
@@ -38,6 +37,7 @@ namespace Reless
         /// <summary>
         /// 방의 크기를 키웁니다.
         /// </summary>
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
         public void EnlargeRoom()
         {
             StartCoroutine(EnlargingRoom());
@@ -60,22 +60,6 @@ namespace Reless
         public void Initialize()
         {
             _room = FindObjectOfType<MRUKRoom>();
-        }
-    }
-}
-
-[CustomEditor(typeof(RoomEnlarger))]
-public class RoomEnlargerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-
-        RoomEnlarger roomEnlarger = (RoomEnlarger)target;
-
-        if (GUILayout.Button("Run EnlargeRoom() for Testing"))
-        {
-            roomEnlarger.EnlargeRoom();
         }
     }
 }
