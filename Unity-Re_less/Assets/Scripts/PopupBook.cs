@@ -37,7 +37,7 @@ namespace Reless
         // Update is called once per frame
         void Update()
         {
-            if (_leftInteractable.State != InteractableState.Select)
+            /*if (_leftInteractable.State != InteractableState.Select)
             {
                 if (_leftInteractable.gameObject.transform.rotation.x is > 0 and < 90)
                 {
@@ -46,7 +46,7 @@ namespace Reless
                 }
                 
                 
-            }
+            }*/
         }
 
         private IEnumerator Folding(Transform transform, float targetAngle)
