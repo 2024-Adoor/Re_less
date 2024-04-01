@@ -49,10 +49,11 @@
       "url": "https://packages.unity.com"
     },
     "com.meta.xr.simulator": {
-      "version": "file:C:/Users/Song/Downloads/com.meta.xr.simulator-62.0.0.tgz",
+      "version": "62.0.0",
       "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {}
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
     },
     "com.unity.ai.navigation": {
       "version": "1.1.5",
