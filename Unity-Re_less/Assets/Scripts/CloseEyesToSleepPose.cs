@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Reflection;
-using Oculus.Interaction;
+using NaughtyAttributes;
 using Oculus.Interaction.PoseDetection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CloseEyesToSleepPose : MonoBehaviour
 {
@@ -23,51 +25,38 @@ public class CloseEyesToSleepPose : MonoBehaviour
     [SerializeField, HideInInspector]
     private Sequence tooCloseSequence;
 
-    private bool _inFadeOut;
-    private float _opacity;
-    private float _timer;
-    private float _timerForTooClose;
-    
     /// <summary>
     /// TooCloseSequence의 Step To Activate 중 MissingHandEither의 인덱스입니다.
     /// </summary>
     private const int MissingHandEitherStep = 1;
     
-    private void OnEnable()
-    {
-        _inFadeOut = false;
-        _opacity = 0f;
-        _timer = 0f;
-        _timerForTooClose = 0f;
-    }
-
-    private void Update()
-    {
-        if (_inFadeOut)
-        {
-            // tooCloseSequence에서 MissingHandEither 단계로 진행 중인 경우에는 페이드 관련 연산을 fadeDurationWhenTooClose로 수행합니다.
-            if (tooCloseSequence.CurrentActivationStep == MissingHandEitherStep)
-            {
-                _timerForTooClose += Time.deltaTime;
-                _opacity = Mathf.Clamp01(_timerForTooClose / fadeDurationWhenTooClose);
-            }
-            else
-            {
-                _timer += Time.deltaTime;
-                _opacity = Mathf.Clamp01(_timer / fadeDuration);
-            }
-            
-            // TODO: 페이드 아웃 효과에 opacity 값을 적용합니다.
-        }
-        
-    }
-
     /// <summary>
     /// 페이드 아웃을 시작합니다.
     /// </summary>
+    [Button]
     public void StartFadeOut()
     {
-        _inFadeOut = true;
+        _fadeOut = StartCoroutine(FadeOut());
+    }
+
+    private Coroutine _fadeOut;
+    
+    /// <summary>
+    /// 페이드 아웃을 진행합니다.
+    /// </summary>
+    private IEnumerator FadeOut()
+    {
+        float timer = 0f;
+        float opacity = 0f;
+        
+        while (opacity < 1f)
+        {
+            timer += Time.deltaTime;
+            opacity = Mathf.Clamp01(timer / fadeDuration);
+            OVRScreenFade.instance.SetUIFade(opacity);
+            
+            yield return null;
+        }
     }
 
     /// <summary>
@@ -85,15 +74,32 @@ public class CloseEyesToSleepPose : MonoBehaviour
     /// </summary>
     public void CancelFadeOut()
     {
-        _inFadeOut = false;
-        _opacity = 0f;
-        _timer = 0f;
-        _timerForTooClose = 0f;
+        // 페이드 아웃 코루틴을 중지합니다.
+        StopCoroutine(_fadeOut);
+        
+        // 페이드 값을 0으로 설정합니다.
+        OVRScreenFade.instance.SetUIFade(0f);
     }
     
+    [Button]
     public void CloseEyes()
     {
-        // TODO: 꿈 세계 (VR)로 전환 코드
+        StopCoroutine(_fadeOut);
+        StartCoroutine(LoadScene());
+        
+        IEnumerator LoadScene()
+        {
+            OVRScreenFade.instance.SetUIFade(1f);
+
+            yield return null;
+
+            var asyncLoad =  SceneManager.LoadSceneAsync("VR Room");
+
+            while (!asyncLoad.isDone)
+            {
+               yield return null;
+            }
+        }
     }
     
 #if UNITY_EDITOR
