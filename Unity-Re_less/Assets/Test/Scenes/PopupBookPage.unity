@@ -923,10 +923,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae663f5e7be40154ebdd06ab042177c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactableGroupView: {fileID: 1239941676}
-  _speed: 20
-  _left: 1
-  _acceleration: 0.2
+  interactableGroupView: {fileID: 1239941676}
+  speed: 50
+  left: 1
+  acceleration: 0.2
 --- !u!1 &1239941669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,10 +1246,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae663f5e7be40154ebdd06ab042177c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactableGroupView: {fileID: 927295601}
-  _speed: 20
-  _left: 0
-  _acceleration: 0.2
+  interactableGroupView: {fileID: 927295601}
+  speed: 50
+  left: 0
+  acceleration: 0.2
 --- !u!1 &1538738876
 GameObject:
   m_ObjectHideFlags: 0
