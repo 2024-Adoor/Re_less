@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f808cd4672d4a25438d92e9dcff4bf53
+guid: b20a828f591da0c419d6d0d93058d79e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: cat_Sleep_ING
+      name: cat_walk
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 0
-      lastFrame: 150
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

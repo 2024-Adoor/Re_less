@@ -2400,14 +2400,15 @@ Animation:
   m_GameObject: {fileID: 440620418}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 1827226128182048838, guid: f808cd4672d4a25438d92e9dcff4bf53, type: 3}
+  m_Animation: {fileID: 1827226128182048838, guid: 8246e5d5929b5ee4e9a3ce4acfbf42d2, type: 3}
   m_Animations:
-  - {fileID: 1827226128182048838, guid: d701bf390794cc24c8fc0c15cc73c355, type: 3}
-  - {fileID: 1827226128182048838, guid: 2feed09f8f573ef48a9e372ebcad1583, type: 3}
-  - {fileID: 1827226128182048838, guid: f808cd4672d4a25438d92e9dcff4bf53, type: 3}
-  - {fileID: 1827226128182048838, guid: 415e0c4f9dd3c544cbff70fb06f00f84, type: 3}
-  - {fileID: 1827226128182048838, guid: f1ac4fed00e6ec14cbce42a9386c71ee, type: 3}
-  - {fileID: 1827226128182048838, guid: 7cde1033e1677d84fb96d52ba2ef31d2, type: 3}
+  - {fileID: 1827226128182048838, guid: 43659ec46922f7d4aab70e0276ef348f, type: 3}
+  - {fileID: 1827226128182048838, guid: 4187e2b0190e8354a9b311d922bef744, type: 3}
+  - {fileID: 1827226128182048838, guid: 82e5dc94372f36341a83c48f1a76acbb, type: 3}
+  - {fileID: 1827226128182048838, guid: 6591603cbbe7bf9459c44768fea0f8aa, type: 3}
+  - {fileID: 1827226128182048838, guid: b20a828f591da0c419d6d0d93058d79e, type: 3}
+  - {fileID: 1827226128182048838, guid: 692b9cc04c206ed45a50d1dd83d47d81, type: 3}
+  - {fileID: 1827226128182048838, guid: 8246e5d5929b5ee4e9a3ce4acfbf42d2, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -6918,6 +6919,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: rigNskin_cat2
       objectReference: {fileID: 0}
+    - target: {fileID: 5737461340252302902, guid: ba0ea9bccf2ca7741bc2a8bfb3f7a659, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7883f5602eb5a854c8a781b844a2c45b, type: 2}
+    - target: {fileID: 5737461340252302902, guid: ba0ea9bccf2ca7741bc2a8bfb3f7a659, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7883f5602eb5a854c8a781b844a2c45b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7631,6 +7640,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: clock_rigged
       objectReference: {fileID: 0}
+    - target: {fileID: 2223639932434330405, guid: 8adfe015874119d43b9775b6e3fdac4a, type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: e363c0c11c71b3642bc53bf672b4e573, type: 3}
+    - target: {fileID: 2223639932434330405, guid: 8adfe015874119d43b9775b6e3fdac4a, type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2223639932434330405, guid: 8adfe015874119d43b9775b6e3fdac4a, type: 3}
+      propertyPath: m_Animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: b0b06fdccdd4a0e46b7d3d2e60557d62, type: 3}
+    - target: {fileID: 2223639932434330405, guid: 8adfe015874119d43b9775b6e3fdac4a, type: 3}
+      propertyPath: m_Animations.Array.data[1]
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: e273c7a361cab004a888b4b049e06618, type: 3}
+    - target: {fileID: 2223639932434330405, guid: 8adfe015874119d43b9775b6e3fdac4a, type: 3}
+      propertyPath: m_Animations.Array.data[2]
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: e363c0c11c71b3642bc53bf672b4e573, type: 3}
+    - target: {fileID: 2223639932434330405, guid: 8adfe015874119d43b9775b6e3fdac4a, type: 3}
+      propertyPath: m_Animations.Array.data[3]
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: e363c0c11c71b3642bc53bf672b4e573, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

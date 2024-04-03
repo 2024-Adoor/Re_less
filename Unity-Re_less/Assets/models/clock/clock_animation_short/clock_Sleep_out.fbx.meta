@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2feed09f8f573ef48a9e372ebcad1583
+guid: e273c7a361cab004a888b4b049e06618
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: cat_Sleep_in
+      name: clock_Sleep_out
       takeName: Take 001
       internalID: 1827226128182048838
-      firstFrame: -1
-      lastFrame: 210
+      firstFrame: -5
+      lastFrame: 115
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
