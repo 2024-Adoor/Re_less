@@ -13,20 +13,20 @@ namespace Test
         private Color materialColor;
 
         // Renderer 컴포넌트 참조
-        private Renderer renderer;
+        private Renderer _renderer;
 
         void Start()
         {
             // Renderer 컴포넌트 가져오기
-            renderer = GetComponent<Renderer>();
-            renderer.material.color = materialColor;
+            _renderer = GetComponent<Renderer>();
+            _renderer.material.color = materialColor;
         }
 
         private void OnValidate()
         {
-            if (Application.isPlaying)
+            if (Application.isPlaying && _renderer != null)
             {
-                renderer.material.color = materialColor;
+                _renderer.material.color = materialColor;
             }
         }
     }
