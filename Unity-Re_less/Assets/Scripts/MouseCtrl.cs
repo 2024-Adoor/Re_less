@@ -23,15 +23,15 @@ public class MouseCtrl : MonoBehaviour
         // B 오브젝트의 위치를 이동량에 따라 조정 (Z 값은 고정)
         Vector3 newPositionB = Cursor.position;
         
-        newPositionB.x += displacement.x;
-        newPositionB.y += displacement.z; // Y 값에 Z 변화량 적용
+        newPositionB.z += displacement.z;
+        newPositionB.y += displacement.x; // Y 값에 Z 변화량 적용
         Cursor.position = newPositionB;
 
         // B 오브젝트의 위치를 이동량에 따라 조정 (Z 값은 고정)
         Vector3 newPositionC = Fruit.position;
         
-        newPositionC.x += displacement.x;
-        newPositionC.y += displacement.z; // Y 값에 Z 변화량 적용
+        newPositionC.z += displacement.z;
+        newPositionC.y += displacement.x; // Y 값에 Z 변화량 적용
         Fruit.position = newPositionC;
 
         lastPositionA = currentPositionA; // 이전 위치 갱신

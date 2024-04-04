@@ -16,12 +16,13 @@ public class CH02obj : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
         if(isMoving)
         {
             // z축 방향으로 이동
             Vector3 movement = new Vector3(0, 0, Speed * Direction * Time.deltaTime);
             transform.position += movement;
         }
+        
     }
 }

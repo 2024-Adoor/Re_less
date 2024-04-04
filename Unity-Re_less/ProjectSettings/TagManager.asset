@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CH02_OBJ
   - Destroy
+  - Fruit
   layers:
   - Default
   - TransparentFX

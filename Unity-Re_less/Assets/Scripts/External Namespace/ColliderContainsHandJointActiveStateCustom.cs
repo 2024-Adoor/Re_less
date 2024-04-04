@@ -23,7 +23,8 @@
 
 using Oculus.Interaction.Input;
 using UnityEngine;
-using UnityEngine.Assertions;
+
+#pragma warning disable CS0414 // 원본 API를 수정한 파일이므로 미사용 변수 경고를 표시하지 않길 원합니다.
 
 namespace Oculus.Interaction.PoseDetection
 {
@@ -31,6 +32,7 @@ namespace Oculus.Interaction.PoseDetection
     /// <see cref="ColliderContainsHandJointActiveState"/>의 변형으로, 해당 클래스와 달리
     /// Exit Collider 없이 Entry Collider만으로 활성화 상태 여부를 지속적으로 업데이트합니다. 
     /// </summary>
+
     public class ColliderContainsHandJointActiveStateCustom : MonoBehaviour, IActiveState
     {
         [SerializeField, Interface(typeof(IHand))]
