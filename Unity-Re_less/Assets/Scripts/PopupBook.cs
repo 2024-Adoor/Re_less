@@ -96,21 +96,6 @@ namespace Reless
         {
             
         }
-
-        [ShowNativeProperty]
-        private float _leftPageRotationUpX => leftPage.transform.up.x;
-        
-        [ShowNativeProperty]
-        private float _leftPageRotationUpY => leftPage.transform.up.y;
-        
-        [ShowNativeProperty]
-        private float _leftPageRotationUpZ => leftPage.transform.up.z;
-        
-        [ShowNativeProperty]
-        private float _rightPageRotation => rightPage.transform.up.x;
-        
-        [ShowNativeProperty]
-        private float _rightPageRotationUpY => rightPage.transform.up.y;
         
         private void Update()
         {
