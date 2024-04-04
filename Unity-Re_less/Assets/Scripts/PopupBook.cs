@@ -17,8 +17,13 @@ namespace Reless
         /// </summary>
         [ShowNonSerializedField]
         private int _currentPageIndex = 0;
+
+        /// <summary>
+        /// 페이지 메시의 두께
+        /// </summary>
+        private const float PageThickness = 0.002f;
         
-        private int PageIndex
+        public int PageIndex
         {
             get => _currentPageIndex;
             set
@@ -94,7 +99,7 @@ namespace Reless
         
         private void Start()
         {
-            
+            PageIndex = 0;
         }
         
         private void Update()
@@ -172,10 +177,6 @@ namespace Reless
             }
         }
 
-        public void TurnNextPage() => PageIndex++;
-        
-        public void TurnPreviousPage() => PageIndex--;
-
         private static void ActivatePopup(GameObject popup, GameObject page)
         {
             popup.SetActive(true);
@@ -193,39 +194,47 @@ namespace Reless
 
             if (fixedLeftPopup is not null)
             {
-                // 이전에 페이지 뒤에 붙는 팝업으로 사용되었다면 회전이 바뀌었을 수 있으니 부모 지정 전에 회전값을 초기화합니다.
-                fixedLeftPopup.transform.localRotation = Quaternion.identity;
+                ResetPopupTransform(fixedLeftPopup);
                 ActivatePopup(fixedLeftPopup, fixedLeftPage);
             }
             if (leftBackPopup is not null)
             {
                 ActivatePopup(leftBackPopup, leftPage);
-                // 페이지 뒤쪽에 붙는 팝업은 뒤집어야 합니다.
-                leftBackPopup.transform.localRotation = Quaternion.Euler(180, -90, 0);
+                SetBackPopupTransform(leftBackPopup, isLeft: true);
             }
             if (leftPopup is not null)
             {
-                // 이전에 페이지 뒤에 붙는 팝업으로 사용되었다면 회전이 바뀌었을 수 있으니 부모 지정 전에 회전값을 초기화합니다.
-                leftPopup.transform.localRotation = Quaternion.identity;
+                ResetPopupTransform(leftPopup);
                 ActivatePopup(leftPopup, leftPage);
             }
             if (rightPopup is not null)
             {
-                // 이전에 페이지 뒤에 붙는 팝업으로 사용되었다면 회전이 바뀌었을 수 있으니 부모 지정 전에 회전값을 초기화합니다.
-                rightPopup.transform.localRotation = Quaternion.identity;
+                ResetPopupTransform(rightPopup);
                 ActivatePopup(rightPopup, rightPage);
             }
             if (rightBackPopup is not null)
             {
                 ActivatePopup(rightBackPopup, rightPage);
-                // 페이지 뒤쪽에 붙는 팝업은 뒤집어야 합니다.
-                rightBackPopup.transform.localRotation = Quaternion.Euler(180, 90, 0);
+                SetBackPopupTransform(rightBackPopup, isLeft: false);
             }
             if (fixedRightPopup is not null)
             {
-                // 이전에 페이지 뒤에 붙는 팝업으로 사용되었다면 회전이 바뀌었을 수 있으니 부모 지정 전에 회전값을 초기화합니다.
-                fixedRightPopup.transform.localRotation = Quaternion.identity;
+                ResetPopupTransform(fixedRightPopup);
                 ActivatePopup(fixedRightPopup, fixedRightPage);
+            }
+
+            // 페이지 뒤쪽에 붙는 팝업의 트랜스폼을 설정합니다.
+            void SetBackPopupTransform(GameObject popup, bool isLeft)
+            {
+                popup.transform.localRotation = Quaternion.Euler(180, isLeft ? -90 : 90, 0);
+                popup.transform.Translate(0f, -PageThickness, 0f);
+            }
+            
+            // 이전에 페이지 뒤에 붙는 팝업으로 사용되었다면 회전이 바뀌었을 수 있으니 부모 지정 전에 회전값을 초기화합니다.
+            void ResetPopupTransform(GameObject popup)
+            {
+                popup.transform.localRotation = Quaternion.identity;
+                popup.transform.localPosition = Vector3.zero;
             }
         }
         
