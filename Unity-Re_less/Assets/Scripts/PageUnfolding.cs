@@ -42,6 +42,11 @@ public class PageUnfolding : MonoBehaviour
     /// 왼쪽 페이지인인지 오른쪽 페이지인지 확인합니다.
     /// </summary>
     private bool _isLeft;
+
+    /// <summary>
+    /// 이전 프레임까지 IsGrabbed가 true였는지 확인합니다.
+    /// </summary>
+    private bool _wasGrabbed;
     
     /// <summary>
     /// 플레이어가 페이지를 잡고 있습니다.
@@ -92,8 +97,12 @@ public class PageUnfolding : MonoBehaviour
     private void LateUpdate()
     {
         // 플레이어가 페이지를 잡고 있나요?
-        if (IsGrabbed)
+        if (IsGrabbed || _wasGrabbed)
         {
+            // 회전을 책 넘어서 한 상태에서 페이지를 놓았다면 즉시 조정되지 않기 때문에,
+            // 페이지를 놓은 시점 한 프레임 뒤까지 ConstrainRotationToWithinBook()의 호출을 보장합니다.
+            _wasGrabbed = IsGrabbed;
+            
             // 플레이어는 페이지를 잡아 자유롭게 회전할 수 있는 상태입니다. 페이지의 회전이 책을 넘어가서는 안 되므로 제한합니다.
             ConstrainRotationToWithinBook();
             

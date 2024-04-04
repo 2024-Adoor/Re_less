@@ -136,44 +136,74 @@ namespace Reless
             if (leftPageAngleUpperVertical)
             {
                 // 자신 페이지 아래에 눌려 있던 팝업들은 이제 제약이 필요 없습니다 - 완전히 풀립니다.
-                if (fixedLeftPopup is not null) fixedLeftPopup.transform.localScale = Vector3.one;
-                if (leftBackPopup is not null) leftBackPopup.transform.localScale = Vector3.one;
+                ReleasePopup(fixedLeftPopup);
+                ReleasePopup(leftBackPopup);
                 
                 // 페이지를 완전히 넘겨가는 경우 자신 페이지와 반대쪽 페이지 위의 팝업은 점점 작아져야 합니다.
-                if (leftPopup is not null) leftPopup.transform.localScale = new Vector3(1f, leftPressure, 1f);
-                if (rightPopup is not null) rightPopup.transform.localScale = new Vector3(1f, leftPressure, 1f);
+                PressurePopup(leftPopup, leftPressure);
+                PressurePopup(rightPopup, leftPressure);
             }
             // 페이지를 넘기는 각도가 90도 이하라면
             else
             {
                 // 자신 페이지 아래의 팝업들은 눌려 있어야 합니다. 특히 완전히 펼쳐져 있는 경우에 아래에 숨겨져 있을 팝업들의 크기는 0입니다.
-                if (fixedLeftPopup is not null) fixedLeftPopup.transform.localScale = new Vector3(1f, leftPressure, 1f);
-                if (leftBackPopup is not null) leftBackPopup.transform.localScale = new Vector3(1f, leftPressure, 1f);
+                PressurePopup(fixedLeftPopup, leftPressure);
+                PressurePopup(leftBackPopup, leftPressure, isBack: true);
                 
                 // 90도 이하의 펼친 각도에서 자신 페이지의 팝업은 완전히 풀려 있습니다. - 단 상대 페이지 또한 펼쳐져 있어야 합니다.
-                if (leftPopup is not null && !rightPageAngleUpperVertical) leftPopup.transform.localScale = Vector3.one;
+                if (!rightPageAngleUpperVertical) ReleasePopup(leftPopup);
             }
 
             // 페이지를 넘기는 각도가 90도를 넘어가면 (오른쪽)
             if (rightPageAngleUpperVertical)
             {
                 // 자신 페이지 아래에 눌려 있던 팝업들은 이제 제약이 필요 없습니다 - 완전히 풀립니다.
-                if (rightPopup is not null) rightPopup.transform.localScale = Vector3.one;
-                if (rightBackPopup is not null) rightBackPopup.transform.localScale = Vector3.one;
+                ReleasePopup(rightPopup);
+                ReleasePopup(rightBackPopup);
                 
                 // 페이지를 완전히 넘겨가는 경우 자신 페이지와 반대쪽 페이지 위의 팝업은 점점 작아져야 합니다.
-                if (rightPopup is not null) rightPopup.transform.localScale = new Vector3(1f, rightPressure, 1f);
-                if (leftPopup is not null) leftPopup.transform.localScale = new Vector3(1f, rightPressure, 1f);
+                PressurePopup(rightPopup, rightPressure);
+                PressurePopup(leftPopup, rightPressure);
             }
             // 페이지를 넘기는 각도가 90도 이하라면
             else
             {
                 // 자신 페이지 아래의 팝업들은 눌려 있어야 합니다. 특히 완전히 펼쳐져 있는 경우에 아래에 숨겨져 있을 팝업들의 크기는 0입니다.
-                if (fixedRightPopup is not null) fixedRightPopup.transform.localScale = new Vector3(1f, rightPressure, 1f);
-                if (rightBackPopup is not null) rightBackPopup.transform.localScale = new Vector3(1f, rightPressure, 1f);
+                PressurePopup(fixedRightPopup, rightPressure);
+                PressurePopup(rightBackPopup, rightPressure, isBack: true);
                 
                 // 90도 이하의 펼친 각도에서 자신 페이지의 팝업은 완전히 풀려 있습니다. - 단 상대 페이지 또한 펼쳐져 있어야 합니다.
-                if (rightPopup is not null && !leftPageAngleUpperVertical) rightPopup.transform.localScale = Vector3.one;
+                if (!leftPageAngleUpperVertical) ReleasePopup(rightPopup);
+            }
+            
+            
+            void PressurePopup(GameObject popup, float pressure, bool isBack = false)
+            {
+                if (popup is null) return;
+                
+                // 페이지가 펼쳐지는 정도에 따라 팝업이 눌리는 정도를 조절합니다.
+                popup.transform.localScale = new Vector3(1f, pressure, 1f);
+                
+                // 일정 구간 밑에서 팝업을 일찍 숨깁니다.
+                if (pressure < 0.05f)
+                {
+                    popup.SetActive(false);
+                }
+                else
+                {
+                    popup.SetActive(true);
+                    
+                    // 팝업 오브젝트의 오리진이 아래에 있기 때문에 스케일이 줄어들 때 튀어나오지 않도록 이동합니다.
+                    popup.transform.localPosition = new Vector3(0f, (isBack ? -1 : 1) * Mathf.Lerp(0.01f, 0f, pressure) , 0f);
+                }
+            }
+            
+            void ReleasePopup(GameObject popup)
+            {
+                if (popup is null) return;
+                
+                popup.transform.localScale = Vector3.one;
+                popup.transform.localPosition = Vector3.zero;
             }
         }
 
