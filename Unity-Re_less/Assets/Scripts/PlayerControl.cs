@@ -10,6 +10,9 @@ namespace Reless
     {
         private OVRCameraRig _cameraRig;
         private Rigidbody _rigidbody;
+        
+        public float jumpForce = 5.0f; // 점프에 가해질 힘
+        private bool hasJumped = false;
 
         /// <summary>
         /// 이동 속도
@@ -46,6 +49,7 @@ namespace Reless
             RotatePlayerToHMD();
             StickMovement();
             SnapTurn();
+            Jump();
         }
 
         // 정확히 뭐 하는거고 왜 필요한지 아직 모르겠음..
@@ -117,6 +121,23 @@ namespace Reless
             else
             {
                 _readyToSnapTurn = true;
+            }
+        }
+
+        private void Jump()
+        {
+            if (OVRInput.GetDown(OVRInput.Button.One) && !hasJumped)
+            {
+                _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                hasJumped = true;
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Untagged"))
+            {
+                hasJumped = false;
             }
         }
     }

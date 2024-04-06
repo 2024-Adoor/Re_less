@@ -43,6 +43,4 @@ public class AwakeSuji : MonoBehaviour
             Debug.Log("Collision with non-Fruit object");
         }
     }
-
-    
 }
