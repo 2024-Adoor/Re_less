@@ -21,11 +21,11 @@ public class ChapterControl : MonoBehaviour
     void Start()
     {
         if (Ch01)
-        {
+        {   
             SpawnPlayer(SpawnPoint01);
         }
         else if (Ch02)
-        {
+        {   
             SpawnPlayer(SpawnPoint02);
 
             // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
@@ -36,7 +36,7 @@ public class ChapterControl : MonoBehaviour
             
         }
         else if (Ch03)
-        {
+        {   
             SpawnPlayer(SpawnPoint03);
         }
     }
