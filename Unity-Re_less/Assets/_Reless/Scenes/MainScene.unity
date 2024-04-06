@@ -375,7 +375,7 @@ MonoBehaviour:
   outerPrefabs:
     floorNextToDoor: {fileID: 919132149155446097, guid: 8fe00509623ce3e49ae3b29c12c8e674, type: 3}
     floorNextToWall: {fileID: 919132149155446097, guid: 8fe00509623ce3e49ae3b29c12c8e674, type: 3}
-    wall: {fileID: 0}
+    WallMaterial: {fileID: 2100000, guid: a9474185883990e459a0ceba4553d4eb, type: 2}
     logoLeft: {fileID: 0}
     logoRight: {fileID: 0}
 --- !u!4 &725717429
