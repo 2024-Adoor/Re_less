@@ -63,52 +63,60 @@ namespace Reless
                 var wallPosition = wallWithDoor.transform.position;
                 
                 var floorNextDoor = Spawn(outerPrefabs.floorNextToDoor, door);
-                TranslateToBottom(floorNextDoor, door);
-                ScaleX(floorNextDoor, door);
-                
                 var floorNextToWall = Spawn(outerPrefabs.floorNextToWall, wallWithDoor);
+
+                TranslateToBottom(floorNextDoor, door);
                 TranslateToBottom(floorNextToWall, wallWithDoor);
+
+                ScaleX(floorNextDoor, door);
                 ScaleX(floorNextToWall, wallWithDoor);
+
+                GameObject wall; 
+                {
+                    var go = new GameObject("Outer Wall");
+                    wall = Spawn(go, wallWithDoor);
+                    Destroy(go);
+                }
                 
                 var doorBound = door.PlaneBoundary2D;
                 var wallBound = wallWithDoor.PlaneBoundary2D;
-                var doorWallDifferentX = door.GetAnchorCenter().z - wallWithDoor.GetAnchorCenter().z;
-                var doorWallDifferentY = wallWithDoor.GetAnchorCenter().y - door.GetAnchorCenter().y;
                 
-                var go = new GameObject("Outer Wall");
-                var wall = Spawn(go, wallWithDoor);
-                Destroy(go);
-                {
+                var doorCenter = door.GetAnchorCenter();
+                var wallCenter = wallWithDoor.GetAnchorCenter();
+                var wallRotation = wallWithDoor.transform.localRotation.eulerAngles.y;
+
+                var doorOffsetX = (wallCenter.x - doorCenter.x) * Mathf.Cos(wallRotation * Mathf.Deg2Rad) - (wallCenter.z - doorCenter.z) * Mathf.Sin(wallRotation * Mathf.Deg2Rad);
+                var doorOffsetY = wallCenter.y - doorCenter.y;
+                    
                     var mesh = new Mesh
                     {
                         vertices = new Vector3[]
                         {
-                            new(wallBound[1].x, wallBound[1].y, 0), // wall left bottom
-                            new(doorBound[1].x - doorWallDifferentX, doorBound[1].y - doorWallDifferentY, 0), // door left bottom
-                            new(doorBound[2].x - doorWallDifferentX, doorBound[2].y - doorWallDifferentY, 0), // door left top
-                            new(doorBound[3].x - doorWallDifferentX, doorBound[3].y - doorWallDifferentY, 0), // door right top
-                            new(doorBound[0].x - doorWallDifferentX, doorBound[0].y - doorWallDifferentY, 0), // door right bottom
-                            new(wallBound[0].x, wallBound[0].y, 0), // wall right bottom
-                            new(wallBound[3].x, wallBound[3].y, 0), // wall right top
-                            new(wallBound[2].x, wallBound[2].y, 0), // wall left top
+                            new(doorBound[0].x - doorOffsetX, doorBound[0].y - doorOffsetY, 0), // 문의 왼쪽 위
+                            new(doorBound[1].x - doorOffsetX, doorBound[1].y - doorOffsetY, 0), // 문의 왼쪽 아래
+                            new(doorBound[2].x - doorOffsetX, doorBound[2].y - doorOffsetY, 0), // 문의 오른쪽 아래
+                            new(doorBound[3].x - doorOffsetX, doorBound[3].y - doorOffsetY, 0), // 문의 오른쪽 위
+                            new(wallBound[0].x, wallBound[0].y, 0), // 벽의 왼쪽 위
+                            new(wallBound[1].x, wallBound[1].y, 0), // 벽의 왼쪽 아래
+                            new(wallBound[3].x, wallBound[3].y, 0), // 벽의 오른쪽 위
+                            new(wallBound[2].x, wallBound[2].y, 0), // 벽의 오른쪽 아래
                         },
+                        // 뒷면이 보이길 원하므로 시계방향으로 정점을 연결합니다.
                         triangles = new[]
                         {
-                            0, 1, 2,
-                            0, 2, 7,
-                            2, 6, 7,
-                            2, 3, 6,
-                            3, 5, 6,
-                            3, 4, 5,
+                            5, 0, 1,
+                            5, 4, 0,
+                            4, 6, 0,
+                            0, 6, 3,
+                            3, 6, 7,
+                            3, 7, 2,
                         },
                     };
-
                     mesh.RecalculateNormals();
                     wall.AddComponent<MeshFilter>().mesh = mesh;
                     wall.AddComponent<MeshRenderer>().material = outerPrefabs.WallMaterial;
-                }
-                wall.transform.position = wallPosition;
                 
+                wall.transform.position = wallPosition;
             }
             
             // 문의 부모 앵커가 없는 경우를 위해 가장 가까운 벽을 찾습니다.
