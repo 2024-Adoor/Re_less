@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ch03_FruitSnap : MonoBehaviour
 {   
     public bool isDetected = false;
+    public GameObject suji;
 
     void OnTriggerEnter(Collider other)
     {
@@ -12,6 +13,10 @@ public class Ch03_FruitSnap : MonoBehaviour
         {
             isDetected = true;
 
+            Vector3 newPosition = transform.position; // 현재 위치
+            newPosition.y = suji.transform.position.y; // Y 좌표를 suji의 Y 좌표로 변경
+            newPosition.z = suji.transform.position.z; // Z 좌표를 suji의 Z 좌표로 변경
+            transform.position = newPosition; // 변경된 위치 적용
         }
     }
 }

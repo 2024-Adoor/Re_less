@@ -14,6 +14,8 @@ public class MouseCtrl : MonoBehaviour
     private Vector3 lastPositionA; // A 오브젝트의 마지막 위치
     private bool collisionDetected = false; // 충돌 감지 여부를 저장하는 변수
 
+    public GameObject Ch03_Fruit;
+
     void Start()
     {
         lastPositionA = transform.position; // 초기 위치 설정
@@ -21,6 +23,9 @@ public class MouseCtrl : MonoBehaviour
 
     void Update()
     {
+        Ch03_FruitSnap Ch03FruitScript = Ch03_Fruit.GetComponent<Ch03_FruitSnap>();
+        collisionDetected = Ch03FruitScript.isDetected;
+
         if (!collisionDetected) // 충돌이 감지되지 않은 경우에만 움직임 처리
         {
             Vector3 currentPositionA = transform.position; // A 오브젝트의 현재 위치
