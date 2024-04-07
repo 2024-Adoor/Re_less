@@ -8,6 +8,7 @@ public class AwakeCharacters : MonoBehaviour
     public GameObject Player;
     private PlayerState PlayerStateScript;  // PlayerState 스크립트 변수
     private bool isDetect = false;
+    public bool isChange = false;
 
     void Update()
     {
@@ -24,6 +25,7 @@ public class AwakeCharacters : MonoBehaviour
 
             // 새로운 프리팹 생성
             GameObject newObject = Instantiate(ChangePrefab, gameObject.transform.position, gameObject.transform.rotation);
+            isChange = true;
         }
     }
 

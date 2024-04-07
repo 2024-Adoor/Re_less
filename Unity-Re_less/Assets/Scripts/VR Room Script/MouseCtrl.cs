@@ -43,6 +43,6 @@ public class MouseCtrl : MonoBehaviour
             ScreenObject.position = newPositionB;
 
             lastPositionA = currentPositionA; // 이전 위치 갱신
-        }
+        } 
     }
 }

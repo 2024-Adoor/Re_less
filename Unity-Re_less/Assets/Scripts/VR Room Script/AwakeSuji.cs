@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AwakeSuji : MonoBehaviour
-{
-    public Texture newTexture; // 변경할 텍스처
+{   
+    public Transform TargetPosition;
+    public GameObject ChangePrefab;
+    public GameObject Fruit;
     public GameObject KeyboardOBJ;
     private Keyboard KeyboardScript; // Keyboard 스크립트 변수
 
+    public bool isChange = false;
+
     private bool FruitDetect = false;
+    private Vector3 offset = new Vector3(0f, 0.5f, 0f);
 
     void Start()
     {
@@ -20,12 +25,15 @@ public class AwakeSuji : MonoBehaviour
     {
         if(FruitDetect && KeyboardScript.enterDown)
         {
-            // 본인의 텍스처를 변경할 텍스처로 설정
-                Renderer renderer = GetComponent<Renderer>();
-                if (renderer != null && newTexture != null)
-                {
-                    renderer.material.mainTexture = newTexture;
-                }
+            Destroy(gameObject);
+            Destroy(Fruit);
+
+            // 새로운 프리팹 생성
+            GameObject newObject = Instantiate(ChangePrefab, gameObject.transform.position, gameObject.transform.rotation);
+            isChange = true;
+
+            // 타겟 위치로 이동시킵니다.
+            newObject.transform.position = TargetPosition.transform.position + offset; // TargetPosition은 타겟 위치를 가리키는 변수
         }
     }
 

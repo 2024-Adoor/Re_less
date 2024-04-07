@@ -6,12 +6,14 @@ public class OnOffMonitor : MonoBehaviour
 {   
     public Material newMaterial; // 변경할 새로운 머테리얼
     public GameObject OffScreen; 
+    public GameObject OnScreen; 
 
     private Renderer ownRenderer; // 자기 자신의 렌더러
 
     private void Start()
     {
         ownRenderer = GetComponent<Renderer>(); // 자기 자신의 렌더러 가져오기
+        OnScreen.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -22,6 +24,7 @@ public class OnOffMonitor : MonoBehaviour
             {
                 ownRenderer.material = newMaterial; // 자기 자신의 머테리얼 변경
                 OffScreen.SetActive(false);
+                OnScreen.SetActive(true);
             }
             else
             {
