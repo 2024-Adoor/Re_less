@@ -36,6 +36,14 @@ namespace Reless
             IEnumerator StartRoutine()
             {
                 yield return LoadingOpeningScene();
+                yield return null;
+                
+                var openingScene = SceneManager.GetSceneByName("Opening");
+                var rootGameObjects = openingScene.GetRootGameObjects();
+                var rootGameObject = rootGameObjects.First(go => go.name == "Root");
+                RedundantResolve(rootGameObjects);
+                TransformOpeningScene(rootGameObject);
+                
                 yield return new WaitForSeconds(1f);
                 yield return RotatingOpeningWall(wallOpeningFirst);
                 yield return new WaitForSeconds(4f);
@@ -56,6 +64,29 @@ namespace Reless
             
             asyncLoad.allowSceneActivation = true;
         }
+        
+        private void TransformOpeningScene(GameObject rootGameObject)
+        {
+            var keyWall = gameManager.KeyWall;
+            rootGameObject.transform.parent = keyWall.transform;
+            rootGameObject.transform.localPosition = new Vector3(0, -keyWall.GetAnchorSize().y / 2, 0);
+            rootGameObject.transform.localRotation = Quaternion.AngleAxis(180, Vector3.up);
+        }
+
+        private void RedundantResolve(GameObject[] rootGameObjects)
+        {
+            foreach (var go in rootGameObjects)
+            {
+                if (go.GetComponent<Camera>() != null || 
+                    go.name == "Directional Light"
+                    )
+                {
+                    Debug.Log($"Destroying {go.name}");
+                    Destroy(go);
+                }
+            }
+        }
+        
         
         private void SetupOpeningWallPivot()
         {
@@ -94,7 +125,7 @@ namespace Reless
             _openingWall.transform.localPosition = Vector3.zero;
             _openingWall.transform.localRotation = Quaternion.identity;
                     
-            const float targetAngle = -90f;
+            const float targetAngle = -180f;
                     
             for (float timer = 0f; timer < curve.keys.Last().time; timer += Time.deltaTime)
             {
