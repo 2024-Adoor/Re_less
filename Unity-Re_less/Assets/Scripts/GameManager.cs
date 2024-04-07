@@ -46,6 +46,8 @@ namespace Reless
             }
         }
 
+        
+
         private void OnEnding()
         {
             throw new NotImplementedException();
@@ -79,7 +81,22 @@ namespace Reless
         private void StartOpening()
         {
             StartCoroutine(LoadingOpeningScene());
+
+            // TODO: X축으로 스케일, Z축으로 오프셋
             
+            
+            /*passthroughLayer.enabled = true;
+
+            var anchors = _currentRoom.GetRoomAnchors();
+            var globalMesh = _currentRoom.GetGlobalMeshAnchor();
+            if (globalMesh != null) globalMesh.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+            
+            foreach (var anchor in anchors)
+            {
+                Debug.Log($"{anchor.name}을 패스스루에 추가");
+                passthroughLayer.AddSurfaceGeometry(anchor.transform.GetChild(0).gameObject);
+            }*/
+
             // 벽 생성과 어두워지는 동안 로딩하고 다 어두워진 다음에 실제로 로드.
             
             
@@ -92,21 +109,40 @@ namespace Reless
                 // 씬 활성화는 어두워지고 나서.
                 asyncLoad.allowSceneActivation = false;
                 
+                yield return new WaitForSeconds(1f);
+                
                 float timer = 0f;
-                float duration = 3f;
+                float duration = 4f;
                 float darkedBrightness = -0.5f;
                 
                 while (timer < duration)
                 {
                     timer += Time.deltaTime;
                     
-                    passthroughLayer.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(0, darkedBrightness, timer / duration));
+                    passthroughLayer.SetBrightnessContrastSaturation(
+                        brightness: Mathf.Lerp(0, darkedBrightness, timer / duration),
+                        contrast: Mathf.Lerp(0, -0.5f, timer / duration),
+                        saturation: Mathf.Lerp(0, -0.8f, timer / duration)
+                        );
                     yield return null;
                 }
+                
+                yield return new WaitForSeconds(1f);
                 
                 asyncLoad.allowSceneActivation = true;
             }
         }
+        
+        [Button]
+        private void SetPhaseToOpening()
+        {
+            CurrentPhase = Phase.Opening;
+        }
+
+        [SerializeField]
+        private EffectMesh _passthroughRoom;
+
+        private MRUKAnchor _keyWall;
 
         [SerializeField, HideInInspector]
         private OVRCameraRig cameraRig;
@@ -126,7 +162,7 @@ namespace Reless
         }
 
         /// <summary>
-        /// MRUK의 OnSceneLoaded 이벤트에 연결되어 호출됩니다.
+        /// MRUK의 <see cref="MRUK.SceneLoadedEvent"/> 이벤트에 연결되어 호출됩니다.
         /// </summary>
         public void OnSceneLoaded()
         {
@@ -147,8 +183,13 @@ namespace Reless
                     onEnter: () => { CurrentPhase = Phase.Opening; },
                     until: () => _currentPhase is Phase.Opening));
             }
+            
+            // 가장 긴 벽을 찾습니다.
+            _keyWall = _currentRoom.GetKeyWall(out _);
         }
 
+        
+        
         private IEnumerator CheckEnterRoom(Action onEnter, Func<bool> until)
         {
             while (!until())

@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b29f53e9c4a79418179d097b56b19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _passthroughRoom: {fileID: 1584425452}
   cameraRig: {fileID: 241227429}
   passthroughLayer: {fileID: 1572264542}
 --- !u!4 &109150759
@@ -222,6 +223,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &209882818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 209882819}
+  - component: {fileID: 209882821}
+  m_Layer: 0
+  m_Name: EdgeEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &209882819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209882818}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1348502254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &209882821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209882818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MeshMaterial: {fileID: 2100000, guid: a69d5884619b58e4681bf44b9e11de3d, type: 2}
+  BorderSize: 0.01
+  Colliders: 0
+  castShadows: 0
+  hideMesh: 0
+  textureCoordinateModes:
+  - U: 0
+    V: 0
+  Labels: 39
 --- !u!1 &241227427 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2483171112401766338, guid: f54012181eacade4ea242c65f804720f, type: 3}
@@ -584,6 +638,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EffectMesh for Debug
       objectReference: {fileID: 0}
+    - target: {fileID: 5456522116536683071, guid: cee191920b8eb41b0960b1082a393a3e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -739,6 +797,8 @@ Transform:
   - {fileID: 853219303}
   - {fileID: 46306368}
   - {fileID: 1796362744}
+  - {fileID: 1584425451}
+  - {fileID: 209882819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1484331708
@@ -767,7 +827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: RoomCreatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -779,6 +839,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
@@ -794,6 +862,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 735310170}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1584425452}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 209882821}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: RoomCreatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -803,6 +879,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
@@ -818,6 +902,14 @@ PrefabInstance:
       value: Initialize
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: CreateMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: CreateMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: RoomCreatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Reless.GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -830,6 +922,14 @@ PrefabInstance:
       value: Reless.RoomEnlarger, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: Meta.XR.MRUtilityKit.EffectMesh, meta.xr.mrutilitykit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: Meta.XR.MRUtilityKit.EffectMesh, meta.xr.mrutilitykit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: RoomCreatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -839,6 +939,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8047981335285221976, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
@@ -897,6 +1005,7 @@ GameObject:
   - component: {fileID: 1572264544}
   - component: {fileID: 1572264543}
   - component: {fileID: 1572264542}
+  - component: {fileID: 1572264545}
   m_Layer: 0
   m_Name: '[BuildingBlock] Passthrough'
   m_TagString: Untagged
@@ -918,7 +1027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectionSurfaceType: 0
   overlayType: 1
-  compositionDepth: 0
+  compositionDepth: 1
   hidden: 0
   overridePerLayerColorScaleAndOffset: 0
   colorScale: {x: 1, y: 1, z: 1, w: 1}
@@ -997,6 +1106,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1572264545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572264541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aba1f4deb9f9504b8310a6ff9b9c5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1584425450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1584425451}
+  - component: {fileID: 1584425452}
+  m_Layer: 0
+  m_Name: PassthroughRoom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1584425451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584425450}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1348502254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1584425452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584425450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MeshMaterial: {fileID: 2100000, guid: d812f7d37ac1703469e07b7ed1f1c985, type: 2}
+  BorderSize: 0
+  Colliders: 0
+  castShadows: 0
+  hideMesh: 0
+  textureCoordinateModes:
+  - U: 0
+    V: 0
+  Labels: -1
 --- !u!1 &1796362743
 GameObject:
   m_ObjectHideFlags: 0
