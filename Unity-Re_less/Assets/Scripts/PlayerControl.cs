@@ -53,7 +53,7 @@ namespace Reless
         {
             RotatePlayerToHMD();
             StickMovement();
-            SnapTurn();
+            //SnapTurn();
             Jump();
             X_Friend();
             Y_Fruit();
