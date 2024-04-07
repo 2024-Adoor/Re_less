@@ -67,6 +67,8 @@ namespace Reless
                 TranslateToBottom(floorNextDoor, door);
                 TranslateToBottom(floorNextToWall, wallWithDoor);
 
+                floorNextDoor.transform.Translate(0, 0.01f, 0);
+                
                 ScaleX(floorNextDoor, door);
                 ScaleX(floorNextToWall, wallWithDoor);
 
