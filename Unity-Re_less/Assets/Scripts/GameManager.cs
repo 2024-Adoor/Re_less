@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using UnityEngine;
@@ -81,26 +82,6 @@ namespace Reless
         private void StartOpening()
         {
             StartCoroutine(LoadingOpeningScene());
-
-            // TODO: X축으로 스케일, Z축으로 오프셋
-            
-            
-            /*passthroughLayer.enabled = true;
-
-            var anchors = _currentRoom.GetRoomAnchors();
-            var globalMesh = _currentRoom.GetGlobalMeshAnchor();
-            if (globalMesh != null) globalMesh.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-            
-            foreach (var anchor in anchors)
-            {
-                Debug.Log($"{anchor.name}을 패스스루에 추가");
-                passthroughLayer.AddSurfaceGeometry(anchor.transform.GetChild(0).gameObject);
-            }*/
-
-            // 벽 생성과 어두워지는 동안 로딩하고 다 어두워진 다음에 실제로 로드.
-            
-            
-            // 패스스루로 된 벽 생성, 어두워지기 시작, 벽 중 하나를 골라서 지우기.
             
             IEnumerator LoadingOpeningScene()
             {
@@ -126,13 +107,57 @@ namespace Reless
                         );
                     yield return null;
                 }
+                asyncLoad.allowSceneActivation = true;
                 
                 yield return new WaitForSeconds(1f);
-                
-                asyncLoad.allowSceneActivation = true;
+
+                var openingWall = FindCreatedEffectMesh(_keyWall, passthroughRoom);
             }
         }
-        
+
+        /// <summary>
+        /// 내부에 있는 EffectMesh의 z-fighting을 방지하기 위해 패스스루 EffectMesh들을 약간 오프셋합니다.
+        /// </summary>
+        private void OffsetPassthroughEffectMeshes()
+        {
+            float offset = 0.005f;
+            float scale = 1.1f;
+            
+            var ceiling = _currentRoom.GetCeilingAnchor();
+            Debug.Log(ceiling == null);
+            {
+                var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
+                Debug.Log(transform == null);
+                //transform.localScale = new Vector3(scale, scale, 1);
+                mesh.Translate(0, 0, -offset);
+            }
+            
+            var floor = _currentRoom.GetFloorAnchor();
+            {
+                var mesh = FindCreatedEffectMesh(floor, passthroughRoom);
+                //transform.localScale = new Vector3(scale, scale, 1);
+                mesh.Translate(0, 0, -offset);
+            }
+            
+            var walls = _currentRoom.GetWallAnchors();
+            foreach (var wall in walls)
+            {
+                var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
+                //transform.localScale = new Vector3(scale, scale, 1);
+                mesh.Translate(0, 0, -offset);
+            }
+        }
+
+        /// <summary>
+        /// 앵커에서 특정 EffectMesh로 생성된 메시를 찾습니다.
+        /// </summary>
+        /// <param name="anchor">찾을 앵커</param>
+        /// <param name="effectMesh">메시를 생성한 EffectMesh</param>
+        /// <returns>메시의 transform</returns>
+        private Transform FindCreatedEffectMesh(MRUKAnchor anchor, EffectMesh effectMesh) => anchor
+            .GetComponentsInChildren<MeshRenderer>()
+            .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).transform;
+
         [Button]
         private void SetPhaseToOpening()
         {
@@ -140,7 +165,7 @@ namespace Reless
         }
 
         [SerializeField]
-        private EffectMesh _passthroughRoom;
+        private EffectMesh passthroughRoom;
 
         private MRUKAnchor _keyWall;
 
@@ -188,7 +213,13 @@ namespace Reless
             _keyWall = _currentRoom.GetKeyWall(out _);
         }
 
-        
+        /// <summary>
+        /// MRUK의 다른 모든 <see cref="MRUK.SceneLoadedEvent"/> 이벤트들이 끝난 후 호출됩니다.
+        /// </summary>
+        public void OnEndSceneLoadedEvent()
+        {
+            OffsetPassthroughEffectMeshes();
+        }
         
         private IEnumerator CheckEnterRoom(Action onEnter, Func<bool> until)
         {
