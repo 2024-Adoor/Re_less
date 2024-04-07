@@ -8,6 +8,8 @@ TagManager:
   - Destroy
   - Fruit
   - CH03_OBJ
+  - HandTrigger
+  - Character
   layers:
   - Default
   - TransparentFX

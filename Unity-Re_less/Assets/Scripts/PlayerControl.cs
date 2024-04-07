@@ -10,9 +10,14 @@ namespace Reless
     {
         private OVRCameraRig _cameraRig;
         private Rigidbody _rigidbody;
-        
+
         public float jumpForce = 5.0f; // 점프에 가해질 힘
         private bool hasJumped = false;
+
+        public bool isXdown;
+        public bool isYdown;
+
+        public GameObject FruitPrefab;
 
         /// <summary>
         /// 이동 속도
@@ -41,7 +46,7 @@ namespace Reless
         // Update is called once per frame
         void Update()
         {
-            
+            PlayerState _PlayerState = GetComponent<PlayerState>();
         }
         
         private void FixedUpdate()
@@ -50,6 +55,8 @@ namespace Reless
             StickMovement();
             SnapTurn();
             Jump();
+            X_Friend();
+            Y_Fruit();
         }
 
         // 정확히 뭐 하는거고 왜 필요한지 아직 모르겠음..
@@ -138,6 +145,32 @@ namespace Reless
             if (collision.gameObject.CompareTag("Untagged"))
             {
                 hasJumped = false;
+            }
+        }
+
+        // X 클릭
+        private void X_Friend()
+        {
+            if(OVRInput.GetDown(OVRInput.RawButton.X))
+            {
+                isXdown = true;
+            }
+            else
+            {
+                isXdown = false;
+            }
+        }
+
+        // Y 클릭
+        private void Y_Fruit()
+        {
+            if(OVRInput.GetDown(OVRInput.RawButton.Y))
+            {
+                isYdown = true;
+            }
+            else
+            {
+                isYdown = false;
             }
         }
     }

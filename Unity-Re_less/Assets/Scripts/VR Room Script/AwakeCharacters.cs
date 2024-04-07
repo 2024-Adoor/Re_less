@@ -17,7 +17,7 @@ public class AwakeCharacters : MonoBehaviour
     }
 
     private void ChagneAni(int isFruit)
-    {
+    { 
         if(isFruit > 0 && isDetect)
         {
             Destroy(gameObject);

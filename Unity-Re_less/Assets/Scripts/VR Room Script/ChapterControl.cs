@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
 public class ChapterControl : MonoBehaviour
@@ -17,6 +19,8 @@ public class ChapterControl : MonoBehaviour
 
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
+
+    public Volume volume;
 
     void Start()
     {
