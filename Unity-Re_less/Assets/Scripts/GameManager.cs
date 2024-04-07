@@ -5,6 +5,7 @@ using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace Reless
 {
@@ -37,7 +38,7 @@ namespace Reless
                 switch (_currentPhase)
                 {
                     case Phase.Title: StartTitle(); break;
-                    case Phase.Opening: StartOpening(); break;
+                    case Phase.Opening: openingBehaviour.enabled = true; break;
                     case Phase.Tutorial: StartTutorial(); break;
                     case Phase.Chapter1: StartChapter1(); break;
                     case Phase.Chapter2: StartChapter2(); break;
@@ -46,8 +47,9 @@ namespace Reless
                 }
             }
         }
-
         
+        [SerializeField, HideInInspector]
+        private OpeningBehaviour openingBehaviour;
 
         private void OnEnding()
         {
@@ -79,42 +81,6 @@ namespace Reless
             SceneManager.LoadSceneAsync("MainScene");
         }
         
-        private void StartOpening()
-        {
-            StartCoroutine(LoadingOpeningScene());
-            
-            IEnumerator LoadingOpeningScene()
-            {
-                var asyncLoad = SceneManager.LoadSceneAsync("Opening", LoadSceneMode.Additive);
-                
-                // 씬 활성화는 어두워지고 나서.
-                asyncLoad.allowSceneActivation = false;
-                
-                yield return new WaitForSeconds(1f);
-                
-                float timer = 0f;
-                float duration = 4f;
-                float darkedBrightness = -0.5f;
-                
-                while (timer < duration)
-                {
-                    timer += Time.deltaTime;
-                    
-                    passthroughLayer.SetBrightnessContrastSaturation(
-                        brightness: Mathf.Lerp(0, darkedBrightness, timer / duration),
-                        contrast: Mathf.Lerp(0, -0.5f, timer / duration),
-                        saturation: Mathf.Lerp(0, -0.8f, timer / duration)
-                        );
-                    yield return null;
-                }
-                asyncLoad.allowSceneActivation = true;
-                
-                yield return new WaitForSeconds(1f);
-
-                var openingWall = FindCreatedEffectMesh(_keyWall, passthroughRoom);
-            }
-        }
-
         /// <summary>
         /// 내부에 있는 EffectMesh의 z-fighting을 방지하기 위해 패스스루 EffectMesh들을 약간 오프셋합니다.
         /// </summary>
@@ -129,14 +95,14 @@ namespace Reless
                 var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
                 Debug.Log(transform == null);
                 //transform.localScale = new Vector3(scale, scale, 1);
-                mesh.Translate(0, 0, -offset);
+                mesh.transform.Translate(0, 0, -offset);
             }
             
             var floor = _currentRoom.GetFloorAnchor();
             {
                 var mesh = FindCreatedEffectMesh(floor, passthroughRoom);
                 //transform.localScale = new Vector3(scale, scale, 1);
-                mesh.Translate(0, 0, -offset);
+                mesh.transform.Translate(0, 0, -offset);
             }
             
             var walls = _currentRoom.GetWallAnchors();
@@ -144,7 +110,7 @@ namespace Reless
             {
                 var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
                 //transform.localScale = new Vector3(scale, scale, 1);
-                mesh.Translate(0, 0, -offset);
+                mesh.transform.Translate(0, 0, -offset);
             }
         }
 
@@ -154,9 +120,13 @@ namespace Reless
         /// <param name="anchor">찾을 앵커</param>
         /// <param name="effectMesh">메시를 생성한 EffectMesh</param>
         /// <returns>메시의 transform</returns>
-        private Transform FindCreatedEffectMesh(MRUKAnchor anchor, EffectMesh effectMesh) => anchor
+        public GameObject FindCreatedEffectMesh(MRUKAnchor anchor, EffectMesh effectMesh) => anchor
             .GetComponentsInChildren<MeshRenderer>()
-            .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).transform;
+            .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).gameObject;
+        
+        public MRUKAnchor KeyWall => _keyWall;
+        
+        public GameObject OpeningWall => FindCreatedEffectMesh(_keyWall, passthroughRoom);
 
         [Button]
         private void SetPhaseToOpening()
@@ -173,7 +143,7 @@ namespace Reless
         private OVRCameraRig cameraRig;
         
         [SerializeField]
-        private OVRPassthroughLayer passthroughLayer;
+        public OVRPassthroughLayer passthroughLayer;
 
         [ShowNonSerializedField]
         private bool _startedInRoom;
@@ -254,6 +224,7 @@ namespace Reless
         private void OnValidate()
         {
             cameraRig ??= FindObjectOfType<OVRCameraRig>();
+            openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
         }
     }
 }
