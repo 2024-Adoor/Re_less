@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Meta.XR.MRUtilityKit;
-using Unity.VisualScripting;
 using UnityEngine;
 using static Meta.XR.MRUtilityKit.MRUKAnchor.SceneLabels;
 
@@ -92,30 +91,30 @@ namespace Reless
                     {
                         vertices = new Vector3[]
                         {
-                            new(doorBound[0].x - doorOffsetX, doorBound[0].y - doorOffsetY, 0), // 문의 왼쪽 위
-                            new(doorBound[1].x - doorOffsetX, doorBound[1].y - doorOffsetY, 0), // 문의 왼쪽 아래
-                            new(doorBound[2].x - doorOffsetX, doorBound[2].y - doorOffsetY, 0), // 문의 오른쪽 아래
-                            new(doorBound[3].x - doorOffsetX, doorBound[3].y - doorOffsetY, 0), // 문의 오른쪽 위
-                            new(wallBound[0].x, wallBound[0].y, 0), // 벽의 왼쪽 위
-                            new(wallBound[1].x, wallBound[1].y, 0), // 벽의 왼쪽 아래
-                            new(wallBound[3].x, wallBound[3].y, 0), // 벽의 오른쪽 위
-                            new(wallBound[2].x, wallBound[2].y, 0), // 벽의 오른쪽 아래
+                            new(doorBound[0].x - doorOffsetX, doorBound[0].y - doorOffsetY, 0),
+                            new(doorBound[1].x - doorOffsetX, doorBound[1].y - doorOffsetY, 0),
+                            new(doorBound[2].x - doorOffsetX, doorBound[2].y - doorOffsetY, 0),
+                            new(doorBound[3].x - doorOffsetX, doorBound[3].y - doorOffsetY, 0),
+                            new(wallBound[0].x, wallBound[0].y, 0),
+                            new(wallBound[1].x, wallBound[1].y, 0),
+                            new(wallBound[2].x, wallBound[2].y, 0),
+                            new(wallBound[3].x, wallBound[3].y, 0),
                         },
-                        // 뒷면이 보이길 원하므로 시계방향으로 정점을 연결합니다.
                         triangles = new[]
                         {
-                            5, 0, 1,
-                            5, 4, 0,
-                            4, 6, 0,
-                            0, 6, 3,
-                            3, 6, 7,
-                            3, 7, 2,
+                            7, 3, 0,
+                            7, 0, 4,
+                            0, 5, 4,
+                            0, 1, 5,
+                            1, 6, 5,
+                            1, 2, 6,
+                            2, 7, 6,
+                            2, 3, 7,
                         },
                     };
                     mesh.RecalculateNormals();
                     wall.AddComponent<MeshFilter>().mesh = mesh;
                     wall.AddComponent<MeshRenderer>().material = outerPrefabs.WallMaterial;
-                
                 wall.transform.position = wallPosition;
             }
             
