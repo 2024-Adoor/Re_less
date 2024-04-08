@@ -73,6 +73,7 @@ namespace Reless
                 
                 yield return new WaitForSeconds(4f);
                 SceneManager.LoadSceneAsync("MainScene");
+                gameManager.CurrentPhase = GameManager.Phase.Chapter1;
             }
         }
         

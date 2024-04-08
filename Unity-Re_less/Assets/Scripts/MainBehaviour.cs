@@ -1,9 +1,11 @@
+using Meta.XR.MRUtilityKit;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Reless
 {
     /// <summary>
-    /// MainScene¿¡¼­ÀÇ µ¿ÀÛÀ» Á¦¾îÇÕ´Ï´Ù.
+    /// MainSceneì—ì„œì˜ ë™ì‘ì„ ì œì–´í•©ë‹ˆë‹¤.
     /// </summary>
     public class MainBehaviour : MonoBehaviour
     {
@@ -15,19 +17,33 @@ namespace Reless
         [SerializeField]
         private CloseEyesToSleepPose closeEyesToSleepPose;
         
-        void Start()
+        private void Start()
         {
             _gameManager = GameManager.Instance;
             
-            // Æ©Åä¸®¾ó ÀÌÈÄ¿¡ MainSceneÀ¸·Î ÁøÀÔÇß´Ù¸é
+            // íŠœí† ë¦¬ì–¼ ì´í›„ì— MainSceneìœ¼ë¡œ ì§„ì…í–ˆë‹¤ë©´
             if (_gameManager.CurrentPhase > GameManager.Phase.Tutorial)
             {
-                // ÆË¾÷ºÏ »ı¼º
-                popupBookSpawner.StartSpawn();
+                // íŒì—…ë¶ ìƒì„±
+                if (MRUK.Instance.IsInitialized)
+                {
+                    Debug.Log("MRUK is initialized, ì§€ê¸ˆ íŒì—…ë¶ ìƒì„±");
+                    SpawnPopupBook();
+                }
+                else
+                {
+                    Debug.Log("MRUK is not initialized, íŒì—…ë¶ ìƒì„± ì´ë²¤íŠ¸ ë“±ë¡");
+                    _gameManager.OnSceneLoadedEvent += SpawnPopupBook;
+                }
                 
-                // ´«À» °¨°í ÀÚ´Â Æ÷Áî È°¼ºÈ­
+                // ëˆˆì„ ê°ê³  ìëŠ” í¬ì¦ˆ í™œì„±í™”
                 EnableCloseEyesToSleepPose();
             }
+        }
+
+        public void OnSceneLoaded()
+        {
+            if (_gameManager.CurrentPhase > GameManager.Phase.Tutorial) SpawnPopupBook();
         }
 
         // Update is called once per frame
@@ -35,6 +51,13 @@ namespace Reless
         {
         
         }
+        
+        [Button]
+        private void SpawnPopupBook()
+        {
+            popupBookSpawner.StartSpawn();
+        }
+        
         
         private void EnableCloseEyesToSleepPose()
         {

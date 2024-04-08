@@ -140,6 +140,7 @@ namespace Reless
         [SerializeField]
         private List<EffectMesh> virtualRoomEffectMeshes;
         
+        [Button]
         public void CreateVirtualRoomEffectMeshes()
         {
             foreach (var effectMesh in virtualRoomEffectMeshes)
@@ -199,24 +200,39 @@ namespace Reless
         {
             _currentRoom = MRUK.Instance.GetCurrentRoom();
             _startedInRoom = _currentRoom.IsPositionInRoom(cameraRig.centerEyeAnchor.position);
-            
-            if (_startedInRoom)
+
+            if (_currentPhase == Phase.Title)
             {
-                // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
-                StartCoroutine(CheckApproachDoor(
-                    onApproach: () => { CurrentPhase = Phase.Opening; },
-                    until: () => _currentPhase is Phase.Opening));
-            }
-            else
-            {
-                // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
-                StartCoroutine(CheckEnterRoom(
-                    onEnter: () => { CurrentPhase = Phase.Opening; },
-                    until: () => _currentPhase is Phase.Opening));
+                if (_startedInRoom)
+                {
+                    // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
+                    StartCoroutine(CheckApproachDoor(
+                        onApproach: () => { CurrentPhase = Phase.Opening; },
+                        until: () => _currentPhase is Phase.Opening));
+                }
+                else
+                {
+                    // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
+                    StartCoroutine(CheckEnterRoom(
+                        onEnter: () => { CurrentPhase = Phase.Opening; },
+                        until: () => _currentPhase is Phase.Opening));
+                }
             }
             
             // 가장 긴 벽을 찾습니다.
             _keyWall = _currentRoom.GetKeyWall(out _);
+            
+            OnSceneLoadedEvent?.Invoke();
+            OnSceneLoadedEvent = null;
+            
+            Debug.Log("OnSceneLoaded");
+        }
+        
+        public Action OnSceneLoadedEvent { get; set; }
+        
+        public void OnRoomCreated()
+        {
+            Debug.Log("OnRoomCreated");
         }
 
         /// <summary>
