@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 그려야 할 오브젝트의 밑그림에 부착되는 컴포넌트
@@ -18,6 +21,17 @@ public class SketchOutline : MonoBehaviour
     private float _maxEdgeLength = 0.5f;
     private float _edgeInset = 0.01f;
     
+    public Action DrawingCompleted;
+    
+    [ShowNativeProperty]
+    public bool IsCompleted => _isCompleted;
+    
+    private bool _isCompleted;
+    
+    [ShowNativeProperty]
+    public float FillRatio => _fillRatio;
+    private float _fillRatio;    
+    
     private void Start()
     {
         GenerateEdgeColliders();
@@ -26,12 +40,32 @@ public class SketchOutline : MonoBehaviour
     private void Update()
     {
         // 모든 DrawingChecker가 체크되었는지 확인합니다.
-        if (_drawingCheckers.Count > 0 && 
-            _drawingCheckers.TrueForAll(checker => checker.Checked))
+        if (_drawingCheckers.Count > 0)
         {
-            // 플레이어가 그린 선이 모든 DrawingChecker에 닿았습니다 - 그림이 완성되었습니다.
-            Debug.Log("Drawing is completed!");
+            _fillRatio = (float)_drawingCheckers.Count(checker => checker.Checked) / _drawingCheckers.Count;
+
+            // 임시: 100%를 충족하는게 너무 어려울 것으로 기대되므로 50% 이상이면 완성으로 간주합니다.
+            if (_fillRatio > 0.5)
+            {
+                _isCompleted = true;
+                DrawingCompleted?.Invoke();
+            }
+            
+            if (_drawingCheckers.TrueForAll(checker => checker.Checked))
+            {
+                // 플레이어가 그린 선이 모든 DrawingChecker에 닿았습니다 - 그림이 완성되었습니다.
+                Debug.Log("Drawing is completed!");
+                _isCompleted = true;
+                DrawingCompleted?.Invoke();
+            }
         }
+    }
+
+    // 테스트용
+    [Button]
+    private void RunDrawingCompleted()
+    {
+        DrawingCompleted?.Invoke();
     }
 
     private void GenerateEdgeColliders()

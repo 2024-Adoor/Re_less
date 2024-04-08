@@ -17,6 +17,27 @@ namespace Reless
         [SerializeField]
         private CloseEyesToSleepPose closeEyesToSleepPose;
         
+        [SerializeField]
+        private Pen pen;
+
+        [SerializeField] 
+        private GameObject ch01SketchObject;
+        
+        [SerializeField] 
+        private GameObject ch02SketchObject;
+        
+        [SerializeField] 
+        private GameObject ch03SketchObject;
+        
+        [SerializeField]
+        private GameObject ch01Object;
+        
+        [SerializeField]
+        private GameObject ch02Object;
+        
+        [SerializeField]
+        private GameObject ch03Object;
+        
         private void Start()
         {
             _gameManager = GameManager.Instance;
@@ -26,7 +47,19 @@ namespace Reless
             {
                 // 눈을 감고 자는 포즈 활성화
                 EnableCloseEyesToSleepPose();
+                
+                // 펜 활성화
+                EnablePen();
+
+                var sketch = Instantiate(ch02SketchObject);
+                sketch.GetComponent<SketchOutline>().DrawingCompleted += () =>
+                {
+                    var obtainObject = Instantiate(ch02Object);
+                    obtainObject.transform.position = sketch.transform.position;
+                    Destroy(sketch);
+                };
             }
+            
         }
 
         public void OnSceneLoaded()
@@ -54,6 +87,11 @@ namespace Reless
         private void EnableCloseEyesToSleepPose()
         {
             closeEyesToSleepPose.transform.gameObject.SetActive(true);
+        }
+        
+        private void EnablePen()
+        {
+            pen.gameObject.SetActive(true);
         }
     }
 }
