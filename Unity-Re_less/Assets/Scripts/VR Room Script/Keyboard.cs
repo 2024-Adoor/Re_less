@@ -8,6 +8,8 @@ public class Keyboard : MonoBehaviour
     public float downwardSpeed = 0.1f; // 내려가는 속도
     public bool enterDown = false; 
 
+    public GameObject Ch03Fruit;       // Fruit & Cursor 
+
     private bool hasCollided = false; // 충돌 여부 체크
     private Vector3 initialPosition; // 초기 위치 저장
 
@@ -18,7 +20,9 @@ public class Keyboard : MonoBehaviour
 
     private void Update()
     {
-        if (hasCollided)
+        Ch03_FruitSnap _Ch03_FruitSnap = Ch03Fruit.GetComponent<Ch03_FruitSnap>();
+
+        if (hasCollided && _Ch03_FruitSnap.isDetected)
         {
             // 아래로 이동
             transform.position -= Vector3.up * downwardSpeed * Time.deltaTime;
@@ -35,11 +39,18 @@ public class Keyboard : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // 충돌한 오브젝트의 태그가 "Player"인 경우
-        if (collision.gameObject.CompareTag("Player") && !hasCollided)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            // 현재 위치에서 아래로 특정 양만큼만 이동
-            //transform.position -= Vector3.up * downwardAmount;
             hasCollided = true; // 충돌 여부 설정
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        // 충돌한 오브젝트의 태그가 "Player"인 경우
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            hasCollided = false; // 충돌 종료 시 변수 초기화
         }
     }
 }

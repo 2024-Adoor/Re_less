@@ -47,18 +47,7 @@ public class ChapterControl : MonoBehaviour
 
     void Update()
     {
-        if (Ch01)
-        {
-            Chapter01();
-        }
-        else if (Ch02)
-        {
-            Chapter02();;
-        }
-        else if (Ch03)
-        {
-            Chapter03();
-        }
+
     }
     
     public void Temp_SpawnPlayerCh02()
@@ -76,25 +65,6 @@ public class ChapterControl : MonoBehaviour
         transform.position = Point.position + offset;
     }
 
-
-    void Chapter01()
-    {
-        // Fruit 충돌시 카운트 ++ 
-        // Fruit 카운트 1 일때, 시계토끼 접근시 시계토끼 깨우기 -> 시계토끼 스크립트에 애니메이션 추가 
-        // 시계토끼와 대화 후 패스스루 씬으로 나가기 
-    }
-
-
-    void Chapter02()
-    {   
-        
-
-        // Fruit 충돌시 카운트 ++
-        // 시계 isBroken 일때 OBJSpawn isSpawn False && OBJprefab isMoving False && 플라스틱 박스 변화 (올라갈 수 있는 구조로)
-        // Fruit 카운트 1 일때, 선인장 & 체셔캣 깨우기 (한명 깨우면 카운트--) -> 각 캐릭터 스크립트에 애니메이션 추가  
-        // 선인장 & 체셔캣과 대화 후 패스스루 씬으로 나가기 
-    }
-
     // CH02_OBJ와 충돌시 리스폰
     void OnCollisionEnter(Collision collision)
     {
@@ -107,10 +77,4 @@ public class ChapterControl : MonoBehaviour
         }
     }
 
-    void Chapter03()
-    {
-        // 모니터 전원을 켜서 스크린 속 자고 있는 앨리스 발견하기
-        // 앨리스가 깨어나면 (AwakeSuji에 isWake 추가) 스크린 밖으로 나오는 앨리스 
-        // 앨리스와 대화 -> 엔딩으로 연결(점점 커지면서 방 한가운데로 이동) -> 패스스루 씬으로 나가기 
-    }
 }

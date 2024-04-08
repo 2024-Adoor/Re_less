@@ -13,7 +13,7 @@ public class UI_Canvas : MonoBehaviour
 
     public Texture2D StartTexture; // RawImage에 사용할 텍스처
     public Texture2D HelpTexture;
-    public Texture2D HandTexture;
+    // public Texture2D HandTexture;
     public Texture2D CharacterTexture;
 
     // Friend Hint 1~4 
@@ -72,6 +72,7 @@ public class UI_Canvas : MonoBehaviour
         transform.rotation = cameraTransform.rotation;
         
         // Ch01 & Ch02 Hand Trigger -> 손으로 짚고 올라가라는 UI 생성
+        /*
         if(PlayerStateScript.isTrigger && isTrigger01)
         {
             AddRawImage(HandTexture, position, scale, "VR_UI_Hand");
@@ -82,6 +83,7 @@ public class UI_Canvas : MonoBehaviour
 
             isTrigger01 = false;
         }
+        */
 
         // 열매카운트 없이 캐릭터와 상호작용 하려고 할 때
         if(PlayerStateScript.fruitCount == 0 && PlayerStateScript.isCharacter && isTrigger02)

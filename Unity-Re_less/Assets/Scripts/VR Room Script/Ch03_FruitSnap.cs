@@ -9,7 +9,7 @@ public class Ch03_FruitSnap : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("CH03_OBJ")) // 충돌한 오브젝트가 CH03_OBJ 태그를 가진 경우
+        if (other.CompareTag("Character")) // 충돌한 오브젝트가 Character 태그를 가진 경우
         {
             isDetected = true;
 
@@ -20,3 +20,4 @@ public class Ch03_FruitSnap : MonoBehaviour
         }
     }
 }
+

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
   m_Name: LiftGammaGain
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   lift:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.39582044, z: 0.7432227, w: 0.000000105637184}
+    m_OverrideState: 0
+    m_Value: {x: 0.9825391, y: 1, z: 0.99351203, w: 0.000000105637184}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 0.94951993, y: 1, z: 0.9409014, w: 0}
+    m_Value: {x: 0.9977483, y: 1, z: 0.98352057, w: 0}
   gain:
-    m_OverrideState: 1
-    m_Value: {x: 0.73498166, y: 0.7407412, z: 1, w: -0.00000021729012}
+    m_OverrideState: 0
+    m_Value: {x: 0.98164034, y: 0.999999, z: 1, w: -0.00000021729012}
 --- !u!114 &-6568578541666368154
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -37,7 +37,7 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.35
   contrast:
     m_OverrideState: 0
     m_Value: 0
@@ -68,10 +68,10 @@ MonoBehaviour:
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 30
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 40
+    m_Value: 100
   gaussianMaxRadius:
     m_OverrideState: 1
     m_Value: 1
@@ -136,7 +136,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.364
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 2

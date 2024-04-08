@@ -39,7 +39,7 @@ public class PlayerState : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Character"))
+        if(collision.gameObject.CompareTag("Character") && fruitCount > 0)
         {
             isCharacter = true;
         }
