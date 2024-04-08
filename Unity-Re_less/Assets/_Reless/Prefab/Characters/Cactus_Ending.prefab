@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2039588976209827960
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -37.184483
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 25.494658
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -55.00924
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821750467394318785, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3198417430819171195, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+      propertyPath: m_Name
+      value: Chracter_Cactus Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8002846831349948594, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e0f1f7e08c7e1f640ab145af6e50eee1, type: 3}

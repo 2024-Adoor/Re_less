@@ -10,6 +10,7 @@ TagManager:
   - CH03_OBJ
   - HandTrigger
   - Character
+  - EndTrigger
   layers:
   - Default
   - TransparentFX

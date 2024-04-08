@@ -5,6 +5,7 @@ using UnityEngine;
 public class SujiManage : MonoBehaviour
 {
     public Animation animationComponent;    // Animation 컴포넌트 참조
+    public GameObject SujiChat;
 
     public Transform Target;                 // 깨어난 후 이동할 위치 
     private Vector3 offset = new Vector3(0f, 0.5f, 0f);
@@ -13,6 +14,8 @@ public class SujiManage : MonoBehaviour
     public AnimationClip IdleAni;           // IDLE Animation Clip 
     public bool isChange = false;
     public bool isSleepOut = false;
+
+    bool isPosition = false;
 
     void Start()
     {
@@ -23,7 +26,12 @@ public class SujiManage : MonoBehaviour
     {
         if(isSleepOut)
         {
-            gameObject.transform.position = Target.position;
+            if(!isPosition)
+            {
+                gameObject.transform.position = Target.position;
+                isPosition = true;
+            }
+            
             // SleepOut 애니메이션 클립으로 전환
             if (animationComponent != null && SleepOutAni != null && !isChange)
             {
@@ -32,7 +40,6 @@ public class SujiManage : MonoBehaviour
                 animationComponent.Play();
                 isChange = true;
             }
-
             StartCoroutine(WaitForSleepOutAnimation());
         }
     }

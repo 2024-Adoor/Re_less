@@ -20,18 +20,21 @@ public class Keyboard : MonoBehaviour
 
     private void Update()
     {
-        Ch03_FruitSnap _Ch03_FruitSnap = Ch03Fruit.GetComponent<Ch03_FruitSnap>();
-
-        if (hasCollided && _Ch03_FruitSnap.isDetected)
+        if (Ch03Fruit != null)
         {
-            // 아래로 이동
-            transform.position -= Vector3.up * downwardSpeed * Time.deltaTime;
-            enterDown = true;
+            Ch03_FruitSnap _Ch03_FruitSnap = Ch03Fruit.GetComponent<Ch03_FruitSnap>();
 
-            // 특정 위치 아래로 이동 완료 시
-            if (transform.position.y <= initialPosition.y - downwardAmount)
+            if (hasCollided && _Ch03_FruitSnap.isDetected)
             {
-                hasCollided = false; // 충돌 여부 초기화
+                // 아래로 이동
+                transform.position -= Vector3.up * downwardSpeed * Time.deltaTime;
+                enterDown = true;
+
+                // 특정 위치 아래로 이동 완료 시
+                if (transform.position.y <= initialPosition.y - downwardAmount)
+                {
+                    hasCollided = false; // 충돌 여부 초기화
+                }
             }
         }
     }
@@ -48,6 +51,8 @@ public class Keyboard : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         // 충돌한 오브젝트의 태그가 "Player"인 경우
+
+
         if (collision.gameObject.CompareTag("Player"))
         {
             hasCollided = false; // 충돌 종료 시 변수 초기화

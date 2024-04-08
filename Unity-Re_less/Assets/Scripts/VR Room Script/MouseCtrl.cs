@@ -23,26 +23,30 @@ public class MouseCtrl : MonoBehaviour
 
     void Update()
     {
-        Ch03_FruitSnap Ch03FruitScript = Ch03_Fruit.GetComponent<Ch03_FruitSnap>();
-        collisionDetected = Ch03FruitScript.isDetected;
-
-        if (!collisionDetected) // 충돌이 감지되지 않은 경우에만 움직임 처리
+        if (Ch03_Fruit != null)
         {
-            Vector3 currentPositionA = transform.position; // A 오브젝트의 현재 위치
+            Ch03_FruitSnap Ch03FruitScript = Ch03_Fruit.GetComponent<Ch03_FruitSnap>();
+            collisionDetected = Ch03FruitScript.isDetected;
 
-            // A 오브젝트의 이동량 계산
-            Vector3 displacement = currentPositionA - lastPositionA;
+            if (!collisionDetected) // 충돌이 감지되지 않은 경우에만 움직임 처리
+            {
+                Vector3 currentPositionA = transform.position; // A 오브젝트의 현재 위치
 
-            // B 오브젝트의 위치를 이동량에 따라 조정 (Z 값은 고정)
-            Vector3 newPositionB = ScreenObject.position;
-            
-            newPositionB.z += displacement.z;
-            newPositionB.y += displacement.x; // Y 값에 Z 변화량 적용
-            newPositionB.y = Mathf.Clamp(newPositionB.y, minY, maxY); // Y 위치를 최대 및 최소 값으로 제한
-            newPositionB.z = Mathf.Clamp(newPositionB.z, minZ, maxZ); // Z 위치를 최대 및 최소 값으로 제한
-            ScreenObject.position = newPositionB;
+                // A 오브젝트의 이동량 계산
+                Vector3 displacement = currentPositionA - lastPositionA;
 
-            lastPositionA = currentPositionA; // 이전 위치 갱신
-        } 
+                // B 오브젝트의 위치를 이동량에 따라 조정 (Z 값은 고정)
+                Vector3 newPositionB = ScreenObject.position;
+                
+                newPositionB.z += displacement.z;
+                newPositionB.y += displacement.x; // Y 값에 Z 변화량 적용
+                newPositionB.y = Mathf.Clamp(newPositionB.y, minY, maxY); // Y 위치를 최대 및 최소 값으로 제한
+                newPositionB.z = Mathf.Clamp(newPositionB.z, minZ, maxZ); // Z 위치를 최대 및 최소 값으로 제한
+                ScreenObject.position = newPositionB;
+
+                lastPositionA = currentPositionA; // 이전 위치 갱신
+            } 
+        }
+        
     }
 }
