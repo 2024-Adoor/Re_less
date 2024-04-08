@@ -13477,7 +13477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3180699261087209262, guid: 7e96b90275195ac40a2a54779cd2871d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4205091314138021409, guid: 7e96b90275195ac40a2a54779cd2871d, type: 3}
       propertyPath: _fingerFeatureStateProvider
@@ -18570,11 +18570,11 @@ SceneRoots:
   - {fileID: 1303890767}
   - {fileID: 1812733220}
   - {fileID: 1484331708}
+  - {fileID: 1572264544}
   - {fileID: 735310171}
   - {fileID: 1348502254}
   - {fileID: 725717429}
-  - {fileID: 1572264544}
-  - {fileID: 109150759}
   - {fileID: 1574274378}
   - {fileID: 1613888414}
   - {fileID: 77264187}
+  - {fileID: 109150759}

@@ -229,11 +229,6 @@ namespace Reless
         }
         
         public Action OnSceneLoadedEvent { get; set; }
-        
-        public void OnRoomCreated()
-        {
-            Debug.Log("OnRoomCreated");
-        }
 
         /// <summary>
         /// MRUK의 다른 모든 <see cref="MRUK.SceneLoadedEvent"/> 이벤트들이 끝난 후 호출됩니다.
