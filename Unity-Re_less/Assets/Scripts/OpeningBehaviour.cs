@@ -26,6 +26,9 @@ namespace Reless
         private GameObject _pivot;
         
         [SerializeField, HideInInspector]
+        private RoomEnlarger roomEnlarger;
+        
+        [SerializeField, HideInInspector]
         private GameManager gameManager;
 
         private void Start()
@@ -50,6 +53,26 @@ namespace Reless
                 yield return RotatingOpeningWall(wallOpening);
                 yield return new WaitForSeconds(4f);
                 yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(4f);
+                yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(4f);
+                
+                // 오프닝 씬 언로드
+                SceneManager.UnloadSceneAsync("Opening");
+                
+                // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
+                
+                // 패스스루 이펙트 메쉬 삭제
+                gameManager.DestroyPassThroughEffectMeshes();
+                gameManager.CreateVirtualRoomEffectMeshes();
+                
+                yield return new WaitForSeconds(2f);
+                roomEnlarger.EnlargeRoom();
+                
+                // 튜토리얼 생략
+                
+                yield return new WaitForSeconds(4f);
+                SceneManager.LoadSceneAsync("MainScene");
             }
         }
         
@@ -138,6 +161,7 @@ namespace Reless
         private void OnValidate()
         {
             gameManager = FindObjectOfType<GameManager>();
+            roomEnlarger = FindObjectOfType<RoomEnlarger>();
         }
     }
 }

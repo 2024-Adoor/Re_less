@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
@@ -16,13 +17,18 @@ namespace Reless
     {
         public static GameManager Instance => _instance ??= new GameObject(nameof(GameManager)).AddComponent<GameManager>();
         private static GameManager _instance;
-        
-        [SerializeField]
-        private FindSpawnPositions popupBookSpawner;
 
         private void Awake()
         {
-            _instance = this;
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(_instance);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         public enum Phase
@@ -78,7 +84,6 @@ namespace Reless
 
         private void StartChapter1()
         {
-            throw new NotImplementedException();
         }
 
         private void StartTutorial()
@@ -97,30 +102,49 @@ namespace Reless
         private void OffsetPassthroughEffectMeshes()
         {
             float offset = 0.005f;
-            float scale = 1.1f;
             
             var ceiling = _currentRoom.GetCeilingAnchor();
             Debug.Log(ceiling == null);
             {
                 var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
                 Debug.Log(transform == null);
-                //transform.localScale = new Vector3(scale, scale, 1);
                 mesh.transform.Translate(0, 0, -offset);
+                _passthroughEffectMeshes.Add(mesh);
             }
             
             var floor = _currentRoom.GetFloorAnchor();
             {
                 var mesh = FindCreatedEffectMesh(floor, passthroughRoom);
-                //transform.localScale = new Vector3(scale, scale, 1);
                 mesh.transform.Translate(0, 0, -offset);
+                _passthroughEffectMeshes.Add(mesh);
             }
             
             var walls = _currentRoom.GetWallAnchors();
             foreach (var wall in walls)
             {
                 var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
-                //transform.localScale = new Vector3(scale, scale, 1);
                 mesh.transform.Translate(0, 0, -offset);
+            }
+        }
+
+        private List<GameObject> _passthroughEffectMeshes = new();
+        
+        public void DestroyPassThroughEffectMeshes()
+        {
+            foreach (var mesh in _passthroughEffectMeshes)
+            {
+                Destroy(mesh);
+            }
+        }
+        
+        [SerializeField]
+        private List<EffectMesh> virtualRoomEffectMeshes;
+        
+        public void CreateVirtualRoomEffectMeshes()
+        {
+            foreach (var effectMesh in virtualRoomEffectMeshes)
+            {
+                effectMesh.CreateMesh();
             }
         }
 
@@ -232,19 +256,6 @@ namespace Reless
         {
             CurrentPhase = _currentPhase;
         }
-
-        private void SpawnPopupBook()
-        {
-            popupBookSpawner.StartSpawn();
-        }
-
-        private void EnableSleepPose()
-        {
-            sleepPose.transform.gameObject.SetActive(true);
-        }
-
-        [SerializeField] 
-        private CloseEyesToSleepPose sleepPose;
         
 #if UNITY_EDITOR
         private void OnValidate()
@@ -257,6 +268,12 @@ namespace Reless
         private void LoadVRScene()
         {
             SceneManager.LoadSceneAsync("VR Room");
+        }
+        
+        [Button]
+        private void LoadMainScene()
+        {
+            SceneManager.LoadSceneAsync("MainScene");
         }
 #endif
         
