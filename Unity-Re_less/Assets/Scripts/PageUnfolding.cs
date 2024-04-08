@@ -12,7 +12,7 @@ public class PageUnfolding : MonoBehaviour
     /// <summary>
     /// 팝업북의 레퍼런스
     /// </summary>
-    [SerializeField, ReadOnly]
+    [SerializeField]
     private PopupBook popupBook;
     
     /// <summary>
@@ -177,10 +177,5 @@ public class PageUnfolding : MonoBehaviour
         {
             transform.localRotation = IsTurnedMoreThanHalf ? TurnedRotation : UnfoldedRotation;
         }
-    }
-
-    private void OnValidate()
-    {
-        popupBook = GetComponentInParent<PopupBook>();
     }
 }
