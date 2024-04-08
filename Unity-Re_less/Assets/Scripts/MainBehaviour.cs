@@ -37,10 +37,14 @@ namespace Reless
         
         [SerializeField]
         private GameObject ch03Object;
+
+        private void Awake()
+        {
+            _gameManager = GameManager.Instance;
+        }
         
         private void Start()
         {
-            _gameManager = GameManager.Instance;
             
             // 튜토리얼 이후에 MainScene으로 진입했다면
             if (_gameManager.CurrentPhase > GameManager.Phase.Tutorial)
@@ -65,7 +69,7 @@ namespace Reless
         public void OnSceneLoaded()
         {
             // 튜토리얼 이후에 MainScene으로 진입했다면
-            if (_gameManager.CurrentPhase > GameManager.Phase.Tutorial)
+            if (GameManager.Instance.CurrentPhase > GameManager.Phase.Tutorial)
             {
                 SpawnPopupBook();
             }
