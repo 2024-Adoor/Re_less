@@ -5,7 +5,6 @@ using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 namespace Reless
 {
@@ -15,6 +14,17 @@ namespace Reless
     /// </summary>
     public class GameManager : MonoBehaviour
     {
+        public static GameManager Instance => _instance ??= new GameObject(nameof(GameManager)).AddComponent<GameManager>();
+        private static GameManager _instance;
+        
+        [SerializeField]
+        private FindSpawnPositions popupBookSpawner;
+
+        private void Awake()
+        {
+            _instance = this;
+        }
+
         public enum Phase
         {
             Title,
@@ -142,6 +152,8 @@ namespace Reless
         [SerializeField, HideInInspector]
         private OVRCameraRig cameraRig;
         
+        public Vector3 PlayerPosition => cameraRig.centerEyeAnchor.position;
+        
         [SerializeField]
         public OVRPassthroughLayer passthroughLayer;
 
@@ -221,11 +233,33 @@ namespace Reless
             CurrentPhase = _currentPhase;
         }
 
+        private void SpawnPopupBook()
+        {
+            popupBookSpawner.StartSpawn();
+        }
+
+        private void EnableSleepPose()
+        {
+            sleepPose.transform.gameObject.SetActive(true);
+        }
+
+        [SerializeField] 
+        private CloseEyesToSleepPose sleepPose;
+        
+#if UNITY_EDITOR
         private void OnValidate()
         {
             cameraRig ??= FindObjectOfType<OVRCameraRig>();
             openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
         }
+        
+        [Button]
+        private void LoadVRScene()
+        {
+            SceneManager.LoadSceneAsync("VR Room");
+        }
+#endif
+        
     }
 }
 
