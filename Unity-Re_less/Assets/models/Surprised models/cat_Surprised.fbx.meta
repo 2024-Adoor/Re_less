@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: f6ef81bdd1ab1e74d9e5cd3f72a97d5a
-guid: b475302d1a72806418e25a10ed41259d
+guid: 6d8deda2557d8214892445d46960684e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert14
+    second: {fileID: 2100000, guid: 5c4e568f22ff85447a3c7325a698d8dd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert15
+    second: {fileID: 2100000, guid: 64fa391a2476866478f152bf200fd4cd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -32,14 +41,9 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
-    isReadable: 0
-  meshes:
-    lODScreenPercentages: []
-    globalScale: 1
     clipAnimations:
     - serializedVersion: 16
-      name: cactus_surprised
+      name: cat_surprised
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 0
@@ -70,7 +74,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 12
+    globalScale: 15
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -125,15 +129,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
-    rootMotionBoneName: 
-    hasTranslationDoF: 0
-    hasExtraRoot: 0
-    skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
-  autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
-    globalScale: 0.12
+    globalScale: 0.14999999
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
