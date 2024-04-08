@@ -47,8 +47,8 @@ namespace Reless
                 // 방의 크기를 키우는 애니메이션
                 for (float elapsedTime = 0f; elapsedTime < enlargingDuration; elapsedTime += Time.deltaTime)
                 {
-                    float scale = Mathf.Lerp(0.1f, 1.0f, animationCurve.Evaluate(elapsedTime / enlargingDuration)) * enlargedScale;
-                    _room.transform.localScale = Vector3.one * scale;
+                    float scale = Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)) * enlargedScale;
+                    _room.transform.localScale = Vector3.one + Vector3.one * scale;
                     yield return null;
                 }
                 
