@@ -60,7 +60,17 @@ public class ChapterControl : MonoBehaviour
             Chapter03();
         }
     }
-
+    
+    public void Temp_SpawnPlayerCh02()
+    {
+        SpawnPlayer(SpawnPoint02);
+    }
+    
+    public void Temp_SpawnPlayerCh03()
+    {
+        SpawnPlayer(SpawnPoint03);
+    }
+    
     void SpawnPlayer(Transform Point)
     {
         transform.position = Point.position + offset;

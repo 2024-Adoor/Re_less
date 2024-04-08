@@ -1,3 +1,4 @@
+using Meta.XR.MRUtilityKit;
 using Reless;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class ExitDreamBehaviour : MonoBehaviour
     private OVRPassthroughLayer roomSurfacePassthrough;
     
     private Vector3 _startPlayerPosition;
+
+    private Vector3 _doorPosition;
     
     // Start is called before the first frame update
     void Start()
@@ -25,4 +28,6 @@ public class ExitDreamBehaviour : MonoBehaviour
     {
         
     }
+    
+    
 }

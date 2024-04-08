@@ -149,6 +149,42 @@ namespace Reless
             }
         }
 
+        private void Update()
+        {
+            if (OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch))
+            {
+                StartCoroutine(LoadScene());                
+            }
+            
+            IEnumerator LoadScene()
+            {
+                var asyncLoad = SceneManager.LoadSceneAsync("VR Room");
+                while (!asyncLoad.isDone)
+                {
+                    yield return null;
+                }
+                
+                var chapterControl = FindObjectOfType<ChapterControl>();
+                if (_currentChapter == 1)
+                {
+                    chapterControl.Ch01 = true;
+                }
+                else if (_currentChapter == 2)
+                {
+                    chapterControl.Temp_SpawnPlayerCh02();
+                }
+                else if (_currentChapter == 3)
+                {
+                    chapterControl.Temp_SpawnPlayerCh03();
+
+                }
+                _currentChapter++;
+            }
+            
+        }
+        
+        private int _currentChapter = 1;
+
         /// <summary>
         /// 앵커에서 특정 EffectMesh로 생성된 메시를 찾습니다.
         /// </summary>
