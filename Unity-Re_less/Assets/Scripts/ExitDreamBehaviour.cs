@@ -1,33 +1,35 @@
-using Meta.XR.MRUtilityKit;
 using Reless;
 using UnityEngine;
 
-/// <summary>
-/// Ã©ÅÍ°¡ ³¡³ª°í ²Ş¿¡¼­ ³ª°¡±â À§ÇÑ ÆĞ½º½º·ç ¹® µ¿ÀÛÀ» ´ã´çÇÏ´Â Å¬·¡½ºÀÔ´Ï´Ù.
-/// </summary>
-public class ExitDreamBehaviour : MonoBehaviour
+namespace Reless
 {
-    private GameManager _gameManager;
-    
-    [SerializeField]
-    private OVRPassthroughLayer roomSurfacePassthrough;
-    
-    private Vector3 _startPlayerPosition;
-
-    private Vector3 _doorPosition;
-    
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// ì±•í„°ê°€ ëë‚˜ê³  ê¿ˆì—ì„œ ë‚˜ê°€ê¸° ìœ„í•œ íŒ¨ìŠ¤ìŠ¤ë£¨ ë¬¸ ë™ì‘ì„ ë‹´ë‹¹í•˜ëŠ” í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
+    /// </summary>
+    public class ExitDreamBehaviour : MonoBehaviour
     {
-        _gameManager = GameManager.Instance;
-        _startPlayerPosition = _gameManager.PlayerPosition;
-    }
+        private GameManager _gameManager;
+    
+        [SerializeField]
+        private OVRPassthroughLayer roomSurfacePassthrough;
+    
+        private Vector3 _startPlayerPosition;
 
-    // Update is called once per frame
-    void Update()
-    {
+        private Vector3 _doorPosition;
+    
+        // Start is called before the first frame update
+        void Start()
+        {
+            _gameManager = GameManager.Instance;
+            _startPlayerPosition = _gameManager.PlayerPosition;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
+    
+    
     }
-    
-    
 }
