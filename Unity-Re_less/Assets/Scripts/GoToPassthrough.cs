@@ -15,10 +15,18 @@ public class GoToPassthrough : MonoBehaviour
 	bool Ch02_Clear = false;
 	bool Ch03_Clear = false;
 
+	// 페이드 UI
+	private FadeUI fadeUI;
+
 	void Start()
 	{
 		Renderer renderer = GetComponent<Renderer>();
 		renderer.enabled = false;
+
+		GameObject fadeUIObject = GameObject.Find("FadeUI");
+
+        // FadeUI 스크립트를 가져옵니다.
+        fadeUI = fadeUIObject.GetComponent<FadeUI>();
 	}
 
 	void Update()
@@ -63,6 +71,7 @@ public class GoToPassthrough : MonoBehaviour
 		{
 			if(Ch01_Clear || Ch02_Clear || Ch03_Clear)
 			{
+				fadeUI.WhiteFadeOut();
 				GameManager.Instance.LoadExitDreamScene();
 			}
 		}

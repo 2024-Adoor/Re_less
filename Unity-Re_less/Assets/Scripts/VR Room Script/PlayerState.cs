@@ -36,6 +36,10 @@ public class PlayerState : MonoBehaviour
     private float delayTime = 2f;
     private bool isDelayedActionStarted = false;
 
+    // UI 트리거 관리
+    public bool isJumpUI = false;
+    public bool isFriendUI = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -136,13 +140,18 @@ public class PlayerState : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log("Fruit detected");
         }
-        else if(other.CompareTag("HandTrigger"))
-        {
-            isTrigger = true;
-        }
         else if(other.CompareTag("EndTrigger") && _SujiEndingTest.RotateFin)
         {
             canEnd = true;
+        }
+
+        if(other.gameObject.name == "Ch01_uiJumpTrigger")
+        {
+            isJumpUI = true;
+        }
+        else if(other.gameObject.name == "Ch01_uiFriendTrigger")
+        {
+            isFriendUI = true;
         }
     }
 

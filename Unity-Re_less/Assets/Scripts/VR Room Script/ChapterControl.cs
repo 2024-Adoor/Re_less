@@ -64,12 +64,12 @@ public class ChapterControl : MonoBehaviour
 
     private void StartChapter01()
     {
-        SpawnPlayer(SpawnPoint01);
+        SpawnPlayer(SpawnPoint01, -40);
     }
     
     private void StartChapter02()
     {
-        SpawnPlayer(SpawnPoint02);
+        SpawnPlayer(SpawnPoint02, 90);
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
         SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
@@ -80,7 +80,7 @@ public class ChapterControl : MonoBehaviour
     
     private void StartChapter03()
     {
-        SpawnPlayer(SpawnPoint03);
+        SpawnPlayer(SpawnPoint03, 150);
     }
 
     void Update()
@@ -88,9 +88,15 @@ public class ChapterControl : MonoBehaviour
 
     }
     
-    void SpawnPlayer(Transform Point)
+    void SpawnPlayer(Transform Point, float RotateY)
     {
         transform.position = Point.position + offset;
+
+        // 새로운 회전값을 Quaternion.Euler를 사용하여 생성합니다.
+        Quaternion newRotation = Quaternion.Euler(0f, RotateY, 0f);
+        
+        // 새로운 회전값을 적용합니다.
+        transform.rotation = newRotation;
     }
 
     // CH02_OBJ와 충돌시 리스폰
