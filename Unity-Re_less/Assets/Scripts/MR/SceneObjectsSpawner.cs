@@ -4,7 +4,7 @@ using Meta.XR.MRUtilityKit;
 using UnityEngine;
 using static Meta.XR.MRUtilityKit.MRUKAnchor.SceneLabels;
 
-namespace Reless
+namespace Reless.MR
 {
     /// <summary>
     /// MRUtilityKit을 사용하여 공간에 필요한 오브젝트의 생성을 담당합니다.
@@ -50,8 +50,17 @@ namespace Reless
         
         [SerializeField]
         private OuterPrefabs outerPrefabs;
+
+        [SerializeField]
+        private GameObject popupBookPrefab;
         
-        public void SpawnOuterPrefabs()
+        public void SpawnAll()
+        {
+            SpawnOuterPrefabs();
+            SpawnPopupBook();
+        }
+        
+        private void SpawnOuterPrefabs()
         {
             var anchors = MRUK.Instance.GetAnchors();
 
@@ -127,6 +136,34 @@ namespace Reless
                 .First();
         }
         
+        /// <summary>
+        /// 팝업북을 스폰합니다.
+        /// </summary>
+        private void SpawnPopupBook()
+        {
+            var anchors = MRUK.Instance.GetAnchors();
+            
+            // 아무 테이블 하나에서 스폰
+            var table = anchors.FirstOrDefault(anchor => anchor.GetLabelsAsEnum() == TABLE);
+            if (table == null)
+            {
+                Debug.LogError("There is no table.");
+                return;
+            }
+            
+            var book = Spawn(popupBookPrefab, table);
+            
+            GameManager.Instance.PopupBook = book.GetComponent<PopupBook>();
+            
+            // 위치: 위
+            TranslateToTop(book, table);
+            
+            book.transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+            
+            // 처음 스폰 시 비활성화
+            book.SetActive(false);
+        }
+        
         private static GameObject Spawn(GameObject prefab, MRUKAnchor anchor)
         {
             var spawned = Instantiate(prefab, anchor.transform);
@@ -137,6 +174,11 @@ namespace Reless
         private void TranslateToBottom(GameObject obj, MRUKAnchor anchor)
         {
             obj.transform.Translate(0, -(anchor.GetAnchorSize().y / 2), 0);
+        }
+        
+        private void TranslateToTop(GameObject obj, MRUKAnchor anchor)
+        {
+            obj.transform.Translate(0, anchor.GetAnchorSize().y / 2, 0);
         }
             
         private void ScaleX(GameObject obj, MRUKAnchor anchor)

@@ -3,7 +3,9 @@ using System.Collections;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.MR;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 namespace Reless
@@ -84,6 +86,8 @@ namespace Reless
                     case Phase.Chapter3: StartChapter3(); break;
                     case Phase.Ending: OnEnding(); break;
                 }
+
+                PopupBookActive = _currentPhase;
             }
         }
         
@@ -157,11 +161,7 @@ namespace Reless
 
         
 
-        [Button]
-        private void SetPhaseToOpening()
-        {
-            CurrentPhase = Phase.Opening;
-        }
+        
 
         
 
@@ -236,6 +236,24 @@ namespace Reless
             CurrentPhase = _currentPhase;
         }
 
+        public PopupBook PopupBook { set => _popupBook ??= value; }
+        
+        private PopupBook _popupBook;
+
+        private Phase PopupBookActive
+        {
+            set
+            {
+                if (_popupBook.IsUnityNull()) return;
+
+                _popupBook.gameObject.SetActive(value switch
+                {
+                    <= Phase.Tutorial => false,
+                    > Phase.Tutorial => true,
+                });
+            }
+        }
+
         [Button(enabledMode: EButtonEnableMode.Playmode)]
         public AsyncOperation LoadVRScene()
         {
@@ -257,6 +275,18 @@ namespace Reless
         {
             cameraRig ??= FindObjectOfType<OVRCameraRig>();
             openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
+        }
+        
+        [Button]
+        private void SetPhaseToOpening()
+        {
+            CurrentPhase = Phase.Opening;
+        }
+        
+        [Button]
+        private void SetPhaseToChapter1()
+        {
+            CurrentPhase = Phase.Chapter1;
         }
 #endif
         

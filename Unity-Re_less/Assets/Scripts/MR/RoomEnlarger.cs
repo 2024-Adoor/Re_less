@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
-using Reless.MR;
 
-namespace Reless
+namespace Reless.MR
 {
     
     /// <summary>

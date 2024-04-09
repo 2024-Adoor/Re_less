@@ -6568,93 +6568,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1562288676}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &725717427
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 725717429}
-  - component: {fileID: 725717428}
-  - component: {fileID: 725717430}
-  m_Layer: 0
-  m_Name: SceneObjectsSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &725717428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 725717427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 263a22897d062cb449212fb9a312b35e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outerPrefabs:
-    floorNextToDoor: {fileID: 6112409626279298483, guid: 8bef243417dfa7644bb8920dcd9b5ba6, type: 3}
-    floorNextToWall: {fileID: 8902268133254898794, guid: 09735e59c606d2142aa1479d565f3732, type: 3}
-    WallMaterial: {fileID: 2100000, guid: a9474185883990e459a0ceba4553d4eb, type: 2}
-    logoLeft: {fileID: 0}
-    logoRight: {fileID: 0}
---- !u!4 &725717429
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 725717427}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &725717430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 725717427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c55c994d76dd43da9cfea6b3e8f32b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 725717428}
-        m_TargetAssemblyTypeName: Reless.SceneObjectsSpawner, Assembly-CSharp
-        m_MethodName: SpawnOuterPrefabs
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  roomCreatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomUpdatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomRemovedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &754343938
 GameObject:
   m_ObjectHideFlags: 0
@@ -8768,7 +8681,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001971510}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14b91343ae064b17a05173794ab73afa, type: 3}
   m_Name: 
@@ -19456,7 +19369,6 @@ SceneRoots:
   - {fileID: 1303890767}
   - {fileID: 1812733220}
   - {fileID: 1572264544}
-  - {fileID: 725717429}
   - {fileID: 1574274378}
   - {fileID: 1613888414}
   - {fileID: 77264187}
