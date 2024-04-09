@@ -8,7 +8,10 @@ public class Chat_Character : MonoBehaviour
     public GameObject Character;
     
     public Material[] chatMaterials; // Material 배열
-    private bool isChatFin = false;
+    public bool isChatFin = false;
+
+    public AnimationClip doorAni;
+    int Chat = 0;
 
     void Start()
     {
@@ -25,7 +28,15 @@ public class Chat_Character : MonoBehaviour
             StartCoroutine(Delay_Change(1.5f));
             isChatFin = true;
         }
-        
+
+        if(Chat == chatMaterials.Length)
+        {
+            _AniManage.animationComponent.Stop();
+            _AniManage.animationComponent.clip = doorAni;
+            _AniManage.animationComponent.Play();
+
+            Chat++;
+        }
     }
 
     IEnumerator Delay_Change(float delayTime)
@@ -34,6 +45,7 @@ public class Chat_Character : MonoBehaviour
         {
             yield return new WaitForSeconds(delayTime); // 딜레이
             ChangeMaterial(material); // 다음 Material로 변경
+            Chat++;
         }
     }
 
