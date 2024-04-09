@@ -33,7 +33,7 @@ public class PlayerState : MonoBehaviour
 
     // Delay °ü¸®
     private float elapsedTime = 0f;
-    private float delayTime = 5f;
+    private float delayTime = 2f;
     private bool isDelayedActionStarted = false;
 
     // Start is called before the first frame update

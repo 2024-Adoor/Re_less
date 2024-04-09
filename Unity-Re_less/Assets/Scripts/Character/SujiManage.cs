@@ -36,6 +36,9 @@ public class SujiManage : MonoBehaviour
 
     void Update()
     {
+        _PlayerState = Player.GetComponent<PlayerState>();
+
+
         if(isSleepOut)
         {
             if(!isPosition)

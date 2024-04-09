@@ -8,7 +8,7 @@ public class Chat_Character : MonoBehaviour
     public GameObject Character;
     
     public Material[] chatMaterials; // Material ¹è¿­
-    private bool isChatFin = false;
+    public bool isChatFin = false;
 
     void Start()
     {
@@ -25,7 +25,6 @@ public class Chat_Character : MonoBehaviour
             StartCoroutine(Delay_Change(1.5f));
             isChatFin = true;
         }
-        
     }
 
     IEnumerator Delay_Change(float delayTime)

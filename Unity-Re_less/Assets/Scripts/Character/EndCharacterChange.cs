@@ -29,10 +29,11 @@ public class EndCharacterChange : MonoBehaviour
     // 프리팹 생성 
     void CreatePrefabInstance(GameObject prefabToCreate)
     {
-        // 프리팹의 위치 정보를 가져옵니다.
+        // 새로 추가할 프리팹의 위치와 회전값을 가져옵니다.
         Vector3 prefabPosition = prefabToCreate.transform.position;
+        Quaternion prefabRotation = prefabToCreate.transform.rotation;
 
-        // 프리팹을 해당 위치에 생성합니다.
-        Instantiate(prefabToCreate, prefabPosition, Quaternion.identity);
+        // 프리팹을 해당 위치와 회전값으로 생성합니다.
+        Instantiate(prefabToCreate, prefabPosition, prefabRotation);
     }
 }

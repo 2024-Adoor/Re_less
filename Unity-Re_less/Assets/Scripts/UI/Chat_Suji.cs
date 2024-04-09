@@ -18,9 +18,6 @@ public class Chat_Suji : MonoBehaviour
     private float delayTime = 2f;
     private bool isDelayedActionStarted = false;
     
-    // VFX 
-    public ParticleSystem SleepOutEffect;
-
     void Start()
     {
         GetComponent<Renderer>().enabled = false;
