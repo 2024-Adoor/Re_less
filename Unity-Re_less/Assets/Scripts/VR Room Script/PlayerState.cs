@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Reless;
 
 public class PlayerState : MonoBehaviour
 {   
@@ -9,7 +10,6 @@ public class PlayerState : MonoBehaviour
     public bool isTrigger = false;
     public bool isCharacter = false;
     
-
     // Ending 요건
     public GameObject Suji;
     SujiEndingTest _SujiEndingTest;
@@ -18,7 +18,18 @@ public class PlayerState : MonoBehaviour
 
     public bool canEnd = false;
     public bool isYUp = false;
+
+    public GameObject DeleteCharacters;
+
+    public GameObject Suji_Surprised;
+    public GameObject Characters_Surprised;
+    bool isSurprised = false;
     
+    // Ending RespawnTrigger & SpawnPoint 
+    public Transform RespawnTrigger;
+    public Transform EndSpawnPoint;
+    public GameObject Camera;
+
     // Delay 관리
     private float elapsedTime = 0f;
     private float delayTime = 5f;
@@ -32,9 +43,13 @@ public class PlayerState : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
-
+    {   
+        if(Suji != null)
+        {
+            _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
+        }
+        
+        // 엔딩요건이 충족되면 Delay 후 isYUp true 
         if(canEnd)
         {
             if (!isDelayedActionStarted)
@@ -51,24 +66,64 @@ public class PlayerState : MonoBehaviour
                         rb.useGravity = false;
                         isYUp = true;
                     }
-
                     isDelayedActionStarted = true;
                 }
             }
         }
 
+        // isYUp -> 플레이어 y값 상승 & 캐릭터 애니메이션 변경 
         if(isYUp)
         {
-            // 현재 위치에서 목표 y 값 위치까지 일정한 속도로 이동
-            transform.position += Vector3.up * upwardSpeed * Time.deltaTime;
+            // 현재 위치에서 일정한 속도로 이동
+            MoveToTargetY(RespawnTrigger);
+
+            if(!isSurprised)
+            {
+                // 애들 프리팹 변경 (IDLE -> Surprised)
+                Destroy(Suji);
+                // Destroy(DeleteCharacters);
+
+                // 새로운 프리팹 생성
+                GameObject newSuji = Instantiate(Suji_Surprised, Suji_Surprised.transform.position, Suji_Surprised.transform.rotation);
+                GameObject newCharacters = Instantiate(Characters_Surprised, Characters_Surprised.transform.position, Characters_Surprised.transform.rotation);
+
+                isSurprised = true;
+            }
         }
 
+        if(Mathf.Approximately(transform.position.y, RespawnTrigger.position.y))
+        {
+            isYUp = false;
+            canEnd = false;
+            Debug.Log("Player on RespawnTrigger !!");
+
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.useGravity = true;
+            }
+
+            transform.position = EndSpawnPoint.position + new Vector3(0f, 23f, 0f);
+
+            CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+            capsuleCollider.radius = 5f;
+            capsuleCollider.height = 45f;
+
+            Camera.transform.position += new Vector3(0f, 23f, 0f);
+
+            PlayerControl _PlayerControl = GetComponent<PlayerControl>();
+            if(_PlayerControl != null)
+            {
+                _PlayerControl.speed = 12f;
+            }
+        }
 
     }
 
     void OnTriggerEnter(Collider other)
     {
-        _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
+        if(Suji != null)
+           _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
 
         if(other.CompareTag("Fruit"))
         {
@@ -94,5 +149,24 @@ public class PlayerState : MonoBehaviour
         {
             isCharacter = true;
         }
+    }
+
+    // 타겟위치까지 이동 
+    void MoveToTargetY(Transform target)
+    {   
+        // y축 방향으로의 거리 계산
+        float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
+    
+        // 이동하는데 필요한 시간 계산
+        float timeToReachTargetY = distanceToTargetY / upwardSpeed;
+    
+        // 목표 지점까지 일정한 속도로 y축 이동
+        float newY = Mathf.MoveTowards(transform.position.y, target.position.y, upwardSpeed * Time.deltaTime);
+        
+        // 현재 x와 z 위치를 유지한 채로 y값을 갱신하여 새로운 위치 설정
+        Vector3 newPosition = new Vector3(transform.position.x, newY, transform.position.z);
+        
+        // 새로운 위치로 이동
+        transform.position = newPosition;
     }
 }

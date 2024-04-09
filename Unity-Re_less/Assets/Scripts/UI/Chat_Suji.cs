@@ -10,12 +10,15 @@ public class Chat_Suji : MonoBehaviour
     public Material Chat02;
     public Material Chat03;
     SujiEndingTest _SujiEndingTest;
+    SujiManage _SujiManage;
 
     public bool isChatFin = false;
 
     private float elapsedTime = 0f;
     private float delayTime = 2f;
     private bool isDelayedActionStarted = false;
+    
+    
 
     void Start()
     {
@@ -24,9 +27,12 @@ public class Chat_Suji : MonoBehaviour
 
     void Update()
     {   
-        SujiManage _SujiManage = Suji.GetComponent<SujiManage>();
-        SujiEndingTest _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
-
+        if(Suji != null)
+        {
+            _SujiManage = Suji.GetComponent<SujiManage>();
+            _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
+        }
+        
         if (_SujiManage.isChange && !isChatFin)
         {   
             GetComponent<Renderer>().enabled = true;
