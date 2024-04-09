@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
+using Reless.MR;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -38,6 +39,14 @@ namespace Reless
             }
         }
         private static GameManager _instance;
+
+        public void Awake()
+        {
+            if (_instance is not null && _instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
 
         public enum Phase
         {
@@ -309,24 +318,28 @@ namespace Reless
         {
             CurrentPhase = _currentPhase;
         }
+
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        public AsyncOperation LoadVRScene()
+        {
+            // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
+            RoomManager.Instance.RoomObjectActive = false;
+            return SceneManager.LoadSceneAsync("VR Room");
+        }
+
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        public AsyncOperation LoadMainScene()
+        {
+            // 메인 씬을 로드할 때는 현실 룸을 다시 활성화합니다.
+            RoomManager.Instance.RoomObjectActive = true;
+            return SceneManager.LoadSceneAsync("MainScene");
+        }
         
 #if UNITY_EDITOR
         private void OnValidate()
         {
             cameraRig ??= FindObjectOfType<OVRCameraRig>();
             openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
-        }
-        
-        [Button]
-        private void LoadVRScene()
-        {
-            SceneManager.LoadSceneAsync("VR Room");
-        }
-        
-        [Button]
-        private void LoadMainScene()
-        {
-            SceneManager.LoadSceneAsync("MainScene");
         }
 #endif
         
