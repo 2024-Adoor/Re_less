@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
@@ -12,6 +14,138 @@ namespace Reless.MR
     {
         [NonSerialized]
         public MRUKRoom Room;
+        
+        [SerializeField]
+        private List<EffectMesh> virtualRoomEffectMeshes;
+        
+        [SerializeField]
+        private EffectMesh passthroughRoom;
+        
+        private List<GameObject> _passthroughEffectMeshes = new();
+        
+        public MRUKAnchor KeyWall => _keyWall;
+        
+        private MRUKAnchor _keyWall;
+
+        [NonSerialized, ReadOnly]
+        public RoomEnlarger roomEnlarger;
+
+        public GameObject OpeningWall => FindCreatedEffectMesh(_keyWall, passthroughRoom);
+        
+        private void Awake()
+        {
+            Debug.Log($"{nameof(RoomManager)}: Making object don't destroy on load.");
+            DontDestroyOnLoad(Instance.gameObject);
+        }
+        
+        public void OnSceneLoaded()
+        {
+            Debug.Log($"{nameof(RoomManager)}: Scene loaded.");
+            
+            DebugRoomInfo();
+            
+            // 생성된 방을 자식으로 설정합니다.
+            Room = MRUK.Instance.GetCurrentRoom();
+            Room.transform.parent = this.transform;
+            
+            // 가장 긴 벽을 찾습니다.
+            _keyWall = Room.GetKeyWall(out _);
+            
+            passthroughRoom.CreateMesh();
+            OffsetPassthroughEffectMeshes();
+            
+            GameManager.Instance.OnSceneLoaded();
+        }
+
+        [Button]
+        public void CreateVirtualRoomEffectMeshes()
+        {
+            foreach (var effectMesh in virtualRoomEffectMeshes)
+            {
+                effectMesh.CreateMesh();
+            }
+        }
+        
+        public void DestroyVirtualRoomEffectMeshes()
+        {
+            foreach (var effectMesh in virtualRoomEffectMeshes)
+            {
+                effectMesh.DestroyMesh();
+            }
+        }
+
+        public bool RoomObjectActive { set => gameObject.SetActive(value); }
+            
+        
+
+        private void DebugRoomInfo()
+        {
+            var rooms = MRUK.Instance.GetRooms();
+            Debug.Log($"{nameof(RoomManager)}: Room count: {rooms.Count}");
+            foreach (var room in rooms)
+            {
+                Debug.Log($"{nameof(RoomManager)}: Room name: {room.name}");
+            }
+        }
+        
+        /// <summary>
+        /// 내부에 있는 EffectMesh의 z-fighting을 방지하기 위해 패스스루 EffectMesh들을 약간 오프셋합니다.
+        /// </summary>
+        private void OffsetPassthroughEffectMeshes()
+        {
+            float offset = 0.005f;
+            
+            var ceiling = Room.GetCeilingAnchor();
+            {
+                var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
+                mesh.transform.Translate(0, 0, -offset);
+                _passthroughEffectMeshes.Add(mesh);
+            }
+            
+            var floor = Room.GetFloorAnchor();
+            {
+                var mesh = FindCreatedEffectMesh(floor, passthroughRoom);
+                mesh.transform.Translate(0, 0, -offset);
+                _passthroughEffectMeshes.Add(mesh);
+            }
+            
+            var walls = Room.GetWallAnchors();
+            foreach (var wall in walls)
+            {
+                var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
+                mesh.transform.Translate(0, 0, -offset);
+            }
+        }
+        
+        /// <summary>
+        /// 패스스루 이펙트 메쉬들의 가시성을 설정합니다.
+        /// </summary>
+        public bool PassthroughEffectMeshesVisibility
+        {
+            set
+            {
+                foreach (var mesh in _passthroughEffectMeshes)
+                {
+                    mesh.SetActive(value);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 앵커에서 특정 EffectMesh로 생성된 메시를 찾습니다.
+        /// </summary>
+        /// <param name="anchor">찾을 앵커</param>
+        /// <param name="effectMesh">메시를 생성한 EffectMesh</param>
+        /// <returns>메시의 transform</returns>
+        public GameObject FindCreatedEffectMesh(MRUKAnchor anchor, EffectMesh effectMesh) => anchor
+            .GetComponentsInChildren<MeshRenderer>()
+            .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).gameObject;
+        
+
+        // Update is called once per frame
+        void Update()
+        {
+        }
         
         public static RoomManager Instance 
         {
@@ -31,58 +165,10 @@ namespace Reless.MR
             }
         }
         private static RoomManager _instance;
-        
-        // Start is called before the first frame update
-        void Awake()
-        {
-            if (_instance is not null && _instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            
-            MakeObjectDontDestroyOnLoad();
-        }
 
-        private void MakeObjectDontDestroyOnLoad()
+        private void OnValidate()
         {
-            if (_instance == null)
-            {
-                Debug.Log($"{nameof(RoomManager)}: Making object don't destroy on load.");
-                DontDestroyOnLoad(Instance.gameObject);
-            }
+            roomEnlarger = FindObjectOfType<RoomEnlarger>();
         }
-
-        public bool RoomObjectActive { set => gameObject.SetActive(value); }
-            
-
-        public void OnSceneLoaded()
-        {
-            Debug.Log($"{nameof(RoomManager)}: Scene loaded.");
-            
-            DebugRoomInfo();
-            
-            // 생성된 방을 자식으로 설정합니다.
-            Room = MRUK.Instance.GetCurrentRoom();
-            Room.transform.parent = this.transform;
-        }
-
-        private void DebugRoomInfo()
-        {
-            var rooms = MRUK.Instance.GetRooms();
-            Debug.Log($"{nameof(RoomManager)}: Room count: {rooms.Count}");
-            foreach (var room in rooms)
-            {
-                Debug.Log($"{nameof(RoomManager)}: Room name: {room.name}");
-            }
-        }
-        
-
-        // Update is called once per frame
-        void Update()
-        {
-        }
-        
-        void Temp(){}
     }
 }

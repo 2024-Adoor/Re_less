@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.MR;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 namespace Reless
@@ -46,6 +43,15 @@ namespace Reless
             {
                 Destroy(gameObject);
             }
+        }
+
+        public void Start()
+        {
+            SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive)
+                .completed += operation =>
+            {
+                Debug.Log("RoomSetupScene Loaded");
+            };
         }
 
         public enum Phase
@@ -113,57 +119,6 @@ namespace Reless
             SceneManager.LoadSceneAsync("MainScene");
         }
         
-        /// <summary>
-        /// 내부에 있는 EffectMesh의 z-fighting을 방지하기 위해 패스스루 EffectMesh들을 약간 오프셋합니다.
-        /// </summary>
-        private void OffsetPassthroughEffectMeshes()
-        {
-            float offset = 0.005f;
-            
-            var ceiling = _currentRoom.GetCeilingAnchor();
-            {
-                var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
-                mesh.transform.Translate(0, 0, -offset);
-                _passthroughEffectMeshes.Add(mesh);
-            }
-            
-            var floor = _currentRoom.GetFloorAnchor();
-            {
-                var mesh = FindCreatedEffectMesh(floor, passthroughRoom);
-                mesh.transform.Translate(0, 0, -offset);
-                _passthroughEffectMeshes.Add(mesh);
-            }
-            
-            var walls = _currentRoom.GetWallAnchors();
-            foreach (var wall in walls)
-            {
-                var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
-                mesh.transform.Translate(0, 0, -offset);
-            }
-        }
-
-        private List<GameObject> _passthroughEffectMeshes = new();
-        
-        public void DestroyPassThroughEffectMeshes()
-        {
-            foreach (var mesh in _passthroughEffectMeshes)
-            {
-                Destroy(mesh);
-            }
-        }
-        
-        [SerializeField]
-        private List<EffectMesh> virtualRoomEffectMeshes;
-        
-        [Button]
-        public void CreateVirtualRoomEffectMeshes()
-        {
-            foreach (var effectMesh in virtualRoomEffectMeshes)
-            {
-                effectMesh.CreateMesh();
-            }
-        }
-
         private void Update()
         {
             if (OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch))
@@ -200,19 +155,7 @@ namespace Reless
         
         private int _currentChapter = 1;
 
-        /// <summary>
-        /// 앵커에서 특정 EffectMesh로 생성된 메시를 찾습니다.
-        /// </summary>
-        /// <param name="anchor">찾을 앵커</param>
-        /// <param name="effectMesh">메시를 생성한 EffectMesh</param>
-        /// <returns>메시의 transform</returns>
-        public GameObject FindCreatedEffectMesh(MRUKAnchor anchor, EffectMesh effectMesh) => anchor
-            .GetComponentsInChildren<MeshRenderer>()
-            .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).gameObject;
         
-        public MRUKAnchor KeyWall => _keyWall;
-        
-        public GameObject OpeningWall => FindCreatedEffectMesh(_keyWall, passthroughRoom);
 
         [Button]
         private void SetPhaseToOpening()
@@ -220,10 +163,8 @@ namespace Reless
             CurrentPhase = Phase.Opening;
         }
 
-        [SerializeField]
-        private EffectMesh passthroughRoom;
+        
 
-        private MRUKAnchor _keyWall;
 
         [SerializeField, HideInInspector]
         private OVRCameraRig cameraRig;
@@ -233,61 +174,37 @@ namespace Reless
         [SerializeField]
         public OVRPassthroughLayer passthroughLayer;
 
-        [ShowNonSerializedField]
-        private bool _startedInRoom;
         
         private MRUKRoom _currentRoom;
-
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
 
         /// <summary>
         /// MRUK의 <see cref="MRUK.SceneLoadedEvent"/> 이벤트에 연결되어 호출됩니다.
         /// </summary>
         public void OnSceneLoaded()
         {
-            _currentRoom = MRUK.Instance.GetCurrentRoom();
-            _startedInRoom = _currentRoom.IsPositionInRoom(cameraRig.centerEyeAnchor.position);
+            _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition);
 
-            if (_currentPhase == Phase.Title)
+            if (_startedInRoom)
             {
-                if (_startedInRoom)
-                {
-                    // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
-                    StartCoroutine(CheckApproachDoor(
-                        onApproach: () => { CurrentPhase = Phase.Opening; },
-                        until: () => _currentPhase is Phase.Opening));
-                }
-                else
-                {
-                    // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
-                    StartCoroutine(CheckEnterRoom(
-                        onEnter: () => { CurrentPhase = Phase.Opening; },
-                        until: () => _currentPhase is Phase.Opening));
-                }
+                // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
+                StartCoroutine(CheckApproachDoor(
+                    onApproach: () => { CurrentPhase = Phase.Opening; },
+                    until: () => _currentPhase is Phase.Opening));
             }
-            
-            // 가장 긴 벽을 찾습니다.
-            _keyWall = _currentRoom.GetKeyWall(out _);
-            
-            OnSceneLoadedEvent?.Invoke();
-            OnSceneLoadedEvent = null;
-            
-            Debug.Log("OnSceneLoaded");
+            else
+            {
+                // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
+                StartCoroutine(CheckEnterRoom(
+                    onEnter: () => { CurrentPhase = Phase.Opening; },
+                    until: () => _currentPhase is Phase.Opening));
+            }
         }
         
-        public Action OnSceneLoadedEvent { get; set; }
-
         /// <summary>
-        /// MRUK의 다른 모든 <see cref="MRUK.SceneLoadedEvent"/> 이벤트들이 끝난 후 호출됩니다.
+        /// 방 안에서 시작했는지 여부
         /// </summary>
-        public void OnEndSceneLoadedEvent()
-        {
-            OffsetPassthroughEffectMeshes();
-        }
+        [ShowNonSerializedField]
+        private bool _startedInRoom;        
         
         private IEnumerator CheckEnterRoom(Action onEnter, Func<bool> until)
         {

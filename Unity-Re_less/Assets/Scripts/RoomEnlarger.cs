@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
+using Reless.MR;
 
 namespace Reless
 {
@@ -11,7 +13,8 @@ namespace Reless
     /// </summary>
     public class RoomEnlarger : MonoBehaviour
     {
-        private MRUKRoom _room;
+        [SerializeField, ReadOnly]
+        private RoomManager roomManager;
         
         /// <summary>
         /// 방의 크기를 키울 때 사용할 크기 배율입니다.
@@ -30,8 +33,7 @@ namespace Reless
         
         private void OnValidate()
         {
-            if (enlargedScale == default) enlargedScale = 15f;
-            if (enlargingDuration == default) enlargingDuration = 2f;
+            roomManager = FindObjectOfType<RoomManager>();
         }
 
         /// <summary>
@@ -47,19 +49,19 @@ namespace Reless
                 // 방의 크기를 키우는 애니메이션
                 for (float elapsedTime = 0f; elapsedTime < enlargingDuration; elapsedTime += Time.deltaTime)
                 {
-                    float scale = Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)) * enlargedScale;
-                    _room.transform.localScale = Vector3.one + Vector3.one * scale;
+                    float scale = Mathf.Lerp(1f, enlargedScale, Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)));
+                    RoomManager.Instance.Room.transform.localScale = Vector3.one * scale;
                     yield return null;
                 }
                 
                 // 최종 값으로 방의 크기 변경
-                _room.transform.localScale = Vector3.one * enlargedScale;
+                RoomManager.Instance.Room.transform.localScale = Vector3.one * enlargedScale;
             }
         }
         
-        public void Initialize()
+        public static void RestoreRoomScale()
         {
-            _room = FindObjectOfType<MRUKRoom>();
+            RoomManager.Instance.Room.transform.localScale = Vector3.one;
         }
     }
 }

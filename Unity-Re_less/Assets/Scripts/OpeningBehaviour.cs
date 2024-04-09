@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using Reless.MR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,9 +25,6 @@ namespace Reless
         private GameObject _openingWall;
 
         private GameObject _pivot;
-        
-        [SerializeField, HideInInspector]
-        private RoomEnlarger roomEnlarger;
         
         [SerializeField, HideInInspector]
         private GameManager gameManager;
@@ -62,18 +60,27 @@ namespace Reless
                 
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
-                // 패스스루 이펙트 메쉬 삭제
-                gameManager.DestroyPassThroughEffectMeshes();
-                gameManager.CreateVirtualRoomEffectMeshes();
+                // 패스스루 이펙트 메쉬 숨기기
+                RoomManager.Instance.PassthroughEffectMeshesVisibility = false;
+                RoomManager.Instance.CreateVirtualRoomEffectMeshes();
                 
                 yield return new WaitForSeconds(2f);
-                roomEnlarger.EnlargeRoom();
+                
+                // 방에서 작아지기
+                Destroy(rootGameObject);
+                RoomManager.Instance.roomEnlarger.EnlargeRoom();
                 
                 // 튜토리얼 생략
                 
                 yield return new WaitForSeconds(4f);
-                SceneManager.LoadSceneAsync("MainScene");
+                gameManager.LoadMainScene();
                 gameManager.CurrentPhase = GameManager.Phase.Chapter1;
+                
+                // 오프닝에서 했던 일을 되돌립니다.
+                ResetTransformOpeningWall();
+                RoomManager.Instance.PassthroughEffectMeshesVisibility = true;
+                RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
+                RoomEnlarger.RestoreRoomScale();
             }
         }
         
@@ -91,7 +98,7 @@ namespace Reless
         
         private void TransformOpeningScene(GameObject rootGameObject)
         {
-            var keyWall = gameManager.KeyWall;
+            var keyWall = RoomManager.Instance.KeyWall;
             rootGameObject.transform.parent = keyWall.transform;
             rootGameObject.transform.localPosition = new Vector3(0, -keyWall.GetAnchorSize().y / 2, 0);
             rootGameObject.transform.localRotation = Quaternion.AngleAxis(180, Vector3.up);
@@ -111,16 +118,15 @@ namespace Reless
             }
         }
         
-        
         private void SetupOpeningWallPivot()
         {
-            _openingWall = gameManager.OpeningWall;
+            _openingWall = RoomManager.Instance.OpeningWall;
             _pivot = new GameObject("Opening Wall Pivot")
             {
                 transform =
                 {
                     parent = _openingWall.transform,
-                    localPosition = new Vector3(gameManager.KeyWall.GetAnchorSize().x / 2, 0, 0)
+                    localPosition = new Vector3(RoomManager.Instance.KeyWall.GetAnchorSize().x / 2, 0, 0)
                 }
             };
         }
@@ -146,8 +152,7 @@ namespace Reless
         private IEnumerator RotatingOpeningWall(AnimationCurve curve)
         {
             // 회전 초기화
-            _openingWall.transform.localPosition = Vector3.zero;
-            _openingWall.transform.localRotation = Quaternion.identity;
+            ResetTransformOpeningWall();
                     
             const float targetAngle = -180f;
                     
@@ -158,11 +163,16 @@ namespace Reless
                 yield return null;
             }
         }
+        
+        private void ResetTransformOpeningWall()
+        {
+            _openingWall.transform.localPosition = Vector3.zero;
+            _openingWall.transform.localRotation = Quaternion.identity;
+        }
 
         private void OnValidate()
         {
             gameManager = FindObjectOfType<GameManager>();
-            roomEnlarger = FindObjectOfType<RoomEnlarger>();
         }
     }
 }
