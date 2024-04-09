@@ -48,7 +48,7 @@ namespace Reless
         private void Start()
         {
             // 튜토리얼 이후/엔딩 전 (= 챕터 중)에 MainScene으로 진입했다면
-            if (_gameManager.CurrentPhase is > GameManager.Phase.Tutorial and GameManager.Phase.Ending)
+            if (_gameManager.CurrentPhase is > GameManager.Phase.Tutorial and < GameManager.Phase.Ending)
             {
                 // 펜 활성화
                 EnablePen();
