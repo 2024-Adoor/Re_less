@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
+using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
 namespace Reless.MR
 {
@@ -21,11 +24,66 @@ namespace Reless.MR
         [SerializeField]
         private EffectMesh passthroughRoom;
         
-        private List<GameObject> _passthroughEffectMeshes = new();
+        [SerializeField]
+        private EffectMesh sppPassThroughRoom;
+        
+        [SerializeField]
+        private EffectMesh edgeEffect;
+        
+        public ReadOnlyCollection<GameObject> PassthroughEffectMeshes => _passthroughEffectMeshes.AsReadOnly();
+        
+        private readonly List<GameObject> _passthroughEffectMeshes = new();
+
+        public ReadOnlyCollection<GameObject> SppPassThroughMeshes => _sppPassThroughMeshes.AsReadOnly();
+        
+        private readonly List<GameObject> _sppPassThroughMeshes = new();
         
         public MRUKAnchor KeyWall => _keyWall;
         
         private MRUKAnchor _keyWall;
+
+        /// <summary>
+        /// 주어진 위치에서 가장 가까운 문 사이의 거리를 반환합니다.
+        /// </summary>
+        /// <param name="position">대상 위치</param>
+        /// <param name="doorPosition">가장 가까운 문의 위치, 문이 없으면 Vector3.zero</param>
+        /// <returns>문의 위치, 문이 없으면 0</returns>
+        public float ClosestDoorDistance(Vector3 position, out Vector3 doorPosition)
+        {
+            // 캐시된 단일 문 위치가 있으면 바로 반환합니다.
+            if (_uniqueDoorPosition is not null)
+            {
+                doorPosition = _uniqueDoorPosition.Value;
+                return Vector3.Distance(position, _uniqueDoorPosition.Value);
+            };
+            
+            _doors ??= Room.GetRoomAnchors()
+                .Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME)
+                .AsReadOnlyCollection();
+            
+            // 문이 하나라면 해당 문을 캐시합니다.
+             if (_doors.Count == 1)
+             {
+                 _uniqueDoorPosition = _doors.First().transform.position;
+                 doorPosition = _uniqueDoorPosition.Value;
+                 return Vector3.Distance(position, _uniqueDoorPosition.Value);
+             }
+
+             // 여러 문 중 현재 위치에서 가장 가까운 문을 찾아 반환합니다.
+             doorPosition = _doors.OrderBy(door => Vector3.Distance(door.transform.position, position))
+                 .FirstOrDefault()?.transform.position ?? Vector3.zero;
+             
+             return Vector3.Distance(position, doorPosition);
+        }
+        
+
+        /// <summary>
+        /// 문이 하나라면 해당 문을 캐시합니다.
+        /// </summary>
+        private Vector3? _uniqueDoorPosition;
+
+        private ICollection<MRUKAnchor> _doors;
+        
 
         [NonSerialized, ReadOnly]
         public RoomEnlarger roomEnlarger;
@@ -51,7 +109,34 @@ namespace Reless.MR
             // 가장 긴 벽을 찾습니다.
             _keyWall = Room.GetKeyWall(out _);
             
+            edgeEffect.CreateMesh();
             passthroughRoom.CreateMesh();
+            sppPassThroughRoom.CreateMesh();
+
+            
+            FindAndAddSppPassThroughMesh(Room.GetCeilingAnchor());
+            FindAndAddSppPassThroughMesh(Room.GetFloorAnchor());
+            foreach (var wall in Room.GetWallAnchors())
+            {
+                FindAndAddSppPassThroughMesh(wall);
+            }
+            
+            void FindAndAddSppPassThroughMesh(MRUKAnchor anchor)
+            {
+                for (int i = 0; i < anchor.transform.childCount; i++)
+                {
+                    var childMesh = anchor.transform.GetChild(i);
+                    
+                    // MeshRenderer가 없는 경우 SPP 패스스루 메쉬로 간주합니다. (할당된 머티리얼 없으면 EffectMesh가 렌더러를 생성하지 않는듯함)
+                    // 향후 더 나은 방법으로 수정 필요.
+                    if (childMesh.GetComponent<MeshRenderer>() == null)
+                    {
+                        Debug.Log($"SPP PassThrough Mesh Found. Adding to list.");
+                        _sppPassThroughMeshes.Add(anchor.transform.GetChild(i).gameObject);
+                    }
+                }
+            }
+            
             OffsetPassthroughEffectMeshes();
             
             GameManager.Instance.OnSceneLoaded();
@@ -114,21 +199,16 @@ namespace Reless.MR
             {
                 var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
                 mesh.transform.Translate(0, 0, -offset);
+                _passthroughEffectMeshes.Add(mesh);
             }
         }
         
         /// <summary>
         /// 패스스루 이펙트 메쉬들의 가시성을 설정합니다.
         /// </summary>
-        public bool PassthroughEffectMeshesVisibility
+        public bool HidePassthroughEffectMesh
         {
-            set
-            {
-                foreach (var mesh in _passthroughEffectMeshes)
-                {
-                    mesh.SetActive(value);
-                }
-            }
+            set => passthroughRoom.HideMesh = !value;
         }
         
         /// <summary>

@@ -75,7 +75,10 @@ public class CloseEyesToSleepPose : MonoBehaviour
     public void CancelFadeOut()
     {
         // 페이드 아웃 코루틴을 중지합니다.
-        StopCoroutine(_fadeOut);
+        if (_fadeOut != null)
+        {
+            StopCoroutine(_fadeOut);
+        }
         
         // 페이드 값을 0으로 설정합니다.
         OVRScreenFade.instance.SetUIFade(0f);

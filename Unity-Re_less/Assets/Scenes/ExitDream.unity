@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 301388496}
   - component: {fileID: 301388495}
   m_Layer: 0
-  m_Name: RoomSurfacePassthorugh
+  m_Name: RoomPassthorugh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -262,7 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80b198c951299041a448b8c040bbbd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSurfacePassthrough: {fileID: 301388495}
+  roomPassthrough: {fileID: 301388495}
+  exitThresholdTime: 2
+  temp_material: {fileID: 2100000, guid: 3c5e683370e221b458216393e65341bf, type: 2}
 --- !u!1 &1991932417
 GameObject:
   m_ObjectHideFlags: 0

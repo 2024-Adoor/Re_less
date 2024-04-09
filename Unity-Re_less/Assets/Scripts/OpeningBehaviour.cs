@@ -45,7 +45,7 @@ namespace Reless
                 RedundantResolve(rootGameObjects);
                 TransformOpeningScene(rootGameObject);
                 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(4f);
                 yield return RotatingOpeningWall(wallOpeningFirst);
                 yield return new WaitForSeconds(4f);
                 yield return RotatingOpeningWall(wallOpening);
@@ -61,7 +61,7 @@ namespace Reless
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
                 // 패스스루 이펙트 메쉬 숨기기
-                RoomManager.Instance.PassthroughEffectMeshesVisibility = false;
+                RoomManager.Instance.HidePassthroughEffectMesh = true;
                 RoomManager.Instance.CreateVirtualRoomEffectMeshes();
                 
                 yield return new WaitForSeconds(2f);
@@ -78,7 +78,7 @@ namespace Reless
                 
                 // 오프닝에서 했던 일을 되돌립니다.
                 ResetTransformOpeningWall();
-                RoomManager.Instance.PassthroughEffectMeshesVisibility = true;
+                RoomManager.Instance.HidePassthroughEffectMesh = false;
                 RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
                 RoomEnlarger.RestoreRoomScale();
             }
