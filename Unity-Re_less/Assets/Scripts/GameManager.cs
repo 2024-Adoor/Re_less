@@ -169,13 +169,10 @@ namespace Reless
         [SerializeField, HideInInspector]
         private OVRCameraRig cameraRig;
         
-        public Vector3 PlayerPosition => cameraRig.centerEyeAnchor.position;
+        public Vector3 PlayerPosition => cameraRig.centerEyeAnchor.localPosition;
         
         [SerializeField]
         public OVRPassthroughLayer passthroughLayer;
-
-        
-        private MRUKRoom _currentRoom;
 
         /// <summary>
         /// MRUK의 <see cref="MRUK.SceneLoadedEvent"/> 이벤트에 연결되어 호출됩니다.
@@ -187,16 +184,16 @@ namespace Reless
             if (_startedInRoom)
             {
                 // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
-                StartCoroutine(CheckApproachDoor(
+                StartCoroutine(CheckingApproachDoor(
                     onApproach: () => { CurrentPhase = Phase.Opening; },
-                    until: () => _currentPhase is Phase.Opening));
+                    until: () => _currentPhase is not Phase.Title));
             }
             else
             {
                 // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
-                StartCoroutine(CheckEnterRoom(
+                StartCoroutine(CheckingEnterRoom(
                     onEnter: () => { CurrentPhase = Phase.Opening; },
-                    until: () => _currentPhase is Phase.Opening));
+                    until: () => _currentPhase is not Phase.Title));
             }
         }
         
@@ -206,13 +203,12 @@ namespace Reless
         [ShowNonSerializedField]
         private bool _startedInRoom;        
         
-        private IEnumerator CheckEnterRoom(Action onEnter, Func<bool> until)
+        private IEnumerator CheckingEnterRoom(Action onEnter, Func<bool> until)
         {
             while (!until())
             {
-                if (_currentRoom.IsPositionInRoom(cameraRig.centerEyeAnchor.position))
+                if (RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition))
                 {
-                    Debug.Log("Enter Room");
                     onEnter?.Invoke();
                     yield break;
                 }
@@ -221,7 +217,7 @@ namespace Reless
             }
         }
         
-        private IEnumerator CheckApproachDoor(Action onApproach, Func<bool> until)
+        private IEnumerator CheckingApproachDoor(Action onApproach, Func<bool> until)
         {
             while (!until())
             {
@@ -253,21 +249,47 @@ namespace Reless
                 });
             }
         }
-
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
-        public AsyncOperation LoadVRScene()
-        {
-            // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
-            RoomManager.Instance.RoomObjectActive = false;
-            return SceneManager.LoadSceneAsync("VR Room");
-        }
-
+        
         [Button(enabledMode: EButtonEnableMode.Playmode)]
         public AsyncOperation LoadMainScene()
         {
             // 메인 씬을 로드할 때는 현실 룸을 다시 활성화합니다.
             RoomManager.Instance.RoomObjectActive = true;
-            return SceneManager.LoadSceneAsync("MainScene");
+            
+            var asyncLoad = SceneManager.LoadSceneAsync("MainScene");
+            asyncLoad.completed += operation =>
+            {
+                // 씬을 다시 불러왔으므로 카메라 리그를 다시 찾습니다.
+                Debug.Log("MainScene Loaded");
+                Debug.Log("Finding OVRCameraRig");
+                cameraRig = FindObjectOfType<OVRCameraRig>();
+                Assert.IsNotNull(cameraRig, "OVRCameraRig not found");
+            };
+            return asyncLoad;
+        }
+        
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        public AsyncOperation LoadVRScene()
+        {
+            // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
+            RoomManager.Instance.RoomObjectActive = false;
+            
+            var asyncLoad = SceneManager.LoadSceneAsync("VR Room");
+            asyncLoad.completed += operation =>
+            {
+                // 씬을 다시 불러왔으므로 카메라 리그를 다시 찾습니다.
+                Debug.Log("VR Room Loaded");
+                Debug.Log("Finding OVRCameraRig");
+                cameraRig = FindObjectOfType<OVRCameraRig>();
+                Assert.IsNotNull(cameraRig, "OVRCameraRig not found");
+            };
+            return asyncLoad;
+        }
+
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        public AsyncOperation LoadExitDreamScene()
+        {
+            return SceneManager.LoadSceneAsync("ExitDream", LoadSceneMode.Additive);
         }
         
 #if UNITY_EDITOR
