@@ -7,13 +7,18 @@ public class AniManage : MonoBehaviour
     public Animation animationComponent;    // Animation 컴포넌트 참조
     public GameObject Player;               // Player
 
+    // VFX
+    public ParticleSystem SleepingEffect;
+    public ParticleSystem SleepOutEffect;
+
     public AnimationClip SleepOutAni;       // SleepOut Animation Clip
     public AnimationClip IdleAni;           // IDLE Animation Clip 
     public bool isChange = false;
 
-    void Update()
+    void Start()
     {
-        
+        SleepingEffect.Play();
+        SleepOutEffect.Stop();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -23,15 +28,19 @@ public class AniManage : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {   
             // Animation 컴포넌트의 현재 Animation을 중지하고 새 Animation Clip으로 변경
-            if (animationComponent != null && SleepOutAni != null && _PlayerState.fruitCount > 0)
+            if (animationComponent != null && SleepOutAni != null && _PlayerState.fruitCount > 0 && !isChange)
             {
+                SleepingEffect.Stop();
+                SleepOutEffect.Play();
+
                 animationComponent.Stop();
                 animationComponent.clip = SleepOutAni;
                 animationComponent.Play();
                 isChange = true;
-                _PlayerState.fruitCount--;
 
                 StartCoroutine(WaitForSleepOutAnimation());
+
+                _PlayerState.fruitCount--;
             }
         }
     }

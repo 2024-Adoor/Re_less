@@ -17,7 +17,6 @@ namespace Reless
         public bool isXdown;
         public bool isYdown;
 
-        public GameObject FruitPrefab;
 
         /// <summary>
         /// 이동 속도
