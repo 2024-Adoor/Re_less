@@ -15,9 +15,9 @@ public class PlayerState : MonoBehaviour
     SujiEndingTest _SujiEndingTest;
     
     public float upwardSpeed = 1f;
-    public float upwardPosition = 20f;
 
     public bool canEnd = false;
+    public bool isYUp = false;
     
     // Delay 관리
     private float elapsedTime = 0f;
@@ -44,24 +44,26 @@ public class PlayerState : MonoBehaviour
                 {
                     // 딜레이가 종료되면 실행할 코드
                     Debug.Log("Delay Finish");
-
                     // Rigidbody의 Use Gravity를 false로 변경
                     Rigidbody rb = GetComponent<Rigidbody>();
                     if (rb != null)
                     {
                         rb.useGravity = false;
+                        isYUp = true;
                     }
-
-                    // 상승할 y 값 위치
-                    float targetY = upwardPosition;
-                    
-                    // 현재 위치에서 목표 y 값 위치까지 일정한 속도로 이동
-                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, targetY, transform.position.z), upwardSpeed * Time.deltaTime);
 
                     isDelayedActionStarted = true;
                 }
             }
         }
+
+        if(isYUp)
+        {
+            // 현재 위치에서 목표 y 값 위치까지 일정한 속도로 이동
+            transform.position += Vector3.up * upwardSpeed * Time.deltaTime;
+        }
+
+
     }
 
     void OnTriggerEnter(Collider other)
