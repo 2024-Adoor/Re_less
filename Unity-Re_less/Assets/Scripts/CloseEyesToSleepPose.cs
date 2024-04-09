@@ -87,7 +87,12 @@ public class CloseEyesToSleepPose : MonoBehaviour
     [Button]
     public void CloseEyes()
     {
-        StopCoroutine(_fadeOut);
+        
+        
+        if (_fadeOut != null)
+        {
+            StopCoroutine(_fadeOut);
+        }
         StartCoroutine(LoadScene());
         
         IEnumerator LoadScene()

@@ -1,3 +1,4 @@
+using System;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using UnityEngine;
@@ -12,31 +13,32 @@ namespace Reless
         private GameManager _gameManager;
     
         [SerializeField]
-        private FindSpawnPositions popupBookSpawner;
-        
-        [SerializeField]
         private CloseEyesToSleepPose closeEyesToSleepPose;
         
         [SerializeField]
         private Pen pen;
 
-        [SerializeField] 
-        private GameObject ch01SketchObject;
-        
-        [SerializeField] 
-        private GameObject ch02SketchObject;
-        
-        [SerializeField] 
-        private GameObject ch03SketchObject;
-        
-        [SerializeField]
-        private GameObject ch01Object;
+        [Serializable]
+        private struct SketchObjectPrefabs
+        {
+            public GameObject chapter01;
+            public GameObject chapter02;
+            public GameObject chapter03;
+        }
         
         [SerializeField]
-        private GameObject ch02Object;
+        private SketchObjectPrefabs _sketchObjectPrefabs;
+        
+        [Serializable]
+        private struct ObtainingObjectPrefabs
+        {
+            public GameObject chapter01;
+            public GameObject chapter02;
+            public GameObject chapter03;
+        }
         
         [SerializeField]
-        private GameObject ch03Object;
+        private ObtainingObjectPrefabs _obtainingObjectPrefabs;
 
         private void Awake()
         {
@@ -45,48 +47,36 @@ namespace Reless
         
         private void Start()
         {
-            
-            // 튜토리얼 이후에 MainScene으로 진입했다면
-            if (_gameManager.CurrentPhase > GameManager.Phase.Tutorial)
+            // 튜토리얼 이후/엔딩 전 (= 챕터 중)에 MainScene으로 진입했다면
+            if (_gameManager.CurrentPhase is > GameManager.Phase.Tutorial and GameManager.Phase.Ending)
             {
-                // 눈을 감고 자는 포즈 활성화
-                EnableCloseEyesToSleepPose();
-                
                 // 펜 활성화
                 EnablePen();
 
-                var sketch = Instantiate(ch02SketchObject);
-                sketch.GetComponent<SketchOutline>().DrawingCompleted += () =>
+                // 챕터별로 그릴 오브젝트 생성
+                (GameObject sktech, GameObject obtaining) drawingPrefabPair = _gameManager.CurrentPhase switch
                 {
-                    var obtainObject = Instantiate(ch02Object);
-                    obtainObject.transform.position = sketch.transform.position;
-                    Destroy(sketch);
+                    GameManager.Phase.Chapter1 => (_sketchObjectPrefabs.chapter01, _obtainingObjectPrefabs.chapter01),
+                    GameManager.Phase.Chapter2 => (_sketchObjectPrefabs.chapter02, _obtainingObjectPrefabs.chapter02),
+                    GameManager.Phase.Chapter3 => (_sketchObjectPrefabs.chapter03, _obtainingObjectPrefabs.chapter03),
                 };
-            }
-            
-        }
-
-        public void OnSceneLoaded()
-        {
-            // 튜토리얼 이후에 MainScene으로 진입했다면
-            if (GameManager.Instance.CurrentPhase > GameManager.Phase.Tutorial)
-            {
-                SpawnPopupBook();
+                SetupSketchObject(drawingPrefabPair.sktech, drawingPrefabPair.obtaining);
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void SetupSketchObject(GameObject sketchPrefab, GameObject obtainingObjectPrefab)
         {
-        
+            var sketchObject = Instantiate(sketchPrefab);
+            sketchObject.transform.position = _gameManager.PlayerPosition;
+            sketchObject.GetComponent<SketchOutline>().DrawingCompleted +=
+                () => ObtainObject(sketchObject, obtainingObjectPrefab);
         }
         
-        [Button]
-        private void SpawnPopupBook()
+        private void ObtainObject(GameObject sketchObject, GameObject obtainingObjectPrefab)
         {
-            popupBookSpawner.StartSpawn();
+            Instantiate(obtainingObjectPrefab).transform.position = sketchObject.transform.position;
+            Destroy(sketchObject);
         }
-        
         
         private void EnableCloseEyesToSleepPose()
         {
@@ -96,6 +86,12 @@ namespace Reless
         private void EnablePen()
         {
             pen.gameObject.SetActive(true);
+        }
+        
+        [Button]
+        public void AchieveEnterCondition()
+        {
+            EnableCloseEyesToSleepPose();
         }
     }
 }
