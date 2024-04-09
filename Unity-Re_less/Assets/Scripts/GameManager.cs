@@ -5,6 +5,7 @@ using System.Linq;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 namespace Reless
@@ -15,21 +16,28 @@ namespace Reless
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance => _instance ??= new GameObject(nameof(GameManager)).AddComponent<GameManager>();
-        private static GameManager _instance;
-
-        private void Awake()
+        public static GameManager Instance 
         {
-            if (_instance == null)
+            get
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
-            }
-            else
-            {
-                Destroy(this.gameObject);
+                if (_instance == null)
+                {
+                    // 씬에서 게임 매니저 오브젝트를 찾습니다.
+                    _instance = FindObjectOfType<GameManager>();
+                    
+                    if (_instance == null)
+                    {
+                        Debug.LogWarning($"{nameof(GameManager)}: There is no instance in the scene. Creating new one.");
+                        _instance = new GameObject(nameof(GameManager)).AddComponent<GameManager>();
+                    }
+                }
+                
+                // 게임 매니저 오브젝트는 씬이 바뀌어도 파괴되지 않습니다.
+                DontDestroyOnLoad(_instance.gameObject);
+                return _instance;
             }
         }
+        private static GameManager _instance;
 
         public enum Phase
         {
@@ -104,10 +112,8 @@ namespace Reless
             float offset = 0.005f;
             
             var ceiling = _currentRoom.GetCeilingAnchor();
-            Debug.Log(ceiling == null);
             {
                 var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
-                Debug.Log(transform == null);
                 mesh.transform.Translate(0, 0, -offset);
                 _passthroughEffectMeshes.Add(mesh);
             }
