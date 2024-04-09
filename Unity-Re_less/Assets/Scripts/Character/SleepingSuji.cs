@@ -28,8 +28,11 @@ public class SleepingSuji : MonoBehaviour
             _SujiManage.isSleepOut = true;
             Destroy(gameObject);
             Destroy(Ch03Fruit);
+
+            Debug.Log("Suji isSleepOut true - SleepingSuji");
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {   

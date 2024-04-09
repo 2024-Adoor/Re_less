@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5541792813731732516}
+  - component: {fileID: 7612882602671296156}
   m_Layer: 0
   m_Name: EndingCharactersSurprised 1
   m_TagString: Untagged
@@ -34,6 +35,20 @@ Transform:
   - {fileID: 8231828318801022736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7612882602671296156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061152168668713726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbe7deb198680a498dd1bf023238d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  NewPrefab: {fileID: 4914131155068768474, guid: cd259e5a5afdbd6468b01366d130fc23, type: 3}
 --- !u!1001 &1726631357453081397
 PrefabInstance:
   m_ObjectHideFlags: 0

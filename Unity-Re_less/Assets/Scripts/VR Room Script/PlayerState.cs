@@ -24,6 +24,7 @@ public class PlayerState : MonoBehaviour
     public GameObject Suji_Surprised;
     public GameObject Characters_Surprised;
     bool isSurprised = false;
+    public bool isTeleport = false;
     
     // Ending RespawnTrigger & SpawnPoint 
     public Transform RespawnTrigger;
@@ -107,15 +108,17 @@ public class PlayerState : MonoBehaviour
 
             CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
             capsuleCollider.radius = 5f;
-            capsuleCollider.height = 45f;
+            capsuleCollider.height = 60f;
 
-            Camera.transform.position += new Vector3(0f, 23f, 0f);
+            Camera.transform.position += new Vector3(0f, 20f, 0f);
 
             PlayerControl _PlayerControl = GetComponent<PlayerControl>();
             if(_PlayerControl != null)
             {
                 _PlayerControl.speed = 12f;
             }
+
+            isTeleport = true;
         }
 
     }

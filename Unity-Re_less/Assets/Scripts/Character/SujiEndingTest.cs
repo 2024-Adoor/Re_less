@@ -8,6 +8,7 @@ public class SujiEndingTest : MonoBehaviour
     public GameObject SujiChat; 
     public GameObject EndingCharacters;
 
+    // 이동하기 위한 값들 
     public Transform A;
     public Transform B;
     public Transform C;
@@ -33,6 +34,13 @@ public class SujiEndingTest : MonoBehaviour
     public bool RotateFin = false;              // Suji 이동 종료 여부 
     private bool isCharacters = false;
 
+    // 애니메이션
+    public Animation animationComponent;    // Animation 컴포넌트 참조
+    public AnimationClip RunAni;       // SleepOut Animation Clip
+    public AnimationClip IdleAni;           // IDLE Animation Clip 
+    bool isRun = false;
+    bool isIDle = false;
+
     void Start()
     {
         Aposition = A.position;
@@ -44,19 +52,29 @@ public class SujiEndingTest : MonoBehaviour
     void Update()
     {   
         // Chat_Suji _Chat_Suji = SujiChat.GetComponent<Chat_Suji>();
+        SujiManage _SujiManage = GetComponent<SujiManage>();
 
         if(canMove)
         {
+            _SujiManage.isSleepOut = false;
+            Debug.Log("Suji isSleepOut is false - SujiEndingTest");
+
+            ChangeAnimation();
+            animationComponent.Play();
+
             // A point까지 이동 
             if(!ApointRotate)
             {
                 transform.Rotate(0, -90, 0);
                 ApointRotate = true;
                 ApointMove = true;
+                animationComponent.Play();
             }
             else if(ApointMove)
             {
                 MoveToTarget(A);
+                ChangeAnimation();
+                animationComponent.Play();
             }
             if (Mathf.Approximately(transform.position.x, Aposition.x) && Mathf.Approximately(transform.position.z, Aposition.z))
             {
@@ -77,10 +95,14 @@ public class SujiEndingTest : MonoBehaviour
                     transform.Rotate(0, 90, 0);
                     BpointRotate = true;
                     BpointMove = true;
+                    ChangeAnimation();
+                    animationComponent.Play();
                 }
                 else if(BpointMove)
                 {
                     MoveToTarget(B);
+                    ChangeAnimation();
+                    animationComponent.Play();
                 }
             }
             if (Mathf.Approximately(transform.position.x, Bposition.x) && Mathf.Approximately(transform.position.z, Bposition.z))
@@ -97,10 +119,14 @@ public class SujiEndingTest : MonoBehaviour
                     transform.Rotate(0, 90, 0);
                     CpointRotate = true;
                     CpointMove = true;
+                    ChangeAnimation();
+                    animationComponent.Play();
                 }
                 else if(CpointMove)
                 {
                     MoveToTarget(C);
+                    ChangeAnimation();
+                    animationComponent.Play();
                 }
             }
             if (Mathf.Approximately(transform.position.x, Cposition.x) && Mathf.Approximately(transform.position.z, Cposition.z))
@@ -108,13 +134,26 @@ public class SujiEndingTest : MonoBehaviour
                 CFin = true;
                 CpointMove = false;
             }
+        }
 
-            // 마지막 Turn
-            if(CFin && !RotateFin)
-            {
-                transform.Rotate(0, 90, 0);
-                RotateFin = true;
-            }
+        // 마지막 Turn
+        if(CFin && !RotateFin)
+        {
+            canMove = false;
+            transform.Rotate(0, 90, 0);
+            RotateFin = true;
+        }
+
+        if(RotateFin && !isIDle)
+        {
+            animationComponent.Stop();
+            animationComponent.clip = IdleAni;
+            isIDle = true;
+        }
+
+        if(isIDle)
+        {
+            animationComponent.Play();
         }
 
     }
@@ -143,4 +182,14 @@ public class SujiEndingTest : MonoBehaviour
         Instantiate(prefabToCreate, prefabPosition, Quaternion.identity);
     }
 
+    void ChangeAnimation()
+    {
+        if (animationComponent != null && RunAni != null && !isRun)
+        {
+            animationComponent.Stop();
+            animationComponent.clip = RunAni;
+            isRun = true;
+            Debug.Log("Suji is Running");
+        }
+    }
 }

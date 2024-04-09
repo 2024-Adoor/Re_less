@@ -18,7 +18,8 @@ public class Chat_Suji : MonoBehaviour
     private float delayTime = 2f;
     private bool isDelayedActionStarted = false;
     
-    
+    // VFX 
+    public ParticleSystem SleepOutEffect;
 
     void Start()
     {
@@ -33,7 +34,7 @@ public class Chat_Suji : MonoBehaviour
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
         
-        if (_SujiManage.isChange && !isChatFin)
+        if (_SujiManage.isEffectStop && !isChatFin)
         {   
             GetComponent<Renderer>().enabled = true;
             StartCoroutine(Delay_Change(1.5f));
@@ -50,12 +51,19 @@ public class Chat_Suji : MonoBehaviour
                 elapsedTime += Time.deltaTime;
                 if (elapsedTime >= delayTime)
                 {
+                    Debug.Log("Suji can Move");
                     // 딜레이가 종료되면 실행할 코드
                     _SujiEndingTest.canMove = true;
                     //Debug.Log("Delayed action after " + delayTime + " seconds.");
                     isDelayedActionStarted = true;
                 }
             }
+        }
+
+        // 수지 이동할 때 enabled false 
+        if(_SujiEndingTest.canMove)
+        {
+            GetComponent<Renderer>().enabled = false;
         }
     }
 
