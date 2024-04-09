@@ -85,7 +85,19 @@ MonoBehaviour:
       m_Calls: []
   _whenSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4870683554583011112}
+        m_TargetAssemblyTypeName: Reless.ObtainingObject, Assembly-CSharp
+        m_MethodName: Snapped
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnselect:
     m_PersistentCalls:
       m_Calls: []
@@ -118,6 +130,7 @@ GameObject:
   - component: {fileID: 4814815718625531830}
   - component: {fileID: 4828538839258000093}
   - component: {fileID: 1487343608163896234}
+  - component: {fileID: 4870683554583011112}
   m_Layer: 0
   m_Name: Ch02ObtainObject
   m_TagString: Untagged
@@ -191,6 +204,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.01, y: 0.034348212, z: 0.01}
   m_Center: {x: 0, y: 0.013567649, z: 0}
+--- !u!114 &4870683554583011112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5628168206714019189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca2d483b8ea63f49ad2f5edeb25a8aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chapter: 2
 --- !u!1 &5732349688675657995
 GameObject:
   m_ObjectHideFlags: 0

@@ -159,6 +159,8 @@ namespace Reless.MR
             TranslateToTop(book, table);
             
             book.transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+            book.transform.localPosition = Vector3.zero;
+            book.transform.localRotation = Quaternion.Euler(0, -90, -90);
             
             // 처음 스폰 시 비활성화
             book.SetActive(false);

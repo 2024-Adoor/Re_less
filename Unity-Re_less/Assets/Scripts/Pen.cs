@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Pen : MonoBehaviour
 {
@@ -80,7 +77,7 @@ public class Pen : MonoBehaviour
         }
 
         // 왼쪽 컨트롤러 X버튼을 누르면 선을 지웁니다.
-        if (OVRInput.Get(OVRInput.Button.Three))
+        if (OVRInput.GetDown(OVRInput.Button.Three))
         {
             ClearLines();
         }

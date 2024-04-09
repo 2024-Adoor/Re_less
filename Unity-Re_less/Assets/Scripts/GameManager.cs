@@ -38,6 +38,8 @@ namespace Reless
             }
         }
         private static GameManager _instance;
+        
+        public static bool NotInThisScene => _instance == null;
 
         public void Awake()
         {
@@ -74,7 +76,10 @@ namespace Reless
             get => _currentPhase;
             set
             {
-                _currentPhase = value;
+                // 클램프
+                if (value < Phase.Title) _currentPhase = Phase.Title;
+                else if (value > Phase.Ending) _currentPhase = Phase.Ending;
+                else _currentPhase = value;
 
                 switch (_currentPhase)
                 {
@@ -125,46 +130,43 @@ namespace Reless
         
         private void Update()
         {
-            if (OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.RTouch))
-            {
-                StartCoroutine(LoadScene());                
-            }
-            
-            IEnumerator LoadScene()
-            {
-                var asyncLoad = SceneManager.LoadSceneAsync("VR Room");
-                while (!asyncLoad.isDone)
-                {
-                    yield return null;
-                }
-                
-                var chapterControl = FindObjectOfType<ChapterControl>();
-                if (_currentChapter == 1)
-                {
-                    chapterControl.Ch01 = true;
-                }
-                else if (_currentChapter == 2)
-                {
-                    chapterControl.Temp_SpawnPlayerCh02();
-                }
-                else if (_currentChapter == 3)
-                {
-                    chapterControl.Temp_SpawnPlayerCh03();
-
-                }
-                _currentChapter++;
-            }
-            
+            ForcePhaseControlling();
         }
-        
-        private int _currentChapter = 1;
 
-        
-
-        
-
-        
-
+        /// <summary>
+        /// 특수 상황용, 특정 키 조합으로 강제로 페이즈를 변경합니다.
+        /// </summary>
+        private void ForcePhaseControlling()
+        {
+            // Start 버튼(왼쪽 컨트롤러 메뉴 버튼)이 눌려 있는 채로
+            if (OVRInput.Get(OVRInput.Button.Start, OVRInput.Controller.LTouch))
+            {
+                // 왼쪽 스틱 버튼을 왼쪽으로 눌렀을 때
+                if (OVRInput.GetDown(OVRInput.RawButton.LThumbstickLeft))
+                {
+                    // 페이즈 단계 줄이기
+                    CurrentPhase--;
+                }
+                // 왼쪽 스틱 버튼을 오른쪽으로 눌렀을 때
+                else if (OVRInput.GetDown(OVRInput.RawButton.LThumbstickRight))
+                {
+                    // 페이즈 단계 늘리기
+                    CurrentPhase++;
+                }
+                // 왼쪽 스틱 버튼이 위쪽으로 눌렸을 때
+                else if (OVRInput.GetDown(OVRInput.RawButton.LThumbstickUp))
+                {
+                    // 메인 씬 로드
+                    LoadMainScene();
+                }    
+                // 왼쪽 스틱 버튼이 아래쪽으로 눌렸을 때
+                else if (OVRInput.GetDown(OVRInput.RawButton.LThumbstickDown))
+                {
+                    // VR 씬 로드
+                    LoadVRScene();
+                }
+            }
+        }
 
         [SerializeField, HideInInspector]
         private OVRCameraRig cameraRig;
@@ -174,9 +176,6 @@ namespace Reless
         [SerializeField]
         public OVRPassthroughLayer passthroughLayer;
 
-        /// <summary>
-        /// MRUK의 <see cref="MRUK.SceneLoadedEvent"/> 이벤트에 연결되어 호출됩니다.
-        /// </summary>
         public void OnSceneLoaded()
         {
             _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition);
