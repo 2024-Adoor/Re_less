@@ -9,34 +9,44 @@ public class Keyboard : MonoBehaviour
     public bool enterDown = false; 
 
     public GameObject Ch03Fruit;       // Fruit & Cursor 
+    Ch03_FruitSnap _Ch03_FruitSnap;
 
     private bool hasCollided = false; // 충돌 여부 체크
     private Vector3 initialPosition; // 초기 위치 저장
 
+    public GameObject EnterPopup;
+    Renderer EnterPopupRender;
+
+    public GameObject Mouse;
+    Renderer MouseRend;
+
+    // VFX 
+    public ParticleSystem PressEffect;
+
     private void Start()
     {
         initialPosition = transform.position; // 초기 위치 저장
+        PressEffect.Stop();
+
+        EnterPopupRender = EnterPopup.GetComponent<Renderer>();
+        MouseRend = Mouse.GetComponent<Renderer>();
     }
 
     private void Update()
     {
-        if (Ch03Fruit != null)
+        if (hasCollided)
         {
-            Ch03_FruitSnap _Ch03_FruitSnap = Ch03Fruit.GetComponent<Ch03_FruitSnap>();
+            // 아래로 이동
+            transform.position -= Vector3.up * downwardSpeed * Time.deltaTime;
+            enterDown = true;
 
-            if (hasCollided && _Ch03_FruitSnap.isDetected)
+            // 특정 위치 아래로 이동 완료 시
+            if (transform.position.y <= initialPosition.y - downwardAmount)
             {
-                // 아래로 이동
-                transform.position -= Vector3.up * downwardSpeed * Time.deltaTime;
-                enterDown = true;
-
-                // 특정 위치 아래로 이동 완료 시
-                if (transform.position.y <= initialPosition.y - downwardAmount)
-                {
-                    hasCollided = false; // 충돌 여부 초기화
-                }
+                hasCollided = false; // 충돌 여부 초기화
             }
         }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,18 +54,23 @@ public class Keyboard : MonoBehaviour
         // 충돌한 오브젝트의 태그가 "Player"인 경우
         if (collision.gameObject.CompareTag("Player"))
         {
-            hasCollided = true; // 충돌 여부 설정
-        }
-    }
+            if(Ch03Fruit != null)
+            {
+                _Ch03_FruitSnap = Ch03Fruit.GetComponent<Ch03_FruitSnap>();
 
-    private void OnCollisionExit(Collision collision)
-    {
-        // 충돌한 오브젝트의 태그가 "Player"인 경우
+                if(_Ch03_FruitSnap.isDetected)
+                {
+                    hasCollided = true; // 충돌 여부 설정
+                    PressEffect.Stop();
+                    EnterPopupRender.enabled = false;
+                    MouseRend.enabled = false;
 
-
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            hasCollided = false; // 충돌 종료 시 변수 초기화
+                    for(int i=0; i<3; i++){
+                        Mouse.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                    
+                }
+            }
         }
     }
 }

@@ -59,7 +59,7 @@ public class GoToPassthrough : MonoBehaviour
 			Renderer rend1 = Chat_Cat.GetComponent<Renderer>();
 			Renderer rend2 = Chat_Cactus.GetComponent<Renderer>();
 
-			if(rend1.material.name.Contains("Cat_5") && rend2.material.name.Contains("Cactus_5"))
+			if(rend1.material.name.Contains("Cat_4") && rend2.material.name.Contains("Cactus_5"))
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch02_Clear = true;

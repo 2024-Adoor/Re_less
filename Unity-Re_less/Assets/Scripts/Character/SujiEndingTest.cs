@@ -41,11 +41,18 @@ public class SujiEndingTest : MonoBehaviour
     bool isRun = false;
     bool isIDle = false;
 
+    // 엔딩 트리거 장소 
+    public GameObject EndTrigger;
+    Renderer EndTriggerRender;
+
     void Start()
     {
         Aposition = A.position;
         Bposition = B.position;
         Cposition = C.position;
+
+        EndTriggerRender = EndTrigger.GetComponent<Renderer>();
+        EndTriggerRender.enabled = false;
     }
 
     // Update 함수는 매 프레임마다 호출됩니다.
@@ -142,6 +149,9 @@ public class SujiEndingTest : MonoBehaviour
             canMove = false;
             transform.Rotate(0, 90, 0);
             RotateFin = true;
+
+            // End Trigger Point Render enable
+            EndTriggerRender.enabled = true;
         }
 
         if(RotateFin && !isIDle)

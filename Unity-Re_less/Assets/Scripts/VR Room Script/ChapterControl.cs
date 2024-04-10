@@ -21,11 +21,19 @@ public class ChapterControl : MonoBehaviour
 
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
+    
+    // UI 트리거용 
+    public int CH02_RespawnCount = 0;
 
     public Volume volume;
 
     private bool _temp_UseStartControlLogic = false;
     
+    // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
+    public GameObject[] Ch01_Objects; 
+    public GameObject[] Ch02_Objects; 
+    public GameObject[] Ch03_Objects; 
+
     private void Awake()
     {
         // 게임매니저가 없는 경우(MainScene에서 시작되지 않음) 리턴합니다. 대신 Start에 있던 기존의 로직이 작동하도록 합니다.
@@ -51,14 +59,20 @@ public class ChapterControl : MonoBehaviour
         if (Ch01)
         {
             StartChapter01();
+            SetActiveFalse(Ch02_Objects);
+            SetActiveFalse(Ch03_Objects);
         }
         else if (Ch02)
         {
             StartChapter02();
+            SetActiveFalse(Ch01_Objects);
+            SetActiveFalse(Ch03_Objects);
         }
         else if (Ch03)
         {
             StartChapter03();
+            SetActiveFalse(Ch01_Objects);
+            SetActiveFalse(Ch02_Objects);
         }
     }
 
@@ -81,6 +95,14 @@ public class ChapterControl : MonoBehaviour
     private void StartChapter03()
     {
         SpawnPlayer(SpawnPoint03, 150);
+    }
+
+    void SetActiveFalse(GameObject[] ChapterObjects)
+    {
+        foreach(GameObject gameObject in ChapterObjects) // Material 배열 순회
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -107,6 +129,7 @@ public class ChapterControl : MonoBehaviour
         {
             // 리스폰 위치 설정
             transform.position = SpawnPoint02.position + offset;
+            CH02_RespawnCount++;
             Debug.Log("Respawned at Chapter 02");
         }
     }

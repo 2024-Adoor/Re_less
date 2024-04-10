@@ -39,10 +39,15 @@ public class PlayerState : MonoBehaviour
     // UI 트리거 관리
     public bool isJumpUI = false;
     public bool isFriendUI = false;
+    public bool isDoorUI = false;
+    public bool isCh02JumpUI = false;
 
     // 효과음 관리
     public AudioClip fruit_get;
     private AudioSource audioSource;
+
+    // EndTrigger 머테리얼
+    public Material EndMaterial;
 
     // Start is called before the first frame update
     void Start()
@@ -148,6 +153,10 @@ public class PlayerState : MonoBehaviour
         }
         else if(other.CompareTag("EndTrigger") && _SujiEndingTest.RotateFin)
         {
+            Renderer otherRend = other.GetComponent<Renderer>();
+
+            otherRend.material = EndMaterial;
+
             canEnd = true;
         }
 
@@ -158,6 +167,14 @@ public class PlayerState : MonoBehaviour
         else if(other.gameObject.name == "UI_FriendTutorial_Trigger")
         {
             isFriendUI = true;
+        }
+        else if(other.gameObject.name == "UI_Ch02Door_Trigger (1)" || other.gameObject.name == "UI_Ch02Door_Trigger (2)")
+        {
+            isDoorUI = true;
+        }
+        else if(other.gameObject.name == "UI_Ch02Jump_Trigger")
+        {
+            isCh02JumpUI = true;
         }
     }
 
