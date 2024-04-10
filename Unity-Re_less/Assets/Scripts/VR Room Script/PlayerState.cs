@@ -40,10 +40,14 @@ public class PlayerState : MonoBehaviour
     public bool isJumpUI = false;
     public bool isFriendUI = false;
 
+    // 효과음 관리
+    public AudioClip fruit_get;
+    private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -139,6 +143,8 @@ public class PlayerState : MonoBehaviour
             // 충돌한 오브젝트 삭제
             Destroy(other.gameObject);
             Debug.Log("Fruit detected");
+
+            audioSource.PlayOneShot(fruit_get);
         }
         else if(other.CompareTag("EndTrigger") && _SujiEndingTest.RotateFin)
         {

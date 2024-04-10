@@ -21,6 +21,8 @@ public class AniManage : MonoBehaviour
 
     void Start()
     {
+        HealingAudioSource = GetComponent<AudioSource>();
+
         SleepingEffect.Play();
         SleepOutEffect.Stop();
     }
