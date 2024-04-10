@@ -29,6 +29,8 @@ namespace Reless
         [SerializeField, HideInInspector]
         private GameManager gameManager;
 
+        private OpeningAnimator _openingAnimator;
+        
         private void Start()
         {
             SetupOpeningWallPivot();
@@ -38,6 +40,7 @@ namespace Reless
             {
                 yield return LoadingOpeningScene();
                 yield return null;
+                _openingAnimator = FindObjectOfType<OpeningAnimator>();
                 
                 var openingScene = SceneManager.GetSceneByName("Opening");
                 var rootGameObjects = openingScene.GetRootGameObjects();
@@ -47,11 +50,46 @@ namespace Reless
                 
                 yield return new WaitForSeconds(4f);
                 yield return RotatingOpeningWall(wallOpeningFirst);
-                yield return new WaitForSeconds(4f);
+                _openingAnimator.EnableScene(0);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(0);
+                _openingAnimator.EnableScene(1);
                 yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(1);
+                _openingAnimator.EnableScene(2);
                 yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(2);
+                _openingAnimator.EnableScene(3);
+                yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(3);
+                _openingAnimator.EnableScene(4);
+                yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(6f);
+                
+                _openingAnimator.DisableScene(4);
+                _openingAnimator.EnableScene(5);
+                yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(5);
+                _openingAnimator.EnableScene(6);
+                yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(6);
+                _openingAnimator.EnableScene(7);
+                yield return RotatingOpeningWall(wallOpening);
+                yield return new WaitForSeconds(3f);
+                
+                _openingAnimator.DisableScene(7);
+                
                 yield return RotatingOpeningWall(wallOpening);
                 yield return new WaitForSeconds(4f);
                 

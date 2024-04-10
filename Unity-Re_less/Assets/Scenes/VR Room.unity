@@ -7584,6 +7584,7 @@ GameObject:
   - component: {fileID: 795946054}
   - component: {fileID: 795946053}
   - component: {fileID: 795946052}
+  - component: {fileID: 795946056}
   m_Layer: 0
   m_Name: Ch01_ToPassthrough
   m_TagString: Untagged
@@ -7671,12 +7672,28 @@ Transform:
   m_GameObject: {fileID: 795946051}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -42.472, y: 24.255, z: -18.83}
+  m_LocalPosition: {x: -42.472, y: 24.255, z: -23.26}
   m_LocalScale: {x: 1.6072595, y: 2.2666624, z: 0.64149}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &795946056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795946051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b318b104b5c35254984d8c6f0e6747d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chapterNum: 1
+  Chat_Clock: {fileID: 1344118006}
+  Chat_Cat: {fileID: 867791230}
+  Chat_Cactus: {fileID: 737952794}
 --- !u!1 &798414759
 GameObject:
   m_ObjectHideFlags: 0
