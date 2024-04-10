@@ -19,6 +19,11 @@ public class GoToPassthrough : MonoBehaviour
 	/// ExitRoom 씬을 이미 로드했다면 추가로 로드하지 않도록 확인합니다.
 	/// </summary>
 	private bool _loadExitRoomExecuted = false;
+	
+	/// <summary>
+	/// 게임매니저 없이 시작되었습니다 (MainScene에서 넘어오지 않음)
+	/// </summary>
+	private bool _startedDirectly = GameManager.NotInThisScene;
 
 	// 페이드 UI
 	private FadeUI fadeUI;
@@ -68,7 +73,7 @@ public class GoToPassthrough : MonoBehaviour
 		
 		bool loadExitRoomScene = Ch01_Clear || Ch02_Clear || Ch03_Clear;
 
-		if (loadExitRoomScene && !_loadExitRoomExecuted)
+		if (loadExitRoomScene && !_loadExitRoomExecuted && !_startedDirectly)
 		{
 			GameManager.Instance.LoadExitDreamScene();
 			_loadExitRoomExecuted = true;
