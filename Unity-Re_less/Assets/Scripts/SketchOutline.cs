@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
+using Reless;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -39,6 +40,11 @@ public class SketchOutline : MonoBehaviour
 
     private void Update()
     {
+        if (OVRInput.GetDown(OVRInput.RawButton.B))
+        {
+            transform.position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+        }
+        
         // 모든 DrawingChecker가 체크되었는지 확인합니다.
         if (_drawingCheckers.Count > 0)
         {
