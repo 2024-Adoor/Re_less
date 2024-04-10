@@ -145,11 +145,11 @@ public class PlayerState : MonoBehaviour
             canEnd = true;
         }
 
-        if(other.gameObject.name == "Ch01_uiJumpTrigger")
+        if(other.gameObject.name == "UI_JumpTutorial_Trigger")
         {
             isJumpUI = true;
         }
-        else if(other.gameObject.name == "Ch01_uiFriendTrigger")
+        else if(other.gameObject.name == "UI_FriendTutorial_Trigger")
         {
             isFriendUI = true;
         }
