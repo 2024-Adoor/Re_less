@@ -21,6 +21,11 @@ namespace Reless
         /// 최초로 벽이 열릴 때의 애니메이션의 커브
         /// </summary>
         [SerializeField] private AnimationCurve wallOpeningFirst;
+        
+        /// <summary>
+        /// 벽이 닫힐 때의 애니메이션의 커브
+        /// </summary>
+        [SerializeField] private AnimationCurve wallClosing;
 
         private GameObject _openingWall;
 
@@ -90,7 +95,7 @@ namespace Reless
                 
                 _openingAnimator.DisableScene(7);
                 
-                yield return RotatingOpeningWall(wallOpening);
+                yield return RotatingOpeningWall(wallClosing);
                 yield return new WaitForSeconds(4f);
                 
                 // 오프닝 씬 언로드
