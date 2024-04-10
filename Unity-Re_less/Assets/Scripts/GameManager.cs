@@ -71,6 +71,7 @@ namespace Reless
         
         private Phase _currentPhase;
 
+        [ShowNativeProperty]
         public Phase CurrentPhase
         {
             get => _currentPhase;
@@ -173,8 +174,7 @@ namespace Reless
         
         public Vector3 PlayerPosition => cameraRig.centerEyeAnchor.localPosition;
         
-        [SerializeField]
-        public OVRPassthroughLayer passthroughLayer;
+
 
         public void OnSceneLoaded()
         {
