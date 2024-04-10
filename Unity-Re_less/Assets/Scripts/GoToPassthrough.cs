@@ -10,10 +10,11 @@ public class GoToPassthrough : MonoBehaviour
 	public GameObject Chat_Clock;
 	public GameObject Chat_Cat;
 	public GameObject Chat_Cactus;
+	public GameObject Player;
 
 	bool Ch01_Clear = false;
 	bool Ch02_Clear = false;
-	bool Ch03_Clear = false;
+	public bool Ch03_Clear = false;
 	
 	/// <summary>
 	/// ExitRoom 씬을 이미 로드했다면 추가로 로드하지 않도록 확인합니다.
@@ -67,8 +68,15 @@ public class GoToPassthrough : MonoBehaviour
 		if(chapterNum == 3)
 		{
 			// 챕터 3 클리어 조건 : 방에서 커져서 문을 열고 트리거에 도달했는가 = 트리거에 도달만 하면 됨
-			GetComponent<Renderer>().enabled = true;
-			Ch03_Clear = true;
+
+			// 방 한가운데 리스폰 됐는지 확인
+			PlayerState _PlayerState = Player.GetComponent<PlayerState>();
+			
+			if(_PlayerState.isTeleport)
+			{
+				GetComponent<Renderer>().enabled = true;
+				Ch03_Clear = true;
+			}
 		}
 		
 		bool loadExitRoomScene = Ch01_Clear || Ch02_Clear || Ch03_Clear;
