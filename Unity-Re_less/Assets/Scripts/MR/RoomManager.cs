@@ -85,7 +85,7 @@ namespace Reless.MR
         private ICollection<MRUKAnchor> _doors;
         
 
-        [NonSerialized, ReadOnly]
+        [ReadOnly]
         public RoomEnlarger roomEnlarger;
 
         public GameObject OpeningWall => FindCreatedEffectMesh(_keyWall, passthroughRoom);
