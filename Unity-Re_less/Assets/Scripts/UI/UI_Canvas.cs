@@ -35,21 +35,21 @@ public class UI_Canvas : MonoBehaviour
     {
         _PlayerControl = Player.GetComponent<PlayerControl>();
         _ChapterControl = Player.GetComponent<ChapterControl>();
+        
+        UnableRawImage(Tutorial_1);
+        UnableRawImage(Tutorial_2);
+        UnableRawImage(Tutorial_3);
+        UnableRawImage(Tutorial_4);
+        UnableRawImage(Tutorial_5);
+        UnableRawImage(Tutorial_6);
+        UnableRawImage(disAwake);
 
         if(_ChapterControl.Ch01)
         {
             _PlayerControl.speed = 0f;
 
-            UnableRawImage(Tutorial_1);
-            UnableRawImage(Tutorial_2);
-            UnableRawImage(Tutorial_3);
-            UnableRawImage(Tutorial_4);
-            UnableRawImage(Tutorial_5);
-            UnableRawImage(Tutorial_6);
-            UnableRawImage(disAwake);
-
             // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableTutorial1", 0.5f);
+            Invoke("EnableTutorial1", 0.2f);
             Invoke("UnableTutorial1", 3.5f);
             Invoke("EnableTutorial3", 3.5f);
             Invoke("UnableTutorial3", 6.5f);
