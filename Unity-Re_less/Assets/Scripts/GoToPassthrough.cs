@@ -40,6 +40,7 @@ public class GoToPassthrough : MonoBehaviour
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch01_Clear = true;
+				GameManager.Instance.LoadExitDreamScene();
 			}
 		}
 		if(chapterNum == 2)
@@ -52,6 +53,7 @@ public class GoToPassthrough : MonoBehaviour
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch02_Clear = true;
+				GameManager.Instance.LoadExitDreamScene();
 			}
 		}
 		if(chapterNum == 3)
@@ -59,6 +61,7 @@ public class GoToPassthrough : MonoBehaviour
 			// 챕터 3 클리어 조건 : 방에서 커져서 문을 열고 트리거에 도달했는가 = 트리거에 도달만 하면 됨
 			GetComponent<Renderer>().enabled = true;
 			Ch03_Clear = true;
+			GameManager.Instance.LoadExitDreamScene();
 		}
 
 	}
