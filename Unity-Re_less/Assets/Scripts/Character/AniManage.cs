@@ -15,6 +15,10 @@ public class AniManage : MonoBehaviour
     public AnimationClip IdleAni;           // IDLE Animation Clip 
     public bool isChange = false;
 
+    // Sound
+    public AudioClip HealingSound;
+    private AudioSource HealingAudioSource;
+
     void Start()
     {
         SleepingEffect.Play();
@@ -32,6 +36,8 @@ public class AniManage : MonoBehaviour
             {
                 SleepingEffect.Stop();
                 SleepOutEffect.Play();
+
+                HealingAudioSource.PlayOneShot(HealingSound);
 
                 animationComponent.Stop();
                 animationComponent.clip = SleepOutAni;
