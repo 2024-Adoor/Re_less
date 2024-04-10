@@ -32,6 +32,15 @@ public class Pen : MonoBehaviour
     
     private MeshCollider _drawingMeshCollider;
 
+    // 효과음 관리
+    public AudioClip Spray;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void Update()
     {
         // 그려질 위치에 쓸 오른손 컨트롤러 위치를 가져옵니다.
@@ -40,6 +49,9 @@ public class Pen : MonoBehaviour
         // 그리기 버튼이 눌리고 있나요?
         if (_isPressed)
         {
+            // 오디오 재생
+            audioSource.Play();
+
             // 선이 너무 길어졌나요?
             if (_limitLine)
             {
@@ -67,6 +79,9 @@ public class Pen : MonoBehaviour
         // 그리기 버튼이 눌리지 않았나요?
         else
         {
+            // 오디오 정지
+            audioSource.Stop();
+
             // 그리기 버튼이 눌렸습니다. 
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
             {
