@@ -176,9 +176,11 @@ namespace Reless
             const float darkenContrast = -0.5f;
             const float darkenSaturation = -0.8f;
             
+            var passthroughLayer = FindAnyObjectByType<OVRPassthroughLayer>();
+            
             for (float timer = 0; timer < duration; timer += Time.deltaTime)
             {
-                gameManager.passthroughLayer.SetBrightnessContrastSaturation(
+                passthroughLayer.SetBrightnessContrastSaturation(
                     brightness: Mathf.Lerp(0, darkenBrightness, timer / duration),
                     contrast: Mathf.Lerp(0, darkenContrast, timer / duration),
                     saturation: Mathf.Lerp(0, darkenSaturation, timer / duration)
