@@ -74,7 +74,7 @@ namespace Reless
                 // 플레이어가 문과 가까운 정도를 계산합니다.
                 float nearness = 1f - Mathf.Clamp01(distance / _initialPlayerToDoorDistance);
                 
-                Debug.Log($"nearness : {nearness}");
+                // Debug.Log($"nearness : {nearness}");
                 
                 // 플레이어가 문에 가까워질수록 패스스루의 불투명도가 올라갑니다.
                 roomPassthrough.textureOpacity = nearness;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.5590147, g: 0.8095578, b: 0.99108803, a: 1}
+  m_IndirectSpecularColor: {r: 0.56089985, g: 0.8127881, b: 0.98376554, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -27835,7 +27835,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804773558}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e9f5cbb83f16aba4cbcd2fc80e96d8db, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -27847,10 +27847,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3500142
+  m_Radius: 0.4
   m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: 0, y: -0.4, z: 0}
+  m_Center: {x: 0, y: 1.4, z: 0}
 --- !u!54 &1804773560
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27888,7 +27888,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -34.45, y: 26.743, z: -33.09}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 515306079}
@@ -27923,9 +27923,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37b12dce5d946545a7b2b568e9372ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ch01: 0
+  Ch01: 1
   Ch02: 0
-  Ch03: 1
+  Ch03: 0
   SpawnPoint01: {fileID: 1055740822}
   SpawnPoint02: {fileID: 1279590334}
   SpawnPoint03: {fileID: 1743890652}
@@ -38267,7 +38267,6 @@ GameObject:
   - component: {fileID: 3469287837538156741}
   - component: {fileID: 1711813855691895823}
   - component: {fileID: 3469287837538156742}
-  - component: {fileID: 3469287837538156743}
   m_Layer: 0
   m_Name: stairs
   m_TagString: Untagged
@@ -43868,27 +43867,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -92952055743102797, guid: 19dc7a1ab7e1c48439d3ca167aad430c, type: 3}
---- !u!65 &3469287837538156743
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132149099320794}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.9284298, y: 1.7854968, z: 1.454803}
-  m_Center: {x: -0.11460614, y: -0.06810541, z: 0.0000018997482}
 --- !u!1 &3492142893734951534
 GameObject:
   m_ObjectHideFlags: 0
