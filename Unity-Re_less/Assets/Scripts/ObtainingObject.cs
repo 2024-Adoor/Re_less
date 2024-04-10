@@ -63,7 +63,21 @@ namespace Reless
             transform.localScale = Vector3.one;
             
             MainBehaviour mainBehaviour = FindObjectOfType<MainBehaviour>();
-            mainBehaviour.AchieveEnterCondition();
+            mainBehaviour.AchieveEnterCondition(chapter);
+            
+            // 스냅되면 중력을 꺼야 합니다.
+            GetComponent<Rigidbody>().useGravity = false;
+        }
+        
+        // 가구현, 프리팹 이벤트에 등록 필요
+        public void Unsnapped()
+        {
+            Debug.Log($"Unsnapped: {gameObject.name}");
+
+            transform.localScale = Vector3.one * 5;
+            
+            // 스냅이 풀리면 중력을 다시 켜야 합니다.
+            GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }
