@@ -102,17 +102,14 @@ namespace Reless
 
         private void OnEnding()
         {
-            throw new NotImplementedException();
         }
 
         private void StartChapter3()
         {
-            throw new NotImplementedException();
         }
 
         private void StartChapter2()
         {
-            throw new NotImplementedException();
         }
 
         private void StartChapter1()
@@ -121,7 +118,6 @@ namespace Reless
 
         private void StartTutorial()
         {
-            throw new NotImplementedException();
         }
 
         private void StartTitle()

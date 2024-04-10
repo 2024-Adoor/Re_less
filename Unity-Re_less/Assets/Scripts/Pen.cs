@@ -34,12 +34,9 @@ public class Pen : MonoBehaviour
 
     // 효과음 관리
     public AudioClip Spray;
+    
+    [SerializeField]
     private AudioSource audioSource;
-
-    void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
 
     void Update()
     {
@@ -49,9 +46,6 @@ public class Pen : MonoBehaviour
         // 그리기 버튼이 눌리고 있나요?
         if (_isPressed)
         {
-            // 오디오 재생
-            audioSource.Play();
-
             // 선이 너무 길어졌나요?
             if (_limitLine)
             {
@@ -66,7 +60,7 @@ public class Pen : MonoBehaviour
             
             // 지금 그려지고 있는 선을 이어서 그립니다.
             UpdateLine(controllerPosition);
-
+            
             // 플레이거가 그리기 버튼을 뗐습니다.
             if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
             {
@@ -74,19 +68,23 @@ public class Pen : MonoBehaviour
                 
                 // 새로운 선을 그리기 위해 초기화합니다.
                 _isPressed = false;
+                
+                // 오디오 정지
+                audioSource.Stop();
             }
         }
         // 그리기 버튼이 눌리지 않았나요?
         else
         {
-            // 오디오 정지
-            audioSource.Stop();
-
             // 그리기 버튼이 눌렸습니다. 
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
             {
                 // 그리기를 시작합니다.
                 StartDraw(controllerPosition);
+                
+                // 오디오 재생
+                audioSource.Play();
+
                 _isPressed = true;
             }
             
@@ -134,20 +132,17 @@ public class Pen : MonoBehaviour
     {
         // 지금까지 만들어진 한 선으로부터 메시 콜라이더를 만들어 목록에 추가합니다.
         var mesh = new Mesh();
-        Debug.LogWarning(_currentLine == null);
         _currentLine.BakeMesh(mesh);
-        Debug.LogWarning(mesh == null);
         var drawingRigidbody = _currentLine.AddComponent<Rigidbody>();
         drawingRigidbody.isKinematic = true;
         var drawingMeshCollider = _currentLine.AddComponent<MeshCollider>();
-        drawingMeshCollider.convex = true; // convex여야 트리거가 작동
-        //drawingMeshCollider.isTrigger = true; // 충돌 필요 없으므로 트리거로 설정
+        drawingMeshCollider.convex = true; 
         drawingMeshCollider.sharedMesh = mesh; // 라인렌더러에서 베이크한 메시를 할당
         drawingMeshCollider.transform.position = Vector3.zero; // 이렇게 해야 콜라이더가 선 위에 제대로 자리합니다.
         _drawingMeshColliders.Add(drawingMeshCollider);
     }
-    
-    public void ClearLines()
+
+    private void ClearLines()
     {
         for (int i = 0; i < this.transform.childCount; i++)
         {
