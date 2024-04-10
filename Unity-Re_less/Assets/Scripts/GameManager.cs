@@ -299,7 +299,12 @@ namespace Reless
         [Button(enabledMode: EButtonEnableMode.Playmode)]
         public AsyncOperation LoadExitDreamScene()
         {
-            return SceneManager.LoadSceneAsync("ExitDream", LoadSceneMode.Additive);
+            var asyncLoad = SceneManager.LoadSceneAsync("ExitDream", LoadSceneMode.Additive);
+            asyncLoad.completed += operation =>
+            {
+                Debug.Log("ExitDreamScene Loaded");
+            };
+            return asyncLoad;
         }
         
 #if UNITY_EDITOR
