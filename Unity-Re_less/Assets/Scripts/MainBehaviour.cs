@@ -88,8 +88,19 @@ namespace Reless
         {
             pen.gameObject.SetActive(true);
         }
-        
+
         [Button]
+        public void AchieveEnterCondition()
+        {
+            AchieveEnterCondition(_gameManager.CurrentPhase switch
+            {
+                GameManager.Phase.Chapter1 => 1,
+                GameManager.Phase.Chapter2 => 2,
+                GameManager.Phase.Chapter3 => 3,
+                _ => 0
+            });
+        }
+        
         public void AchieveEnterCondition(int chapter)
         {
             EnableCloseEyesToSleepPose();
