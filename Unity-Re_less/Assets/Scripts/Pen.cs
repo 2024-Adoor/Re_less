@@ -74,13 +74,15 @@ public class Pen : MonoBehaviour
                 StartDraw(controllerPosition);
                 _isPressed = true;
             }
+            
+            // 그리기 버튼이 눌리지 않고 있고 왼쪽 컨트롤러 X버튼을 누르면 선을 지웁니다.
+            if (OVRInput.GetDown(OVRInput.Button.Three))
+            {
+                ClearLines();
+            }
         }
 
-        // 왼쪽 컨트롤러 X버튼을 누르면 선을 지웁니다.
-        if (OVRInput.GetDown(OVRInput.Button.Three))
-        {
-            ClearLines();
-        }
+        
     }
     
     private void StartDraw(Vector3 position)
@@ -96,6 +98,8 @@ public class Pen : MonoBehaviour
 
     private void UpdateLine(Vector3 position)
     {
+        if (_currentLine == null) return;
+        
         float segmentLength = (position - _pointPositions.Last()).magnitude;
         if (segmentLength >= _minInkDist)
         {
