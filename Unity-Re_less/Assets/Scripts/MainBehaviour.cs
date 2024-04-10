@@ -90,7 +90,7 @@ namespace Reless
         }
         
         [Button]
-        public void AchieveEnterCondition()
+        public void AchieveEnterCondition(int chapter)
         {
             EnableCloseEyesToSleepPose();
         }
