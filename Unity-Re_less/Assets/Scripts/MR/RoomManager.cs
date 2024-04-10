@@ -208,7 +208,7 @@ namespace Reless.MR
         /// </summary>
         public bool HidePassthroughEffectMesh
         {
-            set => passthroughRoom.HideMesh = !value;
+            set => passthroughRoom.HideMesh = value;
         }
         
         /// <summary>
