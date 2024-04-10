@@ -220,7 +220,18 @@ namespace Reless
         {
             while (!until())
             {
-                throw new NotImplementedException();
+                var distance = RoomManager.Instance.ClosestDoorDistance(PlayerPosition, out _);
+                if (distance == 0f)
+                {
+                    Debug.LogWarning("Door not found.");
+                    yield break;
+                }
+                
+                if (distance < 0.5f)
+                {
+                    onApproach?.Invoke();
+                    yield break;
+                }
                 
                 yield return null;
             }

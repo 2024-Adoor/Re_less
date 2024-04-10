@@ -59,6 +59,7 @@ namespace Reless
                     GameManager.Phase.Chapter1 => (_sketchObjectPrefabs.chapter01, _obtainingObjectPrefabs.chapter01),
                     GameManager.Phase.Chapter2 => (_sketchObjectPrefabs.chapter02, _obtainingObjectPrefabs.chapter02),
                     GameManager.Phase.Chapter3 => (_sketchObjectPrefabs.chapter03, _obtainingObjectPrefabs.chapter03),
+                    _ => throw new ArgumentOutOfRangeException()
                 };
                 SetupSketchObject(drawingPrefabPair.sktech, drawingPrefabPair.obtaining);
             }
