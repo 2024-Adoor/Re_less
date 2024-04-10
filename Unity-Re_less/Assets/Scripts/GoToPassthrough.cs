@@ -14,6 +14,11 @@ public class GoToPassthrough : MonoBehaviour
 	bool Ch01_Clear = false;
 	bool Ch02_Clear = false;
 	bool Ch03_Clear = false;
+	
+	/// <summary>
+	/// ExitRoom 씬을 이미 로드했다면 추가로 로드하지 않도록 확인합니다.
+	/// </summary>
+	private bool _loadExitRoomExecuted = false;
 
 	// 페이드 UI
 	private FadeUI fadeUI;
@@ -40,7 +45,6 @@ public class GoToPassthrough : MonoBehaviour
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch01_Clear = true;
-				GameManager.Instance.LoadExitDreamScene();
 			}
 		}
 		if(chapterNum == 2)
@@ -53,7 +57,6 @@ public class GoToPassthrough : MonoBehaviour
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch02_Clear = true;
-				GameManager.Instance.LoadExitDreamScene();
 			}
 		}
 		if(chapterNum == 3)
@@ -61,9 +64,15 @@ public class GoToPassthrough : MonoBehaviour
 			// 챕터 3 클리어 조건 : 방에서 커져서 문을 열고 트리거에 도달했는가 = 트리거에 도달만 하면 됨
 			GetComponent<Renderer>().enabled = true;
 			Ch03_Clear = true;
-			GameManager.Instance.LoadExitDreamScene();
 		}
+		
+		bool loadExitRoomScene = Ch01_Clear || Ch02_Clear || Ch03_Clear;
 
+		if (loadExitRoomScene && !_loadExitRoomExecuted)
+		{
+			GameManager.Instance.LoadExitDreamScene();
+			_loadExitRoomExecuted = true;
+		}
 	}
 
 	// GameManager.Instance.LoadExitDreamScene();
