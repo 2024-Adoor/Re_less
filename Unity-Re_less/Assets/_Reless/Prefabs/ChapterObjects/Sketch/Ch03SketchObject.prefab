@@ -143,15 +143,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
       propertyPath: m_LocalScale.x
-      value: 40
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
       propertyPath: m_LocalScale.y
-      value: 40
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
       propertyPath: m_LocalScale.z
-      value: 40
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
       propertyPath: m_LocalPosition.x
@@ -204,7 +204,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 5879738635707565820, guid: 2a467786d8f1e37428fd33935ebae2ea, type: 3}
+      objectReference: {fileID: -5348153291611577473, guid: 802b7ca2869c025438ac214d7c947296, type: 3}
     - target: {fileID: 919132149155446097, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
       propertyPath: m_Name
       value: Ch03SketchObject
@@ -289,8 +289,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.022351516, y: 0.020296518, z: 0.02226385}
-  m_Center: {x: -0.00085833, y: 0.0087347105, z: 0.0005638972}
+  m_Size: {x: 3.3441553, y: 1.1113101, z: 2.1909604}
+  m_Center: {x: 0.14353931, y: -0.059047356, z: 0.017262816}
 --- !u!4 &6546693397229095294 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4ae0a56f6f60bbf4bad87a71f7c86655, type: 3}
