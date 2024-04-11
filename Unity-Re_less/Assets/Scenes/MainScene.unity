@@ -547,6 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b29f53e9c4a79418179d097b56b19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnedWallHints: []
   openingBehaviour: {fileID: 1001971512}
   cameraRig: {fileID: 241227429}
 --- !u!4 &109150759
@@ -5513,7 +5514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1045912555
 BoxCollider:
   m_ObjectHideFlags: 0

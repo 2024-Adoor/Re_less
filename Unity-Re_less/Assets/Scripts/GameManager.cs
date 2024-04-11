@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.MR;
@@ -93,9 +94,18 @@ namespace Reless
                     case Phase.Ending: OnEnding(); break;
                 }
 
+                switch (_currentPhase)
+                {
+                    case Phase.Chapter1 or Phase.Chapter2 or Phase.Chapter3:
+                        spawnedWallHints.ForEach(wallHint => wallHint.SetActive(true)); break;
+                        default: spawnedWallHints.ForEach(wallHint => wallHint.SetActive(false)); break;
+                }
+
                 PopupBookActive = _currentPhase;
             }
         }
+
+        public List<GameObject> spawnedWallHints;
         
         [SerializeField, HideInInspector]
         private OpeningBehaviour openingBehaviour;
@@ -320,6 +330,18 @@ namespace Reless
         private void SetPhaseToChapter1()
         {
             CurrentPhase = Phase.Chapter1;
+        }
+        
+        [Button]
+        private void SetNextPhase()
+        {
+            CurrentPhase++;
+        }
+        
+        [Button]
+        private void SetPreviousPhase()
+        {
+            CurrentPhase--;
         }
 #endif
         

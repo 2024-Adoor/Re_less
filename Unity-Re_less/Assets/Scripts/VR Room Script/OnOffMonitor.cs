@@ -8,7 +8,7 @@ public class OnOffMonitor : MonoBehaviour
     public GameObject OffScreen; 
     public GameObject OnScreen; 
 
-    // public ParticleSystem PressEffect;
+    public ParticleSystem PressEffect;
 
     // UI Trigger
     public bool isScreenOn = false;
@@ -17,7 +17,7 @@ public class OnOffMonitor : MonoBehaviour
 
     private void Start()
     {
-        // PressEffect.Play();
+        PressEffect.Play();
         ownRenderer = GetComponent<Renderer>(); // 자기 자신의 렌더러 가져오기
         OnScreen.SetActive(false);
     }
@@ -33,7 +33,7 @@ public class OnOffMonitor : MonoBehaviour
 
                 OffScreen.SetActive(false);
                 OnScreen.SetActive(true);
-                // PressEffect.Stop();
+                PressEffect.Stop();
             }
             else
             {
