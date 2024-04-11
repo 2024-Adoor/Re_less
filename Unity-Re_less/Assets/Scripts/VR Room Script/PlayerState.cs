@@ -6,7 +6,7 @@ using Reless;
 public class PlayerState : MonoBehaviour
 {   
     // Fruit 카운트 & 타 캐릭터 상호작용 관리 스크립트입니다. 
-    public int fruitCount; 
+    public int fruitCount = -1; 
     public bool isTrigger = false;
     public bool isCharacter = false;
     
@@ -25,6 +25,9 @@ public class PlayerState : MonoBehaviour
     public GameObject Characters_Surprised;
     bool isSurprised = false;
     public bool isTeleport = false;
+
+    // 엔딩 포인트 trigger -> Destroy Door 
+    public GameObject door;
     
     // Ending RespawnTrigger & SpawnPoint 
     public Transform RespawnTrigger;
@@ -41,6 +44,7 @@ public class PlayerState : MonoBehaviour
     public bool isFriendUI = false;
     public bool isDoorUI = false;
     public bool isCh02JumpUI = false;
+    public bool isDisawakeUI_Trigger = false;
 
     // 효과음 관리
     public AudioClip fruit_get;
@@ -132,6 +136,7 @@ public class PlayerState : MonoBehaviour
             }
 
             isTeleport = true;
+            Destroy(door);
         }
 
     }
@@ -143,8 +148,15 @@ public class PlayerState : MonoBehaviour
 
         if(other.CompareTag("Fruit"))
         {
-            fruitCount++;
-
+            if(fruitCount == -1)
+            {
+                fruitCount = 1;
+            }
+            else
+            {
+                fruitCount++;
+            }
+            
             // 충돌한 오브젝트 삭제
             Destroy(other.gameObject);
             Debug.Log("Fruit detected");
@@ -178,11 +190,32 @@ public class PlayerState : MonoBehaviour
         }
     }
 
+    // 콜라이더랑 충돌할때 
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Character") && fruitCount > 0)
         {
             isCharacter = true;
+        }
+
+        if(collision.gameObject.CompareTag("Character"))
+        {
+            if(collision.gameObject.name != "Character_Suji")
+            {
+                isDisawakeUI_Trigger = true;
+            }
+        }
+    }
+
+    // 콜라이더랑 충돌 안할때 
+    void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Character"))
+        {
+            if(collision.gameObject.name != "Character_Suji")
+            {
+                isDisawakeUI_Trigger = false;
+            }
         }
     }
 

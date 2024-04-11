@@ -47,6 +47,23 @@ public class MouseCtrl : MonoBehaviour
                 lastPositionA = currentPositionA; // 이전 위치 갱신
             } 
         }
-        
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            // 플레이어와 충돌할 때만 isKinematic을 활성화
+            GetComponent<Rigidbody>().isKinematic = false;
+        }
+    }
+    
+    void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            // 플레이어와 충돌이 끝났을 때 isKinematic을 비활성화
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
+}
 }

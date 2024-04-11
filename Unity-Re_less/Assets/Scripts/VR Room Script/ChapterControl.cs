@@ -59,18 +59,24 @@ public class ChapterControl : MonoBehaviour
         if (Ch01)
         {
             StartChapter01();
+
+            // 챕터 1 오브젝트가 아닌 오브젝트 비활성화 
             SetActiveFalse(Ch02_Objects);
             SetActiveFalse(Ch03_Objects);
         }
         else if (Ch02)
         {
             StartChapter02();
+
+            // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
             SetActiveFalse(Ch01_Objects);
             SetActiveFalse(Ch03_Objects);
         }
         else if (Ch03)
         {
             StartChapter03();
+
+            // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
             SetActiveFalse(Ch01_Objects);
             SetActiveFalse(Ch02_Objects);
         }
@@ -83,7 +89,7 @@ public class ChapterControl : MonoBehaviour
     
     private void StartChapter02()
     {
-        SpawnPlayer(SpawnPoint02, 90);
+        SpawnPlayer(SpawnPoint02, 120);
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
         SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();

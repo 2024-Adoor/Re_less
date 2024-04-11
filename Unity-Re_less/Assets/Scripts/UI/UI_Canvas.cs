@@ -140,8 +140,8 @@ public class UI_Canvas : MonoBehaviour
             Invoke("Tutorial6_Speed", 2f);
         }
 
-        // 챕터 2 - 리스폰 2번 했을 때, 시계  UI 
-        if(_ChapterControl.CH02_RespawnCount > 2 && !WatchUIFin)
+        // 챕터 2 - 리스폰 했을 때, 시계  UI 
+        if(_ChapterControl.CH02_RespawnCount > 0 && !WatchUIFin)
         {
             EnableRawImage(Ch02_Watch);
 
@@ -195,6 +195,15 @@ public class UI_Canvas : MonoBehaviour
             Invoke("UnableCh03_End", 2f);
         }
 
+        // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
+        if(_PlayerState.fruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
+        {
+            EnableRawImage(disAwake);
+        }
+        else
+        {
+            UnableRawImage(disAwake);
+        }
     }
 
     void EnableRawImage(RawImage yourRawImage)
