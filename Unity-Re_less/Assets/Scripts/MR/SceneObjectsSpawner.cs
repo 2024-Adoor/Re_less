@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Meta.XR.MRUtilityKit;
 using UnityEngine;
@@ -53,11 +54,15 @@ namespace Reless.MR
 
         [SerializeField]
         private GameObject popupBookPrefab;
+
+        [SerializeField]
+        private List<GameObject> wallHintPrefabs;
         
         public void SpawnAll()
         {
             SpawnOuterPrefabs();
             SpawnPopupBook();
+            SpawnWallHint();
         }
         
         private void SpawnOuterPrefabs()
@@ -161,9 +166,45 @@ namespace Reless.MR
             book.transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
             book.transform.localPosition = Vector3.zero;
             book.transform.localRotation = Quaternion.Euler(0, -90, -90);
+            book.transform.Rotate(Vector3.up, 90);
             
             // 처음 스폰 시 비활성화
             book.SetActive(false);
+        }
+
+        private void SpawnWallHint()
+        {
+            {
+                var hint = Spawn(wallHintPrefabs[0], RoomManager.Instance.KeyWall);
+                hint.transform.Rotate(Vector3.right, 90);
+                hint.transform.Translate(-0.75f, 0, 0);
+                GameManager.Instance.spawnedWallHints.Add(hint);
+                hint.SetActive(false);
+            }
+            {
+                var hint = Spawn(wallHintPrefabs[1], RoomManager.Instance.KeyWall);
+                hint.transform.Rotate(Vector3.right, 90);
+                hint.transform.Translate(-0.25f, 0, 0);
+                GameManager.Instance.spawnedWallHints.Add(hint);
+                hint.SetActive(false);
+
+            }
+            {
+                var hint = Spawn(wallHintPrefabs[2], RoomManager.Instance.KeyWall);
+                hint.transform.Rotate(Vector3.right, 90);
+                hint.transform.Translate(0.25f, 0, 0);
+                GameManager.Instance.spawnedWallHints.Add(hint);
+                hint.SetActive(false);
+
+            }
+            {
+                var hint = Spawn(wallHintPrefabs[3], RoomManager.Instance.KeyWall);
+                hint.transform.Rotate(Vector3.right, 90);
+                hint.transform.Translate(0.75f, 0, 0);
+                GameManager.Instance.spawnedWallHints.Add(hint);
+                hint.SetActive(false);
+
+            }
         }
         
         private static GameObject Spawn(GameObject prefab, MRUKAnchor anchor)
