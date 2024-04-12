@@ -50,8 +50,8 @@ public class SketchOutline : MonoBehaviour
         {
             _fillRatio = (float)_drawingCheckers.Count(checker => checker.Checked) / _drawingCheckers.Count;
 
-            // 임시: 100%를 충족하는게 너무 어려울 것으로 기대되므로 50% 이상이면 완성으로 간주합니다.
-            if (_fillRatio > 0.5)
+            // 임시: 100%를 충족하는게 너무 어려울 것으로 기대되므로 80% 이상이면 완성으로 간주합니다.
+            if (_fillRatio > 0.8)
             {
                 _isCompleted = true;
                 DrawingCompleted?.Invoke();

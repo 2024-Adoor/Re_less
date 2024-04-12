@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Meta.XR.MRUtilityKit;
 using Reless;
@@ -102,6 +103,11 @@ namespace Reless
                 // 중복 실행 방지
                 _isExiting = true;
             }
+        }
+
+        private void OnDestroy()
+        {
+            RoomManager.Instance.HidePassthroughEffectMesh = false;
         }
 
         private IEnumerator ExitingDream()

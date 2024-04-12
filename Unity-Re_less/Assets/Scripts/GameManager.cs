@@ -105,7 +105,8 @@ namespace Reless
             }
         }
 
-        public List<GameObject> spawnedWallHints;
+        [NonSerialized]
+        public List<GameObject> spawnedWallHints = new List<GameObject>();
         
         [SerializeField, HideInInspector]
         private OpeningBehaviour openingBehaviour;

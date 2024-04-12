@@ -177,14 +177,14 @@ namespace Reless.MR
             {
                 var hint = Spawn(wallHintPrefabs[0], RoomManager.Instance.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(-0.75f, 0, 0);
+                hint.transform.Translate(0.75f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
                 hint.SetActive(false);
             }
             {
                 var hint = Spawn(wallHintPrefabs[1], RoomManager.Instance.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(-0.25f, 0, 0);
+                hint.transform.Translate(0.25f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
                 hint.SetActive(false);
 
@@ -192,7 +192,7 @@ namespace Reless.MR
             {
                 var hint = Spawn(wallHintPrefabs[2], RoomManager.Instance.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(0.25f, 0, 0);
+                hint.transform.Translate(-0.25f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
                 hint.SetActive(false);
 
@@ -200,7 +200,7 @@ namespace Reless.MR
             {
                 var hint = Spawn(wallHintPrefabs[3], RoomManager.Instance.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(0.75f, 0, 0);
+                hint.transform.Translate(-0.75f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
                 hint.SetActive(false);
 

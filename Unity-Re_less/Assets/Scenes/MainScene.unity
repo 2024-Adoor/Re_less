@@ -547,7 +547,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b29f53e9c4a79418179d097b56b19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnedWallHints: []
   openingBehaviour: {fileID: 1001971512}
   cameraRig: {fileID: 241227429}
 --- !u!4 &109150759
@@ -5113,7 +5112,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2
+      time: 1.3757324
       value: 1
       inSlope: 1.2610884
       outSlope: 1.2610884

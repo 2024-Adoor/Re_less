@@ -53,7 +53,7 @@ namespace Reless
                 RedundantResolve(rootGameObjects);
                 TransformOpeningScene(rootGameObject);
                 
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(3f);
                 yield return RotatingOpeningWall(wallOpeningFirst);
                 _openingAnimator.EnableScene(0);
                 yield return new WaitForSeconds(3f);
@@ -76,12 +76,12 @@ namespace Reless
                 _openingAnimator.DisableScene(3);
                 _openingAnimator.EnableScene(4);
                 yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(6f);
+                yield return new WaitForSeconds(4f);
                 
                 _openingAnimator.DisableScene(4);
                 _openingAnimator.EnableScene(5);
                 yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(5f);
                 
                 _openingAnimator.DisableScene(5);
                 _openingAnimator.EnableScene(6);
@@ -96,7 +96,7 @@ namespace Reless
                 _openingAnimator.DisableScene(7);
                 
                 yield return RotatingOpeningWall(wallClosing);
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(3f);
                 
                 // 오프닝 씬 언로드
                 SceneManager.UnloadSceneAsync("Opening");
