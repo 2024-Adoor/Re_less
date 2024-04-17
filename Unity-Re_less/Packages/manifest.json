@@ -1,9 +1,11 @@
 {
   "dependencies": {
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
-    "com.meta.xr.mrutilitykit": "63.0.0",
-    "com.meta.xr.sdk.core": "62.0.0",
-    "com.meta.xr.simulator": "62.0.0",
+    "com.jetbrains.riderflow": "2023.1.0-25",
+    "com.meta.xr.mrutilitykit": "64.0.0",
+    "com.meta.xr.sdk.core": "64.0.0",
+    "com.meta.xr.sdk.interaction": "64.0.0",
+    "com.meta.xr.simulator": "64.0.0",
     "com.unity.collab-proxy": "2.3.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.rider": "3.0.28",
@@ -44,5 +46,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "JetBrains",
+      "url": "https://npm.pkg.jetbrains.space/public/p/jetbrains-gamedev/jetbrains-gamedev/",
+      "scopes": [
+        "com.jetbrains"
+      ]
+    }
+  ]
 }
