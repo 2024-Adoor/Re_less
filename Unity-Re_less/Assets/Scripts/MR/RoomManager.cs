@@ -6,7 +6,6 @@ using UnityEngine;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Unity.VisualScripting;
-using UnityEngine.Serialization;
 
 namespace Reless.MR
 {
@@ -57,7 +56,7 @@ namespace Reless.MR
                 return Vector3.Distance(position, _uniqueDoorPosition.Value);
             };
             
-            _doors ??= Room.GetRoomAnchors()
+            _doors ??= Room.Anchors
                 .Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME)
                 .AsReadOnlyCollection();
             
@@ -113,10 +112,9 @@ namespace Reless.MR
             passthroughRoom.CreateMesh();
             sppPassThroughRoom.CreateMesh();
 
-            
-            FindAndAddSppPassThroughMesh(Room.GetCeilingAnchor());
-            FindAndAddSppPassThroughMesh(Room.GetFloorAnchor());
-            foreach (var wall in Room.GetWallAnchors())
+            FindAndAddSppPassThroughMesh(Room.CeilingAnchor);
+            FindAndAddSppPassThroughMesh(Room.FloorAnchor);
+            foreach (var wall in Room.WallAnchors)
             {
                 FindAndAddSppPassThroughMesh(wall);
             }
@@ -165,7 +163,7 @@ namespace Reless.MR
 
         private void DebugRoomInfo()
         {
-            var rooms = MRUK.Instance.GetRooms();
+            var rooms = MRUK.Instance.Rooms;
             Debug.Log($"{nameof(RoomManager)}: Room count: {rooms.Count}");
             foreach (var room in rooms)
             {
@@ -180,22 +178,21 @@ namespace Reless.MR
         {
             float offset = 0.005f;
             
-            var ceiling = Room.GetCeilingAnchor();
+            var ceiling = Room.CeilingAnchor;
             {
                 var mesh = FindCreatedEffectMesh(ceiling, passthroughRoom);
                 mesh.transform.Translate(0, 0, -offset);
                 _passthroughEffectMeshes.Add(mesh);
             }
             
-            var floor = Room.GetFloorAnchor();
+            var floor = Room.FloorAnchor;
             {
                 var mesh = FindCreatedEffectMesh(floor, passthroughRoom);
                 mesh.transform.Translate(0, 0, -offset);
                 _passthroughEffectMeshes.Add(mesh);
             }
             
-            var walls = Room.GetWallAnchors();
-            foreach (var wall in walls)
+            foreach (var wall in Room.WallAnchors)
             {
                 var mesh = FindCreatedEffectMesh(wall, passthroughRoom);
                 mesh.transform.Translate(0, 0, -offset);

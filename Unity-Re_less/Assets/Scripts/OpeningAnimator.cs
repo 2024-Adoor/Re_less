@@ -4,6 +4,9 @@ using UnityEngine.Assertions;
 
 public class OpeningAnimator : MonoBehaviour
 {
+    /// <summary>
+    /// 오프닝 애니메이션의 각 장면들
+    /// </summary>
     public List<GameObject> scenes;
 
     private void Awake()

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.MR;
 using Unity.VisualScripting;
@@ -86,7 +85,7 @@ namespace Reless
                 switch (_currentPhase)
                 {
                     case Phase.Title: StartTitle(); break;
-                    case Phase.Opening: openingBehaviour.enabled = true; break;
+                    case Phase.Opening: openingBehaviour.StartOpening(); break;
                     case Phase.Tutorial: StartTutorial(); break;
                     case Phase.Chapter1: StartChapter1(); break;
                     case Phase.Chapter2: StartChapter2(); break;
@@ -321,31 +320,18 @@ namespace Reless
             openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
         }
         
-        [Button]
-        private void SetPhaseToOpening()
-        {
-            CurrentPhase = Phase.Opening;
-        }
-        
-        [Button]
-        private void SetPhaseToChapter1()
-        {
-            CurrentPhase = Phase.Chapter1;
-        }
-        
-        [Button]
-        private void SetNextPhase()
-        {
-            CurrentPhase++;
-        }
-        
-        [Button]
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
         private void SetPreviousPhase()
         {
             CurrentPhase--;
         }
-#endif
         
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        private void SetNextPhase()
+        {
+            CurrentPhase++;
+        }
+#endif
     }
 }
 

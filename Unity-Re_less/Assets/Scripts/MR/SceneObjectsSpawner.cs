@@ -67,7 +67,7 @@ namespace Reless.MR
         
         private void SpawnOuterPrefabs()
         {
-            var anchors = MRUK.Instance.GetAnchors();
+            var anchors = MRUK.Instance.GetCurrentRoom().Anchors;
 
             foreach (MRUKAnchor door in anchors.Where(anchor => anchor.GetLabelsAsEnum() == DOOR_FRAME))
             {
@@ -146,7 +146,7 @@ namespace Reless.MR
         /// </summary>
         private void SpawnPopupBook()
         {
-            var anchors = MRUK.Instance.GetAnchors();
+            var anchors = MRUK.Instance.GetCurrentRoom().Anchors;
             
             // 아무 테이블 하나에서 스폰
             var table = anchors.FirstOrDefault(anchor => anchor.GetLabelsAsEnum() == TABLE);
@@ -216,17 +216,17 @@ namespace Reless.MR
         
         private void TranslateToBottom(GameObject obj, MRUKAnchor anchor)
         {
-            obj.transform.Translate(0, -(anchor.GetAnchorSize().y / 2), 0);
+            obj.transform.Translate(0, -((anchor.PlaneRect?.height ?? 0) / 2), 0);
         }
         
         private void TranslateToTop(GameObject obj, MRUKAnchor anchor)
         {
-            obj.transform.Translate(0, anchor.GetAnchorSize().y / 2, 0);
+            obj.transform.Translate(0, (anchor.PlaneRect?.height ?? 0) / 2, 0);
         }
             
         private void ScaleX(GameObject obj, MRUKAnchor anchor)
         {
-            float scaleFactor = anchor.GetAnchorSize().x / obj.GetComponent<MeshFilter>().mesh.bounds.size.x;
+            float scaleFactor = (anchor.PlaneRect?.width ?? 1) / obj.GetComponent<MeshFilter>().mesh.bounds.size.x;
             obj.transform.localScale = new Vector3(scaleFactor, 1, 1);
         }
     }

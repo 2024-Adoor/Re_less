@@ -141,10 +141,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
@@ -152,7 +156,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 765793484}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2942050696054502990}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
@@ -160,11 +172,23 @@ PrefabInstance:
       value: OnSceneLoaded
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SpawnAll
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Reless.MR.RoomManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Reless.MR.SceneObjectsSpawner, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
       propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
+      propertyPath: SceneLoadedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8047981335285221976, guid: c2e00db6d2dfa42ac8d821db8d493a44, type: 3}
@@ -319,7 +343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 359474026}
   - component: {fileID: 359474028}
-  - component: {fileID: 359474027}
   m_Layer: 0
   m_Name: SurfaceProjectedPassthrough
   m_TagString: Untagged
@@ -342,30 +365,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6470866752255009768}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &359474027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359474025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c55c994d76dd43da9cfea6b3e8f32b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomCreatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomUpdatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomRemovedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &359474028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,14 +377,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 0
   MeshMaterial: {fileID: 0}
   BorderSize: 0
   Colliders: 0
+  CutHoles: 0
   castShadows: 0
   hideMesh: 0
   textureCoordinateModes:
-  - U: 0
-    V: 0
+  - WallU: 0
+    WallV: 0
+    AnchorUV: 0
   Labels: 7
 --- !u!1001 &609013508
 PrefabInstance:
@@ -927,14 +929,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 0
   MeshMaterial: {fileID: -5922275872616413151, guid: 2c0534cd6c694784fa8c5ab0acee3266, type: 3}
   BorderSize: 0
   Colliders: 0
+  CutHoles: 0
   castShadows: 1
   hideMesh: 0
   textureCoordinateModes:
-  - U: 2
-    V: 1
+  - WallU: 2
+    WallV: 1
+    AnchorUV: 0
   Labels: 1
 --- !u!4 &1145917516086877462
 Transform:
@@ -963,14 +968,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 0
   MeshMaterial: {fileID: 2100000, guid: d812f7d37ac1703469e07b7ed1f1c985, type: 2}
   BorderSize: 0
   Colliders: 0
+  CutHoles: 0
   castShadows: 0
   hideMesh: 0
   textureCoordinateModes:
-  - U: 0
-    V: 0
+  - WallU: 0
+    WallV: 0
+    AnchorUV: 0
   Labels: 7
 --- !u!4 &1499315096982993103
 Transform:
@@ -1031,14 +1039,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 1
   MeshMaterial: {fileID: 2100000, guid: d951f995ee4e8a3479e7f1490a6df218, type: 2}
   BorderSize: 0
   Colliders: 1
+  CutHoles: 0
   castShadows: 1
   hideMesh: 0
   textureCoordinateModes:
-  - U: 0
-    V: 0
+  - WallU: 0
+    WallV: 0
+    AnchorUV: 0
   Labels: 8
 --- !u!114 &2942050696054502990
 MonoBehaviour:
@@ -1076,14 +1087,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 0
   MeshMaterial: {fileID: 2100000, guid: a69d5884619b58e4681bf44b9e11de3d, type: 2}
   BorderSize: 0.02
   Colliders: 1
+  CutHoles: 0
   castShadows: 0
   hideMesh: 0
   textureCoordinateModes:
-  - U: 0
-    V: 0
+  - WallU: 0
+    WallV: 0
+    AnchorUV: 0
   Labels: 39
 --- !u!1 &3277773949589260142
 GameObject:
@@ -1095,7 +1109,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5171187769223316272}
   - component: {fileID: 2942050696054502990}
-  - component: {fileID: 4762143587590098149}
   m_Layer: 0
   m_Name: SceneObjectsSpawner
   m_TagString: Untagged
@@ -1115,14 +1128,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 0
   MeshMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   BorderSize: 0
   Colliders: 0
+  CutHoles: 0
   castShadows: 1
   hideMesh: 0
   textureCoordinateModes:
-  - U: 0
-    V: 0
+  - WallU: 0
+    WallV: 0
+    AnchorUV: 0
   Labels: 2
 --- !u!1 &3879691861562171804
 GameObject:
@@ -1151,7 +1167,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1145917516086877462}
   - component: {fileID: 2751812988666688551}
-  - component: {fileID: 4666940856047673369}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -1159,78 +1174,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4666940856047673369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4666940856047673368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c55c994d76dd43da9cfea6b3e8f32b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2751812988666688551}
-        m_TargetAssemblyTypeName: Meta.XR.MRUtilityKit.EffectMesh, meta.xr.mrutilitykit
-        m_MethodName: CreateMesh
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  roomCreatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomUpdatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomRemovedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &4762143587590098149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3277773949589260142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c55c994d76dd43da9cfea6b3e8f32b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneLoadedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2942050696054502990}
-        m_TargetAssemblyTypeName: Reless.MR.SceneObjectsSpawner, Assembly-CSharp
-        m_MethodName: SpawnAll
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  roomCreatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomUpdatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  roomRemovedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &5171187769223316272
 Transform:
   m_ObjectHideFlags: 0
@@ -1327,14 +1270,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76943ac7e7394f3e969f0c048b26639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnOnStart: 0
   MeshMaterial: {fileID: -1255982633427224767, guid: 2c0534cd6c694784fa8c5ab0acee3266, type: 3}
   BorderSize: 0
   Colliders: 0
+  CutHoles: 0
   castShadows: 1
   hideMesh: 0
   textureCoordinateModes:
-  - U: 0
-    V: 0
+  - WallU: 0
+    WallV: 0
+    AnchorUV: 0
   Labels: 4
 --- !u!1 &8525090957707534896
 GameObject:

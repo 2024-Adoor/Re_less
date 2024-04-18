@@ -20,32 +20,48 @@ namespace Reless
         /// <summary>
         /// 최초로 벽이 열릴 때의 애니메이션의 커브
         /// </summary>
-        [SerializeField] private AnimationCurve wallOpeningFirst;
+        [SerializeField] 
+        private AnimationCurve wallOpeningFirst;
         
         /// <summary>
         /// 벽이 닫힐 때의 애니메이션의 커브
         /// </summary>
-        [SerializeField] private AnimationCurve wallClosing;
+        [SerializeField] 
+        private AnimationCurve wallClosing;
 
+        /// <summary>
+        /// 오프닝이 진행되는 벽
+        /// </summary>
         private GameObject _openingWall;
 
+        /// <summary>
+        /// 오프닝 벽이 회전할 중심 피벗
+        /// </summary>
         private GameObject _pivot;
         
+        /// <summary>
+        /// GameManager 레퍼런스
+        /// </summary>
         [SerializeField, HideInInspector]
         private GameManager gameManager;
 
+        /// <summary>
+        /// OpeningAnimator 레퍼런스
+        /// </summary>
         private OpeningAnimator _openingAnimator;
         
-        private void Start()
+        /// <summary>
+        /// 오프닝을 시작합니다.
+        /// </summary>
+        public void StartOpening()
         {
             SetupOpeningWallPivot();
+            
             StartCoroutine(StartRoutine());
             
             IEnumerator StartRoutine()
             {
                 yield return LoadingOpeningScene();
-                yield return null;
-                _openingAnimator = FindObjectOfType<OpeningAnimator>();
                 
                 var openingScene = SceneManager.GetSceneByName("Opening");
                 var rootGameObjects = openingScene.GetRootGameObjects();
@@ -127,6 +143,9 @@ namespace Reless
             }
         }
         
+        /// <summary>
+        /// 오프닝 씬을 로드합니다.
+        /// </summary>
         private IEnumerator LoadingOpeningScene()
         {
             var asyncLoad = SceneManager.LoadSceneAsync("Opening", LoadSceneMode.Additive);
@@ -137,13 +156,17 @@ namespace Reless
             yield return DarkenPassthrough();
             
             asyncLoad.allowSceneActivation = true;
+
+            yield return null;
+            
+            _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
         }
         
         private void TransformOpeningScene(GameObject rootGameObject)
         {
             var keyWall = RoomManager.Instance.KeyWall;
             rootGameObject.transform.parent = keyWall.transform;
-            rootGameObject.transform.localPosition = new Vector3(0, -keyWall.GetAnchorSize().y / 2, 0);
+            rootGameObject.transform.localPosition = new Vector3(0, (-keyWall.PlaneRect?.height ?? 0) / 2, 0);
             rootGameObject.transform.localRotation = Quaternion.AngleAxis(180, Vector3.up);
         }
 
@@ -161,6 +184,9 @@ namespace Reless
             }
         }
         
+        /// <summary>
+        /// 오프닝 벽의 피벗을 설정합니다.
+        /// </summary>
         private void SetupOpeningWallPivot()
         {
             _openingWall = RoomManager.Instance.OpeningWall;
@@ -169,7 +195,9 @@ namespace Reless
                 transform =
                 {
                     parent = _openingWall.transform,
-                    localPosition = new Vector3(RoomManager.Instance.KeyWall.GetAnchorSize().x / 2, 0, 0)
+                    
+                    // 벽의 왼쪽 중앙에 피벗을 둡니다.
+                    localPosition = new Vector3((RoomManager.Instance.KeyWall.PlaneRect?.width ?? 0) / 2, 0, 0)
                 }
             };
         }
