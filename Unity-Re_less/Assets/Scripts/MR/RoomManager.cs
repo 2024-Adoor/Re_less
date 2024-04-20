@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Unity.VisualScripting;
+using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 namespace Reless.MR
 {
@@ -91,13 +94,17 @@ namespace Reless.MR
         
         private void Awake()
         {
-            Debug.Log($"{nameof(RoomManager)}: Making object don't destroy on load.");
-            DontDestroyOnLoad(Instance.gameObject);
+            Assert.IsTrue(instance is null || instance == this, "there are multiple RoomManager instances.");
         }
         
         public void OnSceneLoaded()
         {
-            Debug.Log($"{nameof(RoomManager)}: Scene loaded.");
+            Debug.Log($"{nameof(RoomManager)}: MRUK Scene loaded.");
+            
+            Assert.IsNull(instance, "RoomManager is singleton but already exists.");
+            instance = this;
+            Debug.Log("dont destroy on load");
+            DontDestroyOnLoad(instance.gameObject);
             
             DebugRoomInfo();
             
@@ -138,6 +145,7 @@ namespace Reless.MR
             OffsetPassthroughEffectMeshes();
             
             GameManager.Instance.OnSceneLoaded();
+            OnMRUKSceneLoaded?.Invoke();
         }
 
         [Button]
@@ -224,24 +232,33 @@ namespace Reless.MR
         {
         }
         
+        [CanBeNull]
         public static RoomManager Instance 
         {
             get
             {
-                // 이미 인스턴스가 존재하면 반환합니다.
-                if (_instance != null) return _instance;
+                if (instance.IsUnityNull() && yetLoadScene)
+                {
+                    // 인스턴스가 없으면 RoomSetup 씬이 로드되지 않은 것입니다. 씬을 한 번만 로드합니다.
+                    SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive);
+                    yetLoadScene = false;
+                }
                 
-                // 씬에서 RoomManager를 찾습니다.
-                _instance = FindObjectOfType<RoomManager>();
-                if (_instance != null) return _instance;
-                
-                // 씬에 RoomManager가 없으면 새로 생성합니다.
-                Debug.LogWarning($"{nameof(RoomManager)}: There is no instance in the scene. Creating new one.");
-                _instance = new GameObject(nameof(RoomManager)).AddComponent<RoomManager>();
-                return _instance;
+                return instance.AsUnityNull();
             }
         }
-        private static RoomManager _instance;
+        private static RoomManager instance;
+        
+        /// <summary>
+        /// 씬을 아직 로드한 적 없으면 true
+        /// </summary>
+        private static bool yetLoadScene = true;
+
+        /// <summary>
+        /// MRUK 씬이 로드되었을 때 호출될 액션
+        /// RoomManager의 인스턴스가 null인 경우 작업을 연기하는 데 사용됩니다.
+        /// </summary>
+        public static Action OnMRUKSceneLoaded { get; set; }
 
         private void OnValidate()
         {

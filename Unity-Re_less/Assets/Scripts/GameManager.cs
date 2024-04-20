@@ -46,16 +46,13 @@ namespace Reless
             if (_instance is not null && _instance != this)
             {
                 Destroy(gameObject);
+                return;
             }
-        }
-
-        public void Start()
-        {
-            SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive)
-                .completed += operation =>
+            
+            if (SceneManager.GetActiveScene().name == "MainScene")
             {
-                Debug.Log("RoomSetupScene Loaded");
-            };
+                SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive);
+            }
         }
 
         public enum Phase
@@ -85,7 +82,7 @@ namespace Reless
                 switch (_currentPhase)
                 {
                     case Phase.Title: StartTitle(); break;
-                    case Phase.Opening: openingBehaviour.StartOpening(); break;
+                    case Phase.Opening: OnOpening?.Invoke(); break;
                     case Phase.Tutorial: StartTutorial(); break;
                     case Phase.Chapter1: StartChapter1(); break;
                     case Phase.Chapter2: StartChapter2(); break;
@@ -107,8 +104,7 @@ namespace Reless
         [NonSerialized]
         public List<GameObject> spawnedWallHints = new List<GameObject>();
         
-        [SerializeField, HideInInspector]
-        private OpeningBehaviour openingBehaviour;
+        public static Action OnOpening { get; set; }
 
         private void OnEnding()
         {
@@ -283,8 +279,8 @@ namespace Reless
         public AsyncOperation LoadMainScene()
         {
             // 메인 씬을 로드할 때는 현실 룸을 다시 활성화합니다.
-            RoomManager.Instance.RoomObjectActive = true;
-            
+            if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = true;
+
             var asyncLoad = SceneManager.LoadSceneAsync("MainScene");
             asyncLoad.completed += operation =>
             {
@@ -297,7 +293,7 @@ namespace Reless
         public AsyncOperation LoadVRScene()
         {
             // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
-            RoomManager.Instance.RoomObjectActive = false;
+            if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = false;
             
             var asyncLoad = SceneManager.LoadSceneAsync("VR Room");
             asyncLoad.completed += operation =>
@@ -319,12 +315,6 @@ namespace Reless
         }
         
 #if UNITY_EDITOR
-        private void OnValidate()
-        {
-            _cameraRig ??= FindObjectOfType<OVRCameraRig>();
-            openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
-        }
-        
         [Button(enabledMode: EButtonEnableMode.Playmode)]
         private void SetPreviousPhase()
         {

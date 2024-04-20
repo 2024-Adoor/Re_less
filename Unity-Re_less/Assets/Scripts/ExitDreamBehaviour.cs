@@ -1,12 +1,7 @@
-using System;
 using System.Collections;
-using Meta.XR.MRUtilityKit;
-using Reless;
 using Reless.MR;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace Reless
 {
@@ -16,6 +11,8 @@ namespace Reless
     public class ExitDreamBehaviour : MonoBehaviour
     {
         private GameManager _gameManager;
+        
+        private RoomManager _roomManager;
     
         [SerializeField]
         private OVRPassthroughLayer roomPassthrough;
@@ -28,27 +25,42 @@ namespace Reless
         
         private bool _isExiting;
 
-        public Material temp_material;
-    
-        private void Start()
+        private void Awake()
+        {
+            if (RoomManager.Instance is RoomManager roomManager)
+            {
+                _roomManager = roomManager;
+            }
+            else
+            {
+                this.enabled = false;
+                RoomManager.OnMRUKSceneLoaded += () =>
+                {
+                    _roomManager = RoomManager.Instance;
+                    this.enabled = true;
+                };
+            }
+        }
+
+        private void OnEnable()
         {
             _gameManager = GameManager.Instance;
             
             // 시작 시점의 플레이어 위치와 가장 가까운 문 위치 사이의 거리를 저장합니다.
-            _initialPlayerToDoorDistance = RoomManager.Instance.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out _);
+            _initialPlayerToDoorDistance = _roomManager.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out _);
             Debug.Log($"Initial Player To Door Distance : {_initialPlayerToDoorDistance}");
 
             // VR Room 씬에서는 패스스루가 기존에 비활성화되어 있을 것으로 기대되므로 패스스루를 활성화합니다.
             FindObjectOfType<OVRManager>().isInsightPassthroughEnabled = true;
             
-            RoomManager.Instance.HidePassthroughEffectMesh = true;
+            _roomManager.HidePassthroughEffectMesh = true;
             
             SceneManager.SetActiveScene(SceneManager.GetSceneByName("ExitDream"));
             
             var sppPassthroughParent = new GameObject("SppPassthroughMeshes");
             
             // 패스스루 이펙트 메쉬를 룸 패스스루 레이어에 추가합니다.
-            foreach (var sppPassthroughMesh in RoomManager.Instance.SppPassThroughMeshes)
+            foreach (var sppPassthroughMesh in _roomManager.SppPassThroughMeshes)
             {
                 var cloned = Instantiate(sppPassthroughMesh, sppPassthroughParent.transform, worldPositionStays: true);
                 //cloned.AddComponent<MeshRenderer>().material = temp_material;
@@ -68,7 +80,7 @@ namespace Reless
 
         private void Update()
         {
-            var distance = RoomManager.Instance.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out var doorPosition);
+            var distance = _roomManager.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out var doorPosition);
             
             if (distance != 0)
             {
@@ -82,7 +94,7 @@ namespace Reless
             }
 
             // 플레이어가 문 밖으로 나갔나요?
-            if (!RoomManager.Instance.Room.IsPositionInRoom(GameManager.EyeAnchor.localPosition, testVerticalBounds: false))
+            if (_roomManager.Room.IsPositionInRoom(GameManager.EyeAnchor.localPosition, testVerticalBounds: false) is false)
             {
                 // 나가 있는 시간을 측정합니다.
                 _playerExitTimer += Time.deltaTime;
@@ -106,7 +118,7 @@ namespace Reless
 
         private void OnDestroy()
         {
-            RoomManager.Instance.HidePassthroughEffectMesh = false;
+            _roomManager.HidePassthroughEffectMesh = false;
         }
 
         private IEnumerator ExitingDream()
