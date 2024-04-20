@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Reless.MR;
 using UnityEngine;
 
@@ -11,6 +10,9 @@ namespace Reless
     /// </summary>
     public class ObtainingObject : MonoBehaviour
     {
+        /// <summary>
+        /// 오브젝트가 속하는 챕터
+        /// </summary>
         [SerializeField] [Range(1, 3)]
         private int chapter;
 
@@ -22,9 +24,10 @@ namespace Reless
         {
             transform.localScale = Vector3.one * 5;
             
+            // 리스폰 체크 루틴을 시작합니다.
             _respawnCheckCoroutine = StartCoroutine(CheckRespawnNeeded(
                 respawnCondition: () => RoomManager.Instance.Room.IsPositionInRoom(transform.position) is false, 
-                onNeeded: () => Respawn(GameManager.Instance.PlayerPosition)));
+                onNeeded: () => Respawn(GameManager.EyeAnchor.position)));
         }
 
         private void OnDestroy()
@@ -38,6 +41,12 @@ namespace Reless
             
         }
         
+        /// <summary>
+        /// 리스폰이 필요한지 체크합니다.
+        /// </summary>
+        /// <param name="respawnCondition">리스폰 필요 조건을 정의하는 함수</param>
+        /// <param name="onNeeded">리스폰 필요 시 실행될 액션</param>
+        /// <returns></returns>
         private IEnumerator CheckRespawnNeeded(Func<bool> respawnCondition, Action onNeeded)
         {
             while (true)
@@ -51,8 +60,13 @@ namespace Reless
             }
         }
         
+        /// <summary>
+        /// 리스폰합니다.
+        /// </summary>
+        /// <param name="position">리스폰할 위치</param>
         public void Respawn(Vector3 position)
         {
+            // 단순히 위치를 옮깁니다.
             transform.position = position;
         }
         

@@ -23,7 +23,7 @@ namespace Reless
                 if (_instance == null)
                 {
                     // 씬에서 게임 매니저 오브젝트를 찾습니다.
-                    _instance = FindObjectOfType<GameManager>();
+                    _instance = FindAnyObjectByType<GameManager>();
                     
                     if (_instance == null)
                     {
@@ -181,24 +181,23 @@ namespace Reless
             }
         }
 
-        public OVRCameraRig CameraRig
+        public static OVRCameraRig CameraRig
         {
             get
             {
-                _cameraRig = _cameraRig.AsUnityNull();
-                _cameraRig ??= FindAnyObjectByType<OVRCameraRig>();
-                Assert.IsNotNull(_cameraRig, "OVRCameraRig not found.");
-                return _cameraRig;
+                Instance._cameraRig = Instance._cameraRig.AsUnityNull();
+                Instance._cameraRig ??= FindAnyObjectByType<OVRCameraRig>();
+                Assert.IsNotNull(Instance._cameraRig, "OVRCameraRig not found.");
+                return Instance._cameraRig;
             }
         }
         private OVRCameraRig _cameraRig;
 
-        public Vector3 PlayerPosition => CameraRig.centerEyeAnchor.localPosition;
-
+        public static Transform EyeAnchor => CameraRig.centerEyeAnchor;
 
         public void OnSceneLoaded()
         {
-            _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition);
+            _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(EyeAnchor.position);
 
             if (_startedInRoom)
             {
@@ -226,7 +225,7 @@ namespace Reless
         {
             while (!until())
             {
-                if (RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition))
+                if (RoomManager.Instance.Room.IsPositionInRoom(EyeAnchor.position))
                 {
                     onEnter?.Invoke();
                     yield break;
@@ -240,7 +239,7 @@ namespace Reless
         {
             while (!until())
             {
-                var distance = RoomManager.Instance.ClosestDoorDistance(PlayerPosition, out _);
+                var distance = RoomManager.Instance.ClosestDoorDistance(EyeAnchor.position, out _);
                 if (distance == 0f)
                 {
                     Debug.LogWarning("Door not found.");
