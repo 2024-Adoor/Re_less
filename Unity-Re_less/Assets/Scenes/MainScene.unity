@@ -548,7 +548,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openingBehaviour: {fileID: 1001971512}
-  cameraRig: {fileID: 241227429}
 --- !u!4 &109150759
 Transform:
   m_ObjectHideFlags: 0
@@ -561,8 +560,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1001971511}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &118765846 stripped
@@ -1339,17 +1337,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2483171112401766338, guid: f54012181eacade4ea242c65f804720f, type: 3}
   m_PrefabInstance: {fileID: 1812733220}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &241227429 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2483171112407822892, guid: f54012181eacade4ea242c65f804720f, type: 3}
-  m_PrefabInstance: {fileID: 1812733220}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241227427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df9f338034892c44ebb62d97894772f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &241227432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5080,12 +5067,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001971510}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 109150759}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1001971512
 MonoBehaviour:
@@ -11401,5 +11388,6 @@ SceneRoots:
   - {fileID: 1613888414}
   - {fileID: 77264187}
   - {fileID: 109150759}
+  - {fileID: 1001971511}
   - {fileID: 1122392752}
   - {fileID: 1045912558}

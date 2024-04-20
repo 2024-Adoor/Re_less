@@ -26,7 +26,7 @@ namespace Reless
             
             // 리스폰 체크 루틴을 시작합니다.
             _respawnCheckCoroutine = StartCoroutine(CheckRespawnNeeded(
-                respawnCondition: () => RoomManager.Instance.Room.IsPositionInRoom(transform.position) is false, 
+                respawnCondition: () => RoomManager.Instance!.Room.IsPositionInRoom(transform.position) is false, 
                 onNeeded: () => Respawn(GameManager.EyeAnchor.position)));
         }
 

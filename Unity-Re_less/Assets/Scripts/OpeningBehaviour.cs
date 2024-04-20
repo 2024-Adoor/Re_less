@@ -2,6 +2,7 @@
 using System.Linq;
 using Reless.MR;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 namespace Reless
@@ -40,20 +41,19 @@ namespace Reless
         private GameObject _pivot;
         
         /// <summary>
-        /// GameManager 레퍼런스
-        /// </summary>
-        [SerializeField, HideInInspector]
-        private GameManager gameManager;
-
-        /// <summary>
         /// OpeningAnimator 레퍼런스
         /// </summary>
         private OpeningAnimator _openingAnimator;
-        
+
+        private void Awake()
+        {
+            GameManager.OnOpening += StartOpening;
+        }
+
         /// <summary>
         /// 오프닝을 시작합니다.
         /// </summary>
-        public void StartOpening()
+        private void StartOpening()
         {
             SetupOpeningWallPivot();
             
@@ -120,6 +120,7 @@ namespace Reless
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
                 // 패스스루 이펙트 메쉬 숨기기
+                Assert.IsNotNull(RoomManager.Instance);
                 RoomManager.Instance.HidePassthroughEffectMesh = true;
                 RoomManager.Instance.CreateVirtualRoomEffectMeshes();
                 
@@ -132,14 +133,14 @@ namespace Reless
                 // 튜토리얼 생략
                 
                 yield return new WaitForSeconds(4f);
-                gameManager.CurrentPhase = GameManager.Phase.Chapter1;
-                gameManager.LoadMainScene();
+                GameManager.Instance.CurrentPhase = GameManager.Phase.Chapter1;
+                GameManager.Instance.LoadMainScene();
                 
                 // 오프닝에서 했던 일을 되돌립니다.
                 ResetTransformOpeningWall();
                 RoomManager.Instance.HidePassthroughEffectMesh = false;
                 RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
-                RoomEnlarger.RestoreRoomScale();
+                RoomManager.Instance.roomEnlarger.RestoreRoomScale();
             }
         }
         
@@ -241,11 +242,6 @@ namespace Reless
         {
             _openingWall.transform.localPosition = Vector3.zero;
             _openingWall.transform.localRotation = Quaternion.identity;
-        }
-
-        private void OnValidate()
-        {
-            gameManager = FindObjectOfType<GameManager>();
         }
     }
 }

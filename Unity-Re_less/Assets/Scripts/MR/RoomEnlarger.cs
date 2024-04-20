@@ -47,18 +47,18 @@ namespace Reless.MR
                 for (float elapsedTime = 0f; elapsedTime < enlargingDuration; elapsedTime += Time.deltaTime)
                 {
                     float scale = Mathf.Lerp(1f, enlargedScale, Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)));
-                    RoomManager.Instance.Room.transform.localScale = Vector3.one * scale;
+                    roomManager.Room.transform.localScale = Vector3.one * scale;
                     yield return null;
                 }
                 
                 // 최종 값으로 방의 크기 변경
-                RoomManager.Instance.Room.transform.localScale = Vector3.one * enlargedScale;
+                roomManager.Room.transform.localScale = Vector3.one * enlargedScale;
             }
         }
         
-        public static void RestoreRoomScale()
+        public void RestoreRoomScale()
         {
-            RoomManager.Instance.Room.transform.localScale = Vector3.one;
+            roomManager.Room.transform.localScale = Vector3.one;
         }
     }
 }

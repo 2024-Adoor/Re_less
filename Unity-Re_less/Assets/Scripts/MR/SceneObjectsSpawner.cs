@@ -58,6 +58,17 @@ namespace Reless.MR
         [SerializeField]
         private List<GameObject> wallHintPrefabs;
         
+        /// <summary>
+        /// RoomManager 레퍼런스
+        /// </summary>
+        [SerializeField]
+        private RoomManager roomManager;
+        
+        private void OnValidate()
+        {
+            roomManager = FindAnyObjectByType<RoomManager>();
+        }
+        
         public void SpawnAll()
         {
             SpawnOuterPrefabs();
@@ -175,14 +186,14 @@ namespace Reless.MR
         private void SpawnWallHint()
         {
             {
-                var hint = Spawn(wallHintPrefabs[0], RoomManager.Instance.KeyWall);
+                var hint = Spawn(wallHintPrefabs[0], roomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(0.75f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
                 hint.SetActive(false);
             }
             {
-                var hint = Spawn(wallHintPrefabs[1], RoomManager.Instance.KeyWall);
+                var hint = Spawn(wallHintPrefabs[1], roomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(0.25f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
@@ -190,7 +201,7 @@ namespace Reless.MR
 
             }
             {
-                var hint = Spawn(wallHintPrefabs[2], RoomManager.Instance.KeyWall);
+                var hint = Spawn(wallHintPrefabs[2], roomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(-0.25f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
@@ -198,7 +209,7 @@ namespace Reless.MR
 
             }
             {
-                var hint = Spawn(wallHintPrefabs[3], RoomManager.Instance.KeyWall);
+                var hint = Spawn(wallHintPrefabs[3], roomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(-0.75f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);

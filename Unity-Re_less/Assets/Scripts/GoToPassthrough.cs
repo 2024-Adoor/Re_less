@@ -81,7 +81,7 @@ public class GoToPassthrough : MonoBehaviour
 		
 		bool loadExitRoomScene = Ch01_Clear || Ch02_Clear || Ch03_Clear;
 
-		if (loadExitRoomScene && !_loadExitRoomExecuted && !_startedDirectly)
+		if (loadExitRoomScene && !_loadExitRoomExecuted)
 		{
 			GameManager.Instance.LoadExitDreamScene();
 			_loadExitRoomExecuted = true;
