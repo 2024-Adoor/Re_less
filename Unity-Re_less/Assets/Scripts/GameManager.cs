@@ -23,7 +23,7 @@ namespace Reless
                 if (_instance == null)
                 {
                     // 씬에서 게임 매니저 오브젝트를 찾습니다.
-                    _instance = FindObjectOfType<GameManager>();
+                    _instance = FindAnyObjectByType<GameManager>();
                     
                     if (_instance == null)
                     {
@@ -138,6 +138,12 @@ namespace Reless
         private void Update()
         {
             ForcePhaseControlling();
+
+            if (OVRInput.GetDown(OVRInput.RawButton.Y))
+            {
+                Debug.Log("On Y Button Pressed");
+                ToggleSpaceWarp();
+            }
         }
 
         /// <summary>
@@ -175,16 +181,23 @@ namespace Reless
             }
         }
 
-        [SerializeField, HideInInspector]
-        private OVRCameraRig cameraRig;
-        
-        public Vector3 PlayerPosition => cameraRig.centerEyeAnchor.localPosition;
-        
+        public static OVRCameraRig CameraRig
+        {
+            get
+            {
+                Instance._cameraRig = Instance._cameraRig.AsUnityNull();
+                Instance._cameraRig ??= FindAnyObjectByType<OVRCameraRig>();
+                Assert.IsNotNull(Instance._cameraRig, "OVRCameraRig not found.");
+                return Instance._cameraRig;
+            }
+        }
+        private OVRCameraRig _cameraRig;
 
+        public static Transform EyeAnchor => CameraRig.centerEyeAnchor;
 
         public void OnSceneLoaded()
         {
-            _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition);
+            _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(EyeAnchor.position);
 
             if (_startedInRoom)
             {
@@ -212,7 +225,7 @@ namespace Reless
         {
             while (!until())
             {
-                if (RoomManager.Instance.Room.IsPositionInRoom(PlayerPosition))
+                if (RoomManager.Instance.Room.IsPositionInRoom(EyeAnchor.position))
                 {
                     onEnter?.Invoke();
                     yield break;
@@ -226,7 +239,7 @@ namespace Reless
         {
             while (!until())
             {
-                var distance = RoomManager.Instance.ClosestDoorDistance(PlayerPosition, out _);
+                var distance = RoomManager.Instance.ClosestDoorDistance(EyeAnchor.position, out _);
                 if (distance == 0f)
                 {
                     Debug.LogWarning("Door not found.");
@@ -275,11 +288,7 @@ namespace Reless
             var asyncLoad = SceneManager.LoadSceneAsync("MainScene");
             asyncLoad.completed += operation =>
             {
-                // 씬을 다시 불러왔으므로 카메라 리그를 다시 찾습니다.
                 Debug.Log("MainScene Loaded");
-                Debug.Log("Finding OVRCameraRig");
-                cameraRig = FindObjectOfType<OVRCameraRig>();
-                Assert.IsNotNull(cameraRig, "OVRCameraRig not found");
             };
             return asyncLoad;
         }
@@ -293,11 +302,7 @@ namespace Reless
             var asyncLoad = SceneManager.LoadSceneAsync("VR Room");
             asyncLoad.completed += operation =>
             {
-                // 씬을 다시 불러왔으므로 카메라 리그를 다시 찾습니다.
                 Debug.Log("VR Room Loaded");
-                Debug.Log("Finding OVRCameraRig");
-                cameraRig = FindObjectOfType<OVRCameraRig>();
-                Assert.IsNotNull(cameraRig, "OVRCameraRig not found");
             };
             return asyncLoad;
         }
@@ -316,7 +321,7 @@ namespace Reless
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            cameraRig ??= FindObjectOfType<OVRCameraRig>();
+            _cameraRig ??= FindObjectOfType<OVRCameraRig>();
             openingBehaviour ??= GetComponentInChildren<OpeningBehaviour>();
         }
         
@@ -331,7 +336,26 @@ namespace Reless
         {
             CurrentPhase++;
         }
+
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        private void EnableAppSW()
+        {
+            OVRManager.SetSpaceWarp(true);
+        }
+        
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        private void DisableAppSW()
+        {
+            OVRManager.SetSpaceWarp(false);
+        }
+
+        [ShowNativeProperty]
+        private bool SpaceWarpEnabled => OVRManager.GetSpaceWarp();
 #endif
+        private void ToggleSpaceWarp()
+        {
+            OVRManager.SetSpaceWarp(!OVRManager.GetSpaceWarp());
+        }
     }
 }
 

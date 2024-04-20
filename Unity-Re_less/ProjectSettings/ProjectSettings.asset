@@ -142,8 +142,6 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 11400000, guid: ad370e8ee56e2c14399707b7a3c7a412, type: 2}
-  - {fileID: -4376503962303726670, guid: 0e64df5fd5f74654c8c24fcc7b6ed04a, type: 2}
-  - {fileID: 11400000, guid: 132d5b195e7fc66459a57d6af983a42f, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -165,6 +163,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.UnityRe_less
+    Standalone: com.DefaultCompany.Unity-Re-less
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -253,7 +252,7 @@ PlayerSettings:
   clonedFromGUID: c0afd0d1d80e3634a9dac47e8a0426ea
   templatePackageId: com.unity.template.3d@8.1.3
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 0
   useCustomLauncherGradleManifest: 0

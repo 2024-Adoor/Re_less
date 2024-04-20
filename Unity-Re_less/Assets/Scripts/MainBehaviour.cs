@@ -65,16 +65,32 @@ namespace Reless
             }
         }
 
+        /// <summary>
+        /// 그릴 오브젝트와 얻을 오브젝트를 설정합니다.
+        /// </summary>
+        /// <param name="sketchPrefab">그릴 오브젝트의 프리팹</param>
+        /// <param name="obtainingObjectPrefab">얻을 오브젝트의 프리팹</param>
         private void SetupSketchObject(GameObject sketchPrefab, GameObject obtainingObjectPrefab)
         {
+            // 그릴 오브젝트를 생성합니다.
             var sketchObject = Instantiate(sketchPrefab);
-            sketchObject.transform.position = _gameManager.PlayerPosition;
+            
+            // 그릴 오브젝트를 플레이어의 시야에 배치합니다.
+            sketchObject.transform.position = GameManager.EyeAnchor.position + GameManager.EyeAnchor.forward * 0.5f;
+            
+            // 그릴 오브젝트가 그려졌을 때 얻을 오브젝트를 획득하게 합니다.
             sketchObject.GetComponent<SketchOutline>().DrawingCompleted +=
                 () => ObtainObject(sketchObject, obtainingObjectPrefab);
         }
         
+        /// <summary>
+        /// 얻을 오브젝트를 획득합니다.
+        /// </summary>
+        /// <param name="sketchObject">그릴 오브젝트</param>
+        /// <param name="obtainingObjectPrefab">얻을 오브젝트의 프리팹</param>
         private void ObtainObject(GameObject sketchObject, GameObject obtainingObjectPrefab)
         {
+            // 그릴 오브젝트 위치에 얻을 오브젝트를 생성하고 그릴 오브젝트를 제거합니다.
             Instantiate(obtainingObjectPrefab).transform.position = sketchObject.transform.position;
             Destroy(sketchObject);
         }
