@@ -31203,7 +31203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b496919a04e979e46a62bc52df0198cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.75865
+      value: 13.73
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b496919a04e979e46a62bc52df0198cc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34915,7 +34915,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 5
   m_Range: 2.85
   m_SpotAngle: 88.50584
   m_InnerSpotAngle: 80.307915
@@ -37616,7 +37616,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2.05
+  m_Intensity: 5.34
   m_Range: 2.85
   m_SpotAngle: 75.22179
   m_InnerSpotAngle: 67.023865
