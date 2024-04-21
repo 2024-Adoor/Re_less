@@ -112,8 +112,8 @@ namespace Reless
         /// </summary>
         private void UpdatePopupsPressure()
         {
-            var leftUp = leftPage.transform.up;
-            var rightUp = rightPage.transform.up;
+            var leftUp = leftPage.transform.localRotation * Vector3.up;
+            var rightUp = rightPage.transform.localRotation * Vector3.up;
             
             float leftPageOpenAngle = Mathf.Clamp(leftUp.x, 0f, 1f);
             float rightPageOpenAngle = Mathf.Clamp(-rightUp.x, 0f, 1f);
