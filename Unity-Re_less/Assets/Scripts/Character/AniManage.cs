@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class AniManage : MonoBehaviour
 {
@@ -19,12 +20,19 @@ public class AniManage : MonoBehaviour
     public AudioClip HealingSound;
     private AudioSource HealingAudioSource;
 
+    // eyes
+    public GameObject eyes1;
+    public GameObject eyes2;
+
     void Start()
     {
         HealingAudioSource = GetComponent<AudioSource>();
 
         SleepingEffect.Play();
         SleepOutEffect.Stop();
+
+        eyes1.SetActive(false);
+        eyes2.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,6 +52,8 @@ public class AniManage : MonoBehaviour
                 animationComponent.Stop();
                 animationComponent.clip = SleepOutAni;
                 animationComponent.Play();
+                eyes1.SetActive(true);
+                eyes2.SetActive(true);
                 isChange = true;
 
                 StartCoroutine(WaitForSleepOutAnimation());

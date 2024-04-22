@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Reless
 {
@@ -6,6 +7,7 @@ namespace Reless
     /// VR에서 플레이어의 움직임을 조작하는 클래스입니다.
     /// Meta StarterSamples의 SimpleCapsuleWithStickMovement.cs를 바탕으로 작성되었습니다.
     /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
     public class PlayerControl : MonoBehaviour
     {
         private OVRCameraRig _cameraRig;
@@ -17,6 +19,8 @@ namespace Reless
         public bool isXdown;
         public bool isYdown;
 
+        private InputAction _moveAction;
+        private InputAction _jumpAction;
 
         /// <summary>
         /// 이동 속도
@@ -32,28 +36,29 @@ namespace Reless
         
         private void Awake()
         {
-            _cameraRig = GetComponentInChildren<OVRCameraRig>();
+            _cameraRig = GameManager.CameraRig; //GetComponentInChildren<OVRCameraRig>();
             _rigidbody = GetComponent<Rigidbody>();
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            PlayerState _PlayerState = GetComponent<PlayerState>();
+            var actions = new InputActions();
+            _moveAction = InputSystem.actions["Move"];
+            _jumpAction = InputSystem.actions["Jump"];
+            _jumpAction.performed += _ =>
+            {
+                if (!hasJumped) _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                hasJumped = true;
+            };
         }
         
         private void FixedUpdate()
         {
             RotatePlayerToHMD();
-            StickMovement();
+            if (_moveAction.inProgress) StickMovement();
             //SnapTurn();
-            Jump();
+            //Jump();
             X_Friend();
             Y_Fruit();
         }
@@ -90,7 +95,7 @@ namespace Reless
             Quaternion direction = Quaternion.Euler(rotation);
 
             // 스틱을 입력받습니다.
-            Vector2 stickVector = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+            Vector2 stickVector = _moveAction.ReadValue<Vector2>(); //OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
             
             // 스틱의 입력을 움직일 방향으로 변환합니다.
             var moveDirection = Vector3.zero;
