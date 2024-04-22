@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 2100000, guid: e60d4ca58f4866d4389ee77c18cab9f0, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _COLORCOLOR_ON
   - _EMISSION
   - _FADING_ON
   - _SOFTPARTICLES_ON
@@ -48,7 +49,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColorMode: 0
+    - _ColorMode: 4
     m_Colors:
     - _BaseColor: {r: 1, g: 0, b: 1, a: 0.22745098}
     - _BaseColorAddSubDiff: {r: -1, g: 0, b: 0, a: 0}
