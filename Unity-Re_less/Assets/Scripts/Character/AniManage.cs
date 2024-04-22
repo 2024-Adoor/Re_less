@@ -21,8 +21,8 @@ public class AniManage : MonoBehaviour
     private AudioSource HealingAudioSource;
 
     // eyes
-    public GameObject eyes1;
-    public GameObject eyes2;
+    // public GameObject eyes1;
+    // public GameObject eyes2;
 
     void Start()
     {
@@ -31,8 +31,8 @@ public class AniManage : MonoBehaviour
         SleepingEffect.Play();
         SleepOutEffect.Stop();
 
-        eyes1.SetActive(false);
-        eyes2.SetActive(false);
+        // eyes1.SetActive(false);
+        // eyes2.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -52,8 +52,8 @@ public class AniManage : MonoBehaviour
                 animationComponent.Stop();
                 animationComponent.clip = SleepOutAni;
                 animationComponent.Play();
-                eyes1.SetActive(true);
-                eyes2.SetActive(true);
+                // eyes1.SetActive(true);
+                // eyes2.SetActive(true);
                 isChange = true;
 
                 StartCoroutine(WaitForSleepOutAnimation());

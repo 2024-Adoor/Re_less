@@ -5,13 +5,15 @@ using UnityEngine;
 public class Broken_Watch : MonoBehaviour
 {
     private int collisionCount = 0;     // 충돌 횟수를 저장할 변수
-    public GameObject destroyPrefab;    // 삭제할 프리팹 
-    public GameObject newPrefab;  // 변경할 프리팹
+    public GameObject newPrefab1;  // 변경할 프리팹1
+    public GameObject newPrefab2;  // 변경할 프리팹2
     public Vector3 RotationOffset;              // 변경할 프리팹 위치 
     public bool isBroken;
 
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
+
+    GameObject newObject_1;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -20,10 +22,19 @@ public class Broken_Watch : MonoBehaviour
             collisionCount++; // 충돌 횟수 증가
             Debug.Log("충돌 횟수: " + collisionCount);
 
-            // 충돌 횟수가 3 이상이면 프리팹 변경
-            if (collisionCount >= 3)
+            // 충돌 횟수 1이면 프리팹 변경 1
+            if (collisionCount == 1)
             {
-                ChangeParentPrefab();
+                //gameObject.SetActive(false);
+                newObject_1 = Instantiate(newPrefab1, newPrefab1.transform.position, newPrefab1.transform.rotation);
+            }
+            // 충돌 횟수 2이면 프리팹 변경 2
+            if (collisionCount == 2)
+            {
+                Destroy(gameObject);
+                Destroy(newObject_1);
+                GameObject newObject_2 = Instantiate(newPrefab2, newPrefab2.transform.position, newPrefab2.transform.rotation);
+
                 isBroken = true;
 
                 SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
@@ -31,20 +42,7 @@ public class Broken_Watch : MonoBehaviour
 
                 spawnCH02Obj1.isSpawn = false;
                 spawnCH02Obj2.isSpawn = false;
-
-                // PrefabRotationPair 구조체의 prefab의 CH02obj 스크립트의 isMoving을 false로 변경 
             }
         }
-    }
-
-    // 프리팹 변경 함수
-    private void ChangeParentPrefab()
-    {
-        // 이전 오브젝트 삭제
-        Destroy(destroyPrefab);
-        Destroy(gameObject);
-
-        // 새로운 프리팹 생성
-        GameObject newObject = Instantiate(newPrefab, newPrefab.transform.position, newPrefab.transform.rotation);
     }
 }
