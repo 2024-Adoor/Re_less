@@ -188,6 +188,9 @@ public class PlayerState : MonoBehaviour
         {
             isCh02JumpUI = true;
         }
+
+
+
     }
 
     // 콜라이더랑 충돌할때 

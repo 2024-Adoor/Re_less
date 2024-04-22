@@ -16,37 +16,41 @@ public class UI_Canvas : MonoBehaviour
     PlayerState _PlayerState;
     ChapterControl _ChapterControl;
 
-    // Tutorial RawImage
-    public RawImage Tutorial_1;
-    public RawImage Tutorial_2;
-    public RawImage Tutorial_3;
-    public RawImage Tutorial_4;
-    public RawImage Tutorial_5;
-    public RawImage Tutorial_6;
-
-    // Can't Awake RawImage
-    public RawImage disAwake;
+    // Chapter 01 UI RawImage
+    public RawImage Ch01_Tutorial_1;
+    public RawImage Ch01_Tutorial_2;
+    public RawImage Ch01_Tutorial_Jump;     // Trigger로 작동
+    public RawImage Ch01_Tutorial_Friend;   // Trigger로 작동
 
     // Chapter 02 UI RawImage
-    public RawImage Ch02_Watch;
-    public RawImage Ch02_Door;
-    public RawImage Ch02_Jump;
+    public RawImage Ch02_Tutorial_1;
+    public RawImage Ch02_Tutorial_2;
+    public RawImage Ch02_Watch;             // Trigger로 작동
+    public RawImage Ch02_Door;              // Trigger로 작동 
 
     // Chatper 03 Ui RawImage
-    public RawImage Ch03_FirstUI;
-    public RawImage Ch03_Mouse;
-    public RawImage Ch03_Suji;
-    public RawImage Ch03_End;
+    public RawImage Ch03_Tutorial_1;
+    public RawImage Ch03_Suji;              // Trigger로 작동
+    public RawImage Ch03_End;               // Trigger로 작동 
+
+    // Can't Awake RawImage
+    public RawImage CantAwake;
+
+    // 열매 UI RawImage
+    public RawImage fruit_0_1;
+    public RawImage fruit_1_1;
+    public RawImage fruit_0_2;
+    public RawImage fruit_1_2;
+    public RawImage fruit_2_2;
 
     // UI 컨트롤을 위한 bool 값
     bool JumpUIFin = false;
     bool FriendUIFin = false;
     bool WatchUIFin = false;
     bool DoorUIFin = false;
-    bool Ch02JumpUIFin = false;
-    bool MouseUIFin = false;
+    bool Ch02Tuto2Fin = false;
     bool EndUIFin = false;
-
+    
     // Chapter 02 Watch 
     public GameObject Watch;
 
@@ -62,51 +66,64 @@ public class UI_Canvas : MonoBehaviour
         _PlayerControl = Player.GetComponent<PlayerControl>();
         _ChapterControl = Player.GetComponent<ChapterControl>();
         
-        UnableRawImage(Tutorial_1);
-        UnableRawImage(Tutorial_2);
-        UnableRawImage(Tutorial_3);
-        UnableRawImage(Tutorial_4);
-        UnableRawImage(Tutorial_5);
-        UnableRawImage(Tutorial_6);
-        UnableRawImage(disAwake);
+        // 전체 RawImage 비활성화
+        UnableRawImage(Ch01_Tutorial_1);
+        UnableRawImage(Ch01_Tutorial_2);
+        UnableRawImage(Ch01_Tutorial_Jump);
+        UnableRawImage(Ch01_Tutorial_Friend);
+
+        UnableRawImage(Ch02_Tutorial_1);
+        UnableRawImage(Ch02_Tutorial_2);
         UnableRawImage(Ch02_Watch);
         UnableRawImage(Ch02_Door);
-        UnableRawImage(Ch02_Jump);
-        UnableRawImage(Ch03_FirstUI);
-        UnableRawImage(Ch03_Mouse);
+
+        UnableRawImage(Ch03_Tutorial_1);
         UnableRawImage(Ch03_Suji);
         UnableRawImage(Ch03_End);
 
+        UnableRawImage(CantAwake);
+
+        UnableRawImage(fruit_0_1);
+        UnableRawImage(fruit_1_1);
+        UnableRawImage(fruit_0_2);
+        UnableRawImage(fruit_1_2);
+        UnableRawImage(fruit_2_2);
+
+
+        // 챕터 1 시작시 UI 창 
         if(_ChapterControl.Ch01)
         {
             _PlayerControl.speed = 0f;
 
             // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableTutorial1", 0.2f);
-            Invoke("UnableTutorial1", 3.5f);
-            Invoke("EnableTutorial3", 3.5f);
-            Invoke("UnableTutorial3", 6.5f);
-            Invoke("EnableTutorial4", 6.5f);
-            Invoke("UnableTutorial4", 9.5f);
+            Invoke("EnableCh01Tutorial1", 0.2f);
+            Invoke("UnableCh01Tutorial1", 3.2f);
+            Invoke("EnableCh01Tutorial2", 3.2f);    // 플레이어 속도 초기화 (4f)
+            Invoke("UnableCh01Tutorial2", 6.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화 
         }
+        // 챕터 2 시작시 UI 창 
         if(_ChapterControl.Ch02)
         {
             // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableTutorial1", 0.2f);
-            Invoke("UnableTutorial1", 3.2f);
+            Invoke("EnableCh02Tutorial1", 0.2f);
+            Invoke("UnableCh02Tutorial1", 3.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화
         }
+        // 챕터 3 시작시 UI 창 
         if(_ChapterControl.Ch03)
         {
             // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableCh03_FirstUI", 0.2f);
-            Invoke("UnableCh03_FirstUI", 3.2f);
+            Invoke("EnableCh03Tutorial1", 0.2f);
+            Invoke("UnableCh03Tutorial1", 3.2f);
         }
     }
 
     void Update()
     {
-        _PlayerState = Player.GetComponent<PlayerState>();
-        _ChapterControl = Player.GetComponent<ChapterControl>();
+        if(Player != null)
+        {
+            _PlayerState = Player.GetComponent<PlayerState>();
+            _ChapterControl = Player.GetComponent<ChapterControl>();
+        }
 
         if(Suji != null)
         {
@@ -122,22 +139,30 @@ public class UI_Canvas : MonoBehaviour
         transform.position = desiredPosition;
         transform.rotation = cameraTransform.rotation;
 
+
         // 챕터 1 - 점프 튜토리얼 UI 
         if(_PlayerState.isJumpUI && !JumpUIFin)
         {
-            EnableRawImage(Tutorial_5);
+            EnableRawImage(Ch01_Tutorial_Jump);
             _PlayerControl.speed = 0f;
-            // 3초 뒤에 UnableRawImage(Tutorial_5) && _PlayerControl.speed = 4.0f
-            Invoke("Tutorial5_Speed", 3f);
+            // 3초 뒤에 UnableRawImage(Ch01_Tutorial_Jump) && _PlayerControl.speed = 4.0f
+            Invoke("Ch01Jump_Speed", 3f);
         }
 
         // 챕터 1 - 열매 전달 튜토리얼 UI 
         if(_PlayerState.isFriendUI && !FriendUIFin)
         {
-            EnableRawImage(Tutorial_6);
+            EnableRawImage(Ch01_Tutorial_Friend);
             _PlayerControl.speed = 0f;
-            // 3초 뒤에 UnableRawImage(Tutorial_6) && _PlayerControl.speed = 4.0f
-            Invoke("Tutorial6_Speed", 2f);
+            // 2초 뒤에 UnableRawImage(Ch01_Tutorial_Friend) && _PlayerControl.speed = 4.0f
+            Invoke("Ch01Jump_Friend", 2f);
+        }
+
+        // 챕터 1 - 열매 먹었을 때 UI 변경
+        if(_ChapterControl.Ch01 && _PlayerState.fruitCount == 1)
+        {
+            UnableRawImage(fruit_0_1);
+            EnableRawImage(fruit_1_1);
         }
 
         // 챕터 2 - 리스폰 했을 때, 시계  UI 
@@ -161,21 +186,28 @@ public class UI_Canvas : MonoBehaviour
             // 2초 뒤에 UnableRawImage(Ch02_Door) && _PlayerControl.speed = 4.0f
             Invoke("Ch02_Door_Speed", 2f);
         }
-
-        // 챕터 2 - 문 UI Fin && 다리 올라갔을 때 
-        if(DoorUIFin && _PlayerState.isCh02JumpUI && !Ch02JumpUIFin)
+        
+        // 챕터 2 - 열매 먹었을 때 UI 변경
+        if(_ChapterControl.Ch02)
         {
-            EnableRawImage(Ch02_Jump);
-            _PlayerControl.speed = 0f;
-            // 2초 뒤에 UnableRawImage(Ch02_Jump) && _PlayerControl.speed = 4.0f
-            Invoke("Ch02_Jump_Speed", 2f);
-        }
+            if(_PlayerState.fruitCount == 1)
+            {
+                UnableRawImage(fruit_0_2);
+                EnableRawImage(fruit_1_2);
+            }
+            if(_PlayerState.fruitCount == 2)
+            {
+                UnableRawImage(fruit_1_2);
+                EnableRawImage(fruit_2_2);
 
-        // 챕터 3 - 스크린 켜졌을 때, 마우스 UI 
-        if(_OnOffMonitor.isScreenOn && !MouseUIFin)
-        {
-            EnableRawImage(Ch03_Mouse);
-            Invoke("UnableCh03_Mouse", 2f);
+                // 친구에게 가져다주자 UI Invoke 
+                if(!Ch02Tuto2Fin)
+                {
+                    EnableRawImage(Ch02_Tutorial_2);
+                    Invoke("UnableCh02Tutorial2", 3f);
+                }
+                
+            }
         }
 
         // 챕터 3 - 수지가 움직일 때, 수지 UI
@@ -198,13 +230,15 @@ public class UI_Canvas : MonoBehaviour
         // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
         if(_PlayerState.fruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
         {
-            EnableRawImage(disAwake);
+            EnableRawImage(CantAwake);
         }
         else
         {
-            UnableRawImage(disAwake);
+            UnableRawImage(CantAwake);
         }
     }
+
+    /**************************************************************************************************/
 
     void EnableRawImage(RawImage yourRawImage)
     {
@@ -218,89 +252,91 @@ public class UI_Canvas : MonoBehaviour
         yourRawImage.enabled = false;
     }
 
-    
+    /**************************************************************************************************/
 
-    void EnableTutorial1()
+    // 챕터 1 튜토리얼 UI Invoke 용
+    void EnableCh01Tutorial1()
     {
-        EnableRawImage(Tutorial_1);
+        EnableRawImage(Ch01_Tutorial_1);
     }
 
-    void UnableTutorial1()
+    void UnableCh01Tutorial1()
     {
-        UnableRawImage(Tutorial_1);
+        UnableRawImage(Ch01_Tutorial_1);
     }
 
-    void EnableTutorial2()
+    void EnableCh01Tutorial2()
     {
-        EnableRawImage(Tutorial_2);
+        EnableRawImage(Ch01_Tutorial_2);
+        _PlayerControl.speed = 4f;
     }
 
-    void UnableTutorial2()
+    void UnableCh01Tutorial2()
     {
-        UnableRawImage(Tutorial_2);
+        UnableRawImage(Ch01_Tutorial_2);
+
+        // 열매 UI 활성화 
+        EnableRawImage(fruit_0_1);
     }
 
-    void EnableTutorial3()
+    // 챕터 2 튜토리얼 UI Invoke 용
+    void EnableCh02Tutorial1()
     {
-        EnableRawImage(Tutorial_3);
+        EnableRawImage(Ch02_Tutorial_1);
     }
 
-    void UnableTutorial3()
+    void UnableCh02Tutorial1()
     {
-        UnableRawImage(Tutorial_3);
+        UnableRawImage(Ch02_Tutorial_1);
+
+        // 열매 UI 활성화 
+        EnableRawImage(fruit_0_2);
     }
 
-    void EnableTutorial4()
+    void UnableCh02Tutorial2()
     {
-        EnableRawImage(Tutorial_4);
-        _PlayerControl = Player.GetComponent<PlayerControl>();
-
-        _PlayerControl.speed = 4.0f;
+        UnableRawImage(Ch02_Tutorial_2);
+        Ch02Tuto2Fin = true;
     }
 
-    void UnableTutorial4()
+    // 챕터 3 튜토리얼 UI Invoke 용
+    void EnableCh03Tutorial1()
     {
-        UnableRawImage(Tutorial_4);
+        EnableRawImage(Ch03_Tutorial_1);
     }
 
-    void EnableCh03_FirstUI()
+    void UnableCh03Tutorial1()
     {
-        EnableRawImage(Ch03_FirstUI);
+        UnableRawImage(Ch03_Tutorial_1);
     }
 
-    void UnableCh03_FirstUI()
-    {
-        UnableRawImage(Ch03_FirstUI);
-    }
+    /**************************************************************************************************/
 
-    void UnableCh03_Mouse()
-    {
-        UnableRawImage(Ch03_Mouse);
-        MouseUIFin = true;
-    }
-    
     void UnableCh03_End()
     {
         UnableRawImage(Ch03_End);
         EndUIFin = true;
     }
 
-    // ******************************************************************************* // 
+    /**************************************************************************************************/
 
-    void Tutorial5_Speed()
+    // 챕터1 점프 튜토리얼 UI 비활성화 & 플레이어 스피드 초기화 
+    void Ch01Jump_Speed()
     {
-        UnableRawImage(Tutorial_5);
+        UnableRawImage(Ch01_Tutorial_Jump);
         _PlayerControl.speed = 4.0f;
         JumpUIFin = true;
     }
 
-    void Tutorial6_Speed()
+    // 챕터1 열매 전달 튜토리얼 UI 비활성화 & 플레이어 스피드 초기화 
+    void Ch01Jump_Friend()
     {
-        UnableRawImage(Tutorial_6);
+        UnableRawImage(Ch01_Tutorial_Friend);
         _PlayerControl.speed = 4.0f;
         FriendUIFin = true;
     }
 
+    // 챕터2 문 UI 비활성화 & 플레이어 스피드 초기화 
     void Ch02_Door_Speed()
     {
         UnableRawImage(Ch02_Door);
@@ -308,12 +344,6 @@ public class UI_Canvas : MonoBehaviour
         DoorUIFin = true;
     }
 
-    void Ch02_Jump_Speed()
-    {
-        UnableRawImage(Ch02_Jump);
-        _PlayerControl.speed = 4.0f;
-        Ch02JumpUIFin = true;
-    }
 
     
 }
