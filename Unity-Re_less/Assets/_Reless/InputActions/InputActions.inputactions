@@ -1,0 +1,127 @@
+{
+    "name": "InputActions",
+    "maps": [
+        {
+            "name": "VR",
+            "id": "cc64e311-f6b9-4714-86ed-0d14e99f1a6f",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "1ee65d5b-de81-4ef9-ba4e-63719ee2627a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "ff35cc5d-c803-4f7d-80db-087980dc8b4b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1d201c37-0fc8-41a2-a087-2e5b4324bb8f",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Meta Quest",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "762fbf1a-b6e4-4640-ac0e-6b3a760045c6",
+                    "path": "<OculusTouchController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Meta Quest",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MR",
+            "id": "38330ab1-2ec5-472a-9204-e8892ae7d611",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "2727453c-bd60-41b5-9907-d7855511c6f6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "abcd9772-7122-4c75-86a6-9daa17669fb5",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "1346303a-8661-4504-aedf-87cd5a642bc1",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "4093bb37-24f2-46aa-8b8a-0e85664117e3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d3acc52b-b797-4561-8924-be3cdea217ff",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Meta Quest",
+            "bindingGroup": "Meta Quest",
+            "devices": [
+                {
+                    "devicePath": "<OculusTouchController>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<OculusHMD>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
