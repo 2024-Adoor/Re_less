@@ -9,6 +9,9 @@ public class Chat_Suji : MonoBehaviour
     
     public Material Chat02;
     public Material Chat03;
+    public Material Chat04;
+    public Material Chat05;
+
     SujiEndingTest _SujiEndingTest;
     SujiManage _SujiManage;
 
@@ -39,9 +42,9 @@ public class Chat_Suji : MonoBehaviour
         }
 
         Renderer rend = GetComponent<Renderer>();
-        if (rend.material.name.Contains("Suji_3"))
+        if (rend.material.name.Contains("수지 5"))
         {   
-            Debug.Log("Chat_Suji's material contains Suji_3 !!");
+            Debug.Log("Chat_Suji's material contains 수지 5 !!");
 
             if (!isDelayedActionStarted)
             {
@@ -70,7 +73,10 @@ public class Chat_Suji : MonoBehaviour
         ChangeMaterial(Chat02);
         yield return new WaitForSeconds(delayTime); 
         ChangeMaterial(Chat03);
-        
+        yield return new WaitForSeconds(delayTime); // 딜레이
+        ChangeMaterial(Chat04);
+        yield return new WaitForSeconds(delayTime); 
+        ChangeMaterial(Chat05);
     }
 
     // 머테리얼 변경

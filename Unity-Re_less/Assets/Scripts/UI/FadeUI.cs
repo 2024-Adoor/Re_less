@@ -13,25 +13,58 @@ public class FadeUI : MonoBehaviour
     float time = 0f;
     float FadeTime = 1f;
 
+
+    // 챕터 3 엔딩 연출 
+    public GameObject Player;
+    PlayerState _PlayerState;
+    bool isFadeOut = false;
     bool isFadeIn = false;
 
     void Start()
     {
         WhitePanel.gameObject.SetActive(false);
         BlackPanel.gameObject.SetActive(false);
-
-        // WhiteFadeIn();
     }
 
     void Update()
     {
+        if(Player != null)
+        {
+            _PlayerState = Player.GetComponent<PlayerState>();
+        }
+
         // 카메라의 전방 벡터와 거리를 곱하여 원하는 위치를 계산합니다.
         Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
 
         // 계산된 위치로 Canvas를 이동시킵니다.
         transform.position = desiredPosition;
         transform.rotation = cameraTransform.rotation;
+
+        if(_PlayerState.isFadeOut)
+        {
+            if(!isFadeOut)
+            {
+                BlackFadeOut();
+                isFadeOut = true;
+            }
+            else if(isFadeOut && !isFadeIn)
+            {
+                Invoke("BlackFadeIn_bool", 3f);
+                isFadeIn = true;
+            }
+        }
     }
+
+    // 인보크용 함수
+    public void BlackFadeIn_bool()
+    {
+        BlackFadeIn();
+        _PlayerState.isFadeOut = false;
+        _PlayerState.isFadeIn = true;
+    }
+
+
+    /**************************************************************************************************/
 
     // 흰색 1.0f -> 없어짐 0.0f
     public void WhiteFadeIn()

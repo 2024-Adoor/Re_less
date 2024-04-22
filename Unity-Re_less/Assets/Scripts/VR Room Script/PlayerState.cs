@@ -46,6 +46,10 @@ public class PlayerState : MonoBehaviour
     public bool isCh02JumpUI = false;
     public bool isDisawakeUI_Trigger = false;
 
+    // Fade 트리거 관리
+    public bool isFadeOut = false; 
+    public bool isFadeIn = false;
+
     // 효과음 관리
     public AudioClip fruit_get;
     private AudioSource audioSource;
@@ -66,7 +70,7 @@ public class PlayerState : MonoBehaviour
         {
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
-        
+
         // 엔딩요건이 충족되면 Delay 후 isYUp true 
         if(canEnd)
         {
@@ -111,32 +115,36 @@ public class PlayerState : MonoBehaviour
 
         if(Mathf.Approximately(transform.position.y, RespawnTrigger.position.y))
         {
+            isFadeOut = true;
             isYUp = false;
             canEnd = false;
             Debug.Log("Player on RespawnTrigger !!");
-
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null)
+            
+            if(isFadeIn)
             {
-                rb.useGravity = true;
+                Rigidbody rb = GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.useGravity = true;
+                }
+
+                transform.position = EndSpawnPoint.position + new Vector3(0f, 23f, 0f);
+
+                CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+                capsuleCollider.radius = 5f;
+                capsuleCollider.height = 60f;
+
+                Camera.transform.position += new Vector3(0f, 20f, 0f);
+
+                PlayerControl _PlayerControl = GetComponent<PlayerControl>();
+                if(_PlayerControl != null)
+                {
+                    _PlayerControl.speed = 12f;
+                }
+
+                isTeleport = true;
+                Destroy(door);
             }
-
-            transform.position = EndSpawnPoint.position + new Vector3(0f, 23f, 0f);
-
-            CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
-            capsuleCollider.radius = 5f;
-            capsuleCollider.height = 60f;
-
-            Camera.transform.position += new Vector3(0f, 20f, 0f);
-
-            PlayerControl _PlayerControl = GetComponent<PlayerControl>();
-            if(_PlayerControl != null)
-            {
-                _PlayerControl.speed = 12f;
-            }
-
-            isTeleport = true;
-            Destroy(door);
         }
 
     }
@@ -188,9 +196,6 @@ public class PlayerState : MonoBehaviour
         {
             isCh02JumpUI = true;
         }
-
-
-
     }
 
     // 콜라이더랑 충돌할때 
@@ -240,4 +245,5 @@ public class PlayerState : MonoBehaviour
         // 새로운 위치로 이동
         transform.position = newPosition;
     }
+
 }

@@ -46,8 +46,8 @@ public class GoToPassthrough : MonoBehaviour
 		{
 			Renderer rend = Chat_Clock.GetComponent<Renderer>();
 
-			// 챕터 1 클리어 조건 : 시계토끼 대사 끝 (=머테리얼 이름이 Clock_7)
-			if(rend.material.name.Contains("Clock_7"))
+			// 챕터 1 클리어 조건 : 시계토끼 대사 끝 (=머테리얼 이름이 시계토끼6)
+			if(rend.material.name.Contains("시계토끼 6"))
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch01_Clear = true;
@@ -59,7 +59,7 @@ public class GoToPassthrough : MonoBehaviour
 			Renderer rend1 = Chat_Cat.GetComponent<Renderer>();
 			Renderer rend2 = Chat_Cactus.GetComponent<Renderer>();
 
-			if(rend1.material.name.Contains("Cat_4") && rend2.material.name.Contains("Cactus_5"))
+			if(rend1.material.name.Contains("체셔캣 4") && rend2.material.name.Contains("모자장수 4"))
 			{
 				GetComponent<Renderer>().enabled = true;
 				Ch02_Clear = true;

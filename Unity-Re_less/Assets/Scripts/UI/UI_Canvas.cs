@@ -30,6 +30,7 @@ public class UI_Canvas : MonoBehaviour
 
     // Chatper 03 Ui RawImage
     public RawImage Ch03_Tutorial_1;
+    public RawImage Ch03_Tutorial_2;
     public RawImage Ch03_Suji;              // Trigger로 작동
     public RawImage Ch03_End;               // Trigger로 작동 
 
@@ -50,12 +51,14 @@ public class UI_Canvas : MonoBehaviour
     bool DoorUIFin = false;
     bool Ch02Tuto2Fin = false;
     bool EndUIFin = false;
+    bool MonitorFin = false;
     
     // Chapter 02 Watch 
     public GameObject Watch;
 
     // Chapter 03 Monitor Button
     public GameObject MonitorButton;
+    OnOffMonitor _OnOffMonitor;
 
     // Chapter 03 Suji
     public GameObject Suji;
@@ -78,6 +81,7 @@ public class UI_Canvas : MonoBehaviour
         UnableRawImage(Ch02_Door);
 
         UnableRawImage(Ch03_Tutorial_1);
+        UnableRawImage(Ch03_Tutorial_2);
         UnableRawImage(Ch03_Suji);
         UnableRawImage(Ch03_End);
 
@@ -130,8 +134,11 @@ public class UI_Canvas : MonoBehaviour
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
         
-        OnOffMonitor _OnOffMonitor = MonitorButton.GetComponent<OnOffMonitor>();
-
+        if(MonitorButton != null)
+        {
+            _OnOffMonitor = MonitorButton.GetComponent<OnOffMonitor>();
+        }
+        
         // 카메라의 전방 벡터와 거리를 곱하여 원하는 위치를 계산합니다.
         Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
 
@@ -208,6 +215,13 @@ public class UI_Canvas : MonoBehaviour
                 }
                 
             }
+        }
+
+        // 챕터 3 - 모니터 버튼 켜졌을 때, 모니터 보라는 UI
+        if(_OnOffMonitor.isScreenOn && !MonitorFin)
+        {
+            EnableRawImage(Ch03_Tutorial_2);
+            Invoke("UnableCh03Tutorial2", 3f);
         }
 
         // 챕터 3 - 수지가 움직일 때, 수지 UI
@@ -308,6 +322,12 @@ public class UI_Canvas : MonoBehaviour
     void UnableCh03Tutorial1()
     {
         UnableRawImage(Ch03_Tutorial_1);
+    }
+
+    void UnableCh03Tutorial2()
+    {
+        UnableRawImage(Ch03_Tutorial_2);
+        MonitorFin = true;
     }
 
     /**************************************************************************************************/

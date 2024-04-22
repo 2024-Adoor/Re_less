@@ -10,6 +10,10 @@ public class OnOffMonitor : MonoBehaviour
 
     public ParticleSystem PressEffect;
 
+    // 모니터 팝업 1 
+    public GameObject Popup_1;
+    bool PopupFin = false;
+
     // UI Trigger
     public bool isScreenOn = false;
 
@@ -34,6 +38,13 @@ public class OnOffMonitor : MonoBehaviour
                 OffScreen.SetActive(false);
                 OnScreen.SetActive(true);
                 PressEffect.Stop();
+
+                // 모니터 팝업 1 띄우고 지우기
+                EnablePopup();
+                if(!PopupFin)
+                {
+                    Invoke("UnablePopup", 5f);
+                }
             }
             else
             {
@@ -41,4 +52,18 @@ public class OnOffMonitor : MonoBehaviour
             }
         }
     }
+
+
+    void EnablePopup()
+    {
+        Popup_1.SetActive(true);
+    }
+
+    void UnablePopup()
+    {
+        Popup_1.SetActive(false);
+        PopupFin = true;
+    }
 }
+
+
