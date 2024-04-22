@@ -43,9 +43,9 @@ public class ChapterControl : MonoBehaviour
         // MainScene에서 시작되고 적절하게 페이즈가 지정되었다면 아래 로직을 이어갑니다.
         switch (GameManager.Instance.CurrentPhase)
         {
-            case GameManager.Phase.Chapter1: StartChapter01(); break;
-            case GameManager.Phase.Chapter2: StartChapter02(); break;
-            case GameManager.Phase.Chapter3: StartChapter03(); break;
+            case GameManager.Phase.Chapter1: StartChapter01(); break; SetActiveFalse(Ch02_Objects); SetActiveFalse(Ch03_Objects);
+            case GameManager.Phase.Chapter2: StartChapter02(); break; SetActiveFalse(Ch01_Objects); SetActiveFalse(Ch03_Objects);
+            case GameManager.Phase.Chapter3: StartChapter03(); break; SetActiveFalse(Ch01_Objects); SetActiveFalse(Ch02_Objects);
             
             default: Debug.LogWarning($"Unexpected phase: {GameManager.Instance.CurrentPhase}"); break;
         }
@@ -54,7 +54,7 @@ public class ChapterControl : MonoBehaviour
     void Start()
     {
         // 이 경우 Awake에서 로직을 처리했습니다 - Start에서는 아무것도 하지 않습니다.
-        if (!_temp_UseStartControlLogic) return;
+        // if (!_temp_UseStartControlLogic) return;
         
         if (Ch01)
         {
