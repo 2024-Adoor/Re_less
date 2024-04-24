@@ -5,14 +5,18 @@ using Reless;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ChapterControl : MonoBehaviour
 {   
-    // 챕터별 진행여부
-    public bool Ch01;
-    public bool Ch02;
-    public bool Ch03;
-
+#if UNITY_EDITOR
+    /// <summary>
+    /// 에디터에서 테스트용으로 챕터를 설정합니다.
+    /// </summary>
+    [SerializeField]
+    private Chapter setChapterTo;
+#endif
+    
     // 챕터별 스폰포인트 
     public Transform SpawnPoint01;
     public Transform SpawnPoint02;
@@ -32,62 +36,72 @@ public class ChapterControl : MonoBehaviour
     // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
     public GameObject[] Ch01_Objects; 
     public GameObject[] Ch02_Objects; 
-    public GameObject[] Ch03_Objects; 
+    public GameObject[] Ch03_Objects;
+
+    /// <summary>
+    /// 현재 챕터
+    /// </summary>
+    public Chapter CurrentChapter
+    {
+        get => _currentChapter;
+        private set
+        {
+            _currentChapter = value;
+            switch (_currentChapter)
+            {
+                case Chapter.Chapter1: SetupChapter01(); break;
+                case Chapter.Chapter2: SetupChapter02(); break;
+                case Chapter.Chapter3: SetupChapter03(); break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+    private Chapter _currentChapter;
 
     private void Awake()
     {
-        // 게임매니저가 없는 경우(MainScene에서 시작되지 않음) 리턴합니다. 대신 Start에 있던 기존의 로직이 작동하도록 합니다.
-        _temp_UseStartControlLogic = GameManager.NotInThisScene;
-        if (_temp_UseStartControlLogic) return;
-
-        // MainScene에서 시작되고 적절하게 페이즈가 지정되었다면 아래 로직을 이어갑니다.
-        switch (GameManager.Instance.CurrentPhase)
+        if (GameManager.Instance.CurrentChapter is Chapter chapter)
         {
-            case GameManager.Phase.Chapter1: StartChapter01(); break; SetActiveFalse(Ch02_Objects); SetActiveFalse(Ch03_Objects);
-            case GameManager.Phase.Chapter2: StartChapter02(); break; SetActiveFalse(Ch01_Objects); SetActiveFalse(Ch03_Objects);
-            case GameManager.Phase.Chapter3: StartChapter03(); break; SetActiveFalse(Ch01_Objects); SetActiveFalse(Ch02_Objects);
-            
-            default: Debug.LogWarning($"Unexpected phase: {GameManager.Instance.CurrentPhase}"); break;
+            CurrentChapter = chapter;
         }
+#if UNITY_EDITOR
+        else
+        {
+            if (setChapterTo != CurrentChapter)
+            {
+                CurrentChapter = setChapterTo;
+            }
+        }
+#endif
     }
 
     void Start()
     {
-        // 이 경우 Awake에서 로직을 처리했습니다 - Start에서는 아무것도 하지 않습니다.
-        // if (!_temp_UseStartControlLogic) return;
         
-        if (Ch01)
-        {
-            StartChapter01();
-
-            // 챕터 1 오브젝트가 아닌 오브젝트 비활성화 
-            SetActiveFalse(Ch02_Objects);
-            SetActiveFalse(Ch03_Objects);
-        }
-        else if (Ch02)
-        {
-            StartChapter02();
-
-            // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
-            SetActiveFalse(Ch01_Objects);
-            SetActiveFalse(Ch03_Objects);
-        }
-        else if (Ch03)
-        {
-            StartChapter03();
-
-            // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
-            SetActiveFalse(Ch01_Objects);
-            SetActiveFalse(Ch02_Objects);
-        }
-    }
-
-    private void StartChapter01()
-    {
-        SpawnPlayer(SpawnPoint01, -40);
     }
     
-    private void StartChapter02()
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (setChapterTo != CurrentChapter)
+        {
+            Debug.Log($"Changing chapter to {setChapterTo}");
+            CurrentChapter = setChapterTo;
+        }
+#endif
+    }
+    private void SetupChapter01()
+    {
+        SpawnPlayer(SpawnPoint01, -40);
+        
+        // 챕터 1 오브젝트가 아닌 오브젝트 비활성화 
+        SetActiveFalse(Ch02_Objects);
+        SetActiveFalse(Ch03_Objects);
+        
+        SetActiveTrue(Ch01_Objects);
+    }
+    
+    private void SetupChapter02()
     {
         SpawnPlayer(SpawnPoint02, 120);
 
@@ -96,11 +110,23 @@ public class ChapterControl : MonoBehaviour
         SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
         spawnCH02Obj1.isSpawn = true;
         spawnCH02Obj2.isSpawn = true;
+        
+        // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
+        SetActiveFalse(Ch01_Objects);
+        SetActiveFalse(Ch03_Objects);
+        
+        SetActiveTrue(Ch02_Objects);
     }
     
-    private void StartChapter03()
+    private void SetupChapter03()
     {
         SpawnPlayer(SpawnPoint03, 150);
+        
+        // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
+        SetActiveFalse(Ch01_Objects);
+        SetActiveFalse(Ch02_Objects);
+        
+        SetActiveTrue(Ch03_Objects);
     }
 
     void SetActiveFalse(GameObject[] ChapterObjects)
@@ -110,10 +136,13 @@ public class ChapterControl : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
-    void Update()
+    
+    void SetActiveTrue(GameObject[] ChapterObjects)
     {
-
+        foreach(GameObject gameObject in ChapterObjects) 
+        {
+            gameObject.SetActive(true);
+        }
     }
     
     void SpawnPlayer(Transform Point, float RotateY)

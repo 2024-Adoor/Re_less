@@ -7,10 +7,10 @@ using Reless;
 
 public class UI_Canvas : MonoBehaviour
 {
-    public Transform cameraTransform; // Ä«¸Ş¶óÀÇ Transform
-    public float distanceFromCamera = 1f; // Ä«¸Ş¶ó·ÎºÎÅÍÀÇ °Å¸®
+    public Transform cameraTransform; // ì¹´ë©”ë¼ì˜ Transform
+    public float distanceFromCamera = 1f; // ì¹´ë©”ë¼ë¡œë¶€í„°ì˜ ê±°ë¦¬
 
-    // ÇÃ·¹ÀÌ¾î
+    // í”Œë ˆì´ì–´
     public GameObject Player;
     PlayerControl _PlayerControl;
     PlayerState _PlayerState;
@@ -19,32 +19,32 @@ public class UI_Canvas : MonoBehaviour
     // Chapter 01 UI RawImage
     public RawImage Ch01_Tutorial_1;
     public RawImage Ch01_Tutorial_2;
-    public RawImage Ch01_Tutorial_Jump;     // Trigger·Î ÀÛµ¿
-    public RawImage Ch01_Tutorial_Friend;   // Trigger·Î ÀÛµ¿
+    public RawImage Ch01_Tutorial_Jump;     // Triggerë¡œ ì‘ë™
+    public RawImage Ch01_Tutorial_Friend;   // Triggerë¡œ ì‘ë™
 
     // Chapter 02 UI RawImage
     public RawImage Ch02_Tutorial_1;
     public RawImage Ch02_Tutorial_2;
-    public RawImage Ch02_Watch;             // Trigger·Î ÀÛµ¿
-    public RawImage Ch02_Door;              // Trigger·Î ÀÛµ¿ 
+    public RawImage Ch02_Watch;             // Triggerë¡œ ì‘ë™
+    public RawImage Ch02_Door;              // Triggerë¡œ ì‘ë™ 
 
     // Chatper 03 Ui RawImage
     public RawImage Ch03_Tutorial_1;
     public RawImage Ch03_Tutorial_2;
-    public RawImage Ch03_Suji;              // Trigger·Î ÀÛµ¿
-    public RawImage Ch03_End;               // Trigger·Î ÀÛµ¿ 
+    public RawImage Ch03_Suji;              // Triggerë¡œ ì‘ë™
+    public RawImage Ch03_End;               // Triggerë¡œ ì‘ë™ 
 
     // Can't Awake RawImage
     public RawImage CantAwake;
 
-    // ¿­¸Å UI RawImage
+    // ì—´ë§¤ UI RawImage
     public RawImage fruit_0_1;
     public RawImage fruit_1_1;
     public RawImage fruit_0_2;
     public RawImage fruit_1_2;
     public RawImage fruit_2_2;
 
-    // UI ÄÁÆ®·ÑÀ» À§ÇÑ bool °ª
+    // UI ì»¨íŠ¸ë¡¤ì„ ìœ„í•œ bool ê°’
     bool JumpUIFin = false;
     bool FriendUIFin = false;
     bool WatchUIFin = false;
@@ -69,7 +69,7 @@ public class UI_Canvas : MonoBehaviour
         _PlayerControl = Player.GetComponent<PlayerControl>();
         _ChapterControl = Player.GetComponent<ChapterControl>();
         
-        // ÀüÃ¼ RawImage ºñÈ°¼ºÈ­
+        // ì „ì²´ RawImage ë¹„í™œì„±í™”
         UnableRawImage(Ch01_Tutorial_1);
         UnableRawImage(Ch01_Tutorial_2);
         UnableRawImage(Ch01_Tutorial_Jump);
@@ -94,28 +94,28 @@ public class UI_Canvas : MonoBehaviour
         UnableRawImage(fruit_2_2);
 
 
-        // Ã©ÅÍ 1 ½ÃÀÛ½Ã UI Ã¢ 
-        if(_ChapterControl.Ch01)
+        // ì±•í„° 1 ì‹œì‘ì‹œ UI ì°½ 
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter1)
         {
             _PlayerControl.speed = 0f;
 
-            // ½ÃÀÛÇÏ°í 1ÃÊ µÚ¿¡ Chapter_Start render È°¼ºÈ­ -> 3ÃÊ µÚ render ºñÈ°¼ºÈ­ 
+            // ì‹œì‘í•˜ê³  1ì´ˆ ë’¤ì— Chapter_Start render í™œì„±í™” -> 3ì´ˆ ë’¤ render ë¹„í™œì„±í™” 
             Invoke("EnableCh01Tutorial1", 0.2f);
             Invoke("UnableCh01Tutorial1", 3.2f);
-            Invoke("EnableCh01Tutorial2", 3.2f);    // ÇÃ·¹ÀÌ¾î ¼Óµµ ÃÊ±âÈ­ (4f)
-            Invoke("UnableCh01Tutorial2", 6.2f);    // Æ©Åä¸®¾ó UI ºñÈ°¼ºÈ­ & ¿­¸Å UI È°¼ºÈ­ 
+            Invoke("EnableCh01Tutorial2", 3.2f);    // í”Œë ˆì´ì–´ ì†ë„ ì´ˆê¸°í™” (4f)
+            Invoke("UnableCh01Tutorial2", 6.2f);    // íŠœí† ë¦¬ì–¼ UI ë¹„í™œì„±í™” & ì—´ë§¤ UI í™œì„±í™” 
         }
-        // Ã©ÅÍ 2 ½ÃÀÛ½Ã UI Ã¢ 
-        if(_ChapterControl.Ch02)
+        // ì±•í„° 2 ì‹œì‘ì‹œ UI ì°½ 
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
-            // ½ÃÀÛÇÏ°í 1ÃÊ µÚ¿¡ Chapter_Start render È°¼ºÈ­ -> 3ÃÊ µÚ render ºñÈ°¼ºÈ­ 
+            // ì‹œì‘í•˜ê³  1ì´ˆ ë’¤ì— Chapter_Start render í™œì„±í™” -> 3ì´ˆ ë’¤ render ë¹„í™œì„±í™” 
             Invoke("EnableCh02Tutorial1", 0.2f);
-            Invoke("UnableCh02Tutorial1", 3.2f);    // Æ©Åä¸®¾ó UI ºñÈ°¼ºÈ­ & ¿­¸Å UI È°¼ºÈ­
+            Invoke("UnableCh02Tutorial1", 3.2f);    // íŠœí† ë¦¬ì–¼ UI ë¹„í™œì„±í™” & ì—´ë§¤ UI í™œì„±í™”
         }
-        // Ã©ÅÍ 3 ½ÃÀÛ½Ã UI Ã¢ 
-        if(_ChapterControl.Ch03)
+        // ì±•í„° 3 ì‹œì‘ì‹œ UI ì°½ 
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter3)
         {
-            // ½ÃÀÛÇÏ°í 1ÃÊ µÚ¿¡ Chapter_Start render È°¼ºÈ­ -> 3ÃÊ µÚ render ºñÈ°¼ºÈ­ 
+            // ì‹œì‘í•˜ê³  1ì´ˆ ë’¤ì— Chapter_Start render í™œì„±í™” -> 3ì´ˆ ë’¤ render ë¹„í™œì„±í™” 
             Invoke("EnableCh03Tutorial1", 0.2f);
             Invoke("UnableCh03Tutorial1", 3.2f);
         }
@@ -126,7 +126,6 @@ public class UI_Canvas : MonoBehaviour
         if(Player != null)
         {
             _PlayerState = Player.GetComponent<PlayerState>();
-            _ChapterControl = Player.GetComponent<ChapterControl>();
         }
 
         if(Suji != null)
@@ -139,45 +138,45 @@ public class UI_Canvas : MonoBehaviour
             _OnOffMonitor = MonitorButton.GetComponent<OnOffMonitor>();
         }
         
-        // Ä«¸Ş¶óÀÇ Àü¹æ º¤ÅÍ¿Í °Å¸®¸¦ °öÇÏ¿© ¿øÇÏ´Â À§Ä¡¸¦ °è»êÇÕ´Ï´Ù.
+        // ì¹´ë©”ë¼ì˜ ì „ë°© ë²¡í„°ì™€ ê±°ë¦¬ë¥¼ ê³±í•˜ì—¬ ì›í•˜ëŠ” ìœ„ì¹˜ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
         Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
 
-        // °è»êµÈ À§Ä¡·Î Canvas¸¦ ÀÌµ¿½ÃÅµ´Ï´Ù.
+        // ê³„ì‚°ëœ ìœ„ì¹˜ë¡œ Canvasë¥¼ ì´ë™ì‹œí‚µë‹ˆë‹¤.
         transform.position = desiredPosition;
         transform.rotation = cameraTransform.rotation;
 
 
-        // Ã©ÅÍ 1 - Á¡ÇÁ Æ©Åä¸®¾ó UI 
+        // ì±•í„° 1 - ì í”„ íŠœí† ë¦¬ì–¼ UI 
         if(_PlayerState.isJumpUI && !JumpUIFin)
         {
             EnableRawImage(Ch01_Tutorial_Jump);
             _PlayerControl.speed = 0f;
-            // 3ÃÊ µÚ¿¡ UnableRawImage(Ch01_Tutorial_Jump) && _PlayerControl.speed = 4.0f
+            // 3ì´ˆ ë’¤ì— UnableRawImage(Ch01_Tutorial_Jump) && _PlayerControl.speed = 4.0f
             Invoke("Ch01Jump_Speed", 3f);
         }
 
-        // Ã©ÅÍ 1 - ¿­¸Å Àü´Ş Æ©Åä¸®¾ó UI 
+        // ì±•í„° 1 - ì—´ë§¤ ì „ë‹¬ íŠœí† ë¦¬ì–¼ UI 
         if(_PlayerState.isFriendUI && !FriendUIFin)
         {
             EnableRawImage(Ch01_Tutorial_Friend);
             _PlayerControl.speed = 0f;
-            // 2ÃÊ µÚ¿¡ UnableRawImage(Ch01_Tutorial_Friend) && _PlayerControl.speed = 4.0f
+            // 2ì´ˆ ë’¤ì— UnableRawImage(Ch01_Tutorial_Friend) && _PlayerControl.speed = 4.0f
             Invoke("Ch01Jump_Friend", 2f);
         }
 
-        // Ã©ÅÍ 1 - ¿­¸Å ¸Ô¾úÀ» ¶§ UI º¯°æ
-        if(_ChapterControl.Ch01 && _PlayerState.fruitCount == 1)
+        // ì±•í„° 1 - ì—´ë§¤ ë¨¹ì—ˆì„ ë•Œ UI ë³€ê²½
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && _PlayerState.fruitCount == 1)
         {
             UnableRawImage(fruit_0_1);
             EnableRawImage(fruit_1_1);
         }
 
-        // Ã©ÅÍ 2 - ¸®½ºÆù ÇßÀ» ¶§, ½Ã°è  UI 
+        // ì±•í„° 2 - ë¦¬ìŠ¤í° í–ˆì„ ë•Œ, ì‹œê³„  UI 
         if(_ChapterControl.CH02_RespawnCount > 0 && !WatchUIFin)
         {
             EnableRawImage(Ch02_Watch);
 
-            // ½Ã°è°¡ ºÎ½¤Á³À» ¶§ UI »èÁ¦ 
+            // ì‹œê³„ê°€ ë¶€ìˆ´ì¡Œì„ ë•Œ UI ì‚­ì œ 
             if(Watch == null)
             {
                 UnableRawImage(Ch02_Watch);
@@ -185,17 +184,17 @@ public class UI_Canvas : MonoBehaviour
             }
         }
 
-        // Ã©ÅÍ 2 - ¹® ¾Õ¿¡ ¿ÔÀ» ¶§, ¹® UI
+        // ì±•í„° 2 - ë¬¸ ì•ì— ì™”ì„ ë•Œ, ë¬¸ UI
         if(_PlayerState.isDoorUI && !DoorUIFin)
         {
             EnableRawImage(Ch02_Door);
             _PlayerControl.speed = 0f;
-            // 2ÃÊ µÚ¿¡ UnableRawImage(Ch02_Door) && _PlayerControl.speed = 4.0f
+            // 2ì´ˆ ë’¤ì— UnableRawImage(Ch02_Door) && _PlayerControl.speed = 4.0f
             Invoke("Ch02_Door_Speed", 2f);
         }
         
-        // Ã©ÅÍ 2 - ¿­¸Å ¸Ô¾úÀ» ¶§ UI º¯°æ
-        if(_ChapterControl.Ch02)
+        // ì±•í„° 2 - ì—´ë§¤ ë¨¹ì—ˆì„ ë•Œ UI ë³€ê²½
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
             if(_PlayerState.fruitCount == 1)
             {
@@ -207,7 +206,7 @@ public class UI_Canvas : MonoBehaviour
                 UnableRawImage(fruit_1_2);
                 EnableRawImage(fruit_2_2);
 
-                // Ä£±¸¿¡°Ô °¡Á®´ÙÁÖÀÚ UI Invoke 
+                // ì¹œêµ¬ì—ê²Œ ê°€ì ¸ë‹¤ì£¼ì UI Invoke 
                 if(!Ch02Tuto2Fin)
                 {
                     EnableRawImage(Ch02_Tutorial_2);
@@ -217,14 +216,14 @@ public class UI_Canvas : MonoBehaviour
             }
         }
 
-        // Ã©ÅÍ 3 - ¸ğ´ÏÅÍ ¹öÆ° ÄÑÁ³À» ¶§, ¸ğ´ÏÅÍ º¸¶ó´Â UI
+        // Ã©ï¿½ï¿½ 3 - ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ UI
         if(_OnOffMonitor.isScreenOn && !MonitorFin)
         {
             EnableRawImage(Ch03_Tutorial_2);
             Invoke("UnableCh03Tutorial2", 3f);
         }
 
-        // Ã©ÅÍ 3 - ¼öÁö°¡ ¿òÁ÷ÀÏ ¶§, ¼öÁö UI
+        // ì±•í„° 3 - ìˆ˜ì§€ê°€ ì›€ì§ì¼ ë•Œ, ìˆ˜ì§€ UI
         if(_SujiEndingTest.canMove)
         {
             EnableRawImage(Ch03_Suji);
@@ -234,14 +233,14 @@ public class UI_Canvas : MonoBehaviour
             UnableRawImage(Ch03_Suji);
         }
 
-        // Ã©ÅÍ 3 - ¸®½ºÆù µÆÀ» ¶§, ¿£µù UI 
+        // ì±•í„° 3 - ë¦¬ìŠ¤í° ëì„ ë•Œ, ì—”ë”© UI 
         if(_PlayerState.isTeleport && !EndUIFin)
         {
             EnableRawImage(Ch03_End);
             Invoke("UnableCh03_End", 2f);
         }
 
-        // ¸ğµç Ã©ÅÍ - FruitCount < 0 ÀÏ¶§ Ä³¸¯ÅÍ¿Í Ãæµ¹, disAwake È°¼ºÈ­ 
+        // ëª¨ë“  ì±•í„° - FruitCount < 0 ì¼ë•Œ ìºë¦­í„°ì™€ ì¶©ëŒ, disAwake í™œì„±í™” 
         if(_PlayerState.fruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
         {
             EnableRawImage(CantAwake);
@@ -256,19 +255,19 @@ public class UI_Canvas : MonoBehaviour
 
     void EnableRawImage(RawImage yourRawImage)
     {
-        // ·»´õ·¯¸¦ È°¼ºÈ­ÇÕ´Ï´Ù.
+        // ë Œë”ëŸ¬ë¥¼ í™œì„±í™”í•©ë‹ˆë‹¤.
         yourRawImage.enabled = true;
     }
 
     void UnableRawImage(RawImage yourRawImage)
     {
-        // ·»´õ·¯¸¦ È°¼ºÈ­ÇÕ´Ï´Ù.
+        // ë Œë”ëŸ¬ë¥¼ í™œì„±í™”í•©ë‹ˆë‹¤.
         yourRawImage.enabled = false;
     }
 
     /**************************************************************************************************/
 
-    // Ã©ÅÍ 1 Æ©Åä¸®¾ó UI Invoke ¿ë
+    // ì±•í„° 1 íŠœí† ë¦¬ì–¼ UI Invoke ìš©
     void EnableCh01Tutorial1()
     {
         EnableRawImage(Ch01_Tutorial_1);
@@ -289,11 +288,11 @@ public class UI_Canvas : MonoBehaviour
     {
         UnableRawImage(Ch01_Tutorial_2);
 
-        // ¿­¸Å UI È°¼ºÈ­ 
+        // ì—´ë§¤ UI í™œì„±í™” 
         EnableRawImage(fruit_0_1);
     }
 
-    // Ã©ÅÍ 2 Æ©Åä¸®¾ó UI Invoke ¿ë
+    // ì±•í„° 2 íŠœí† ë¦¬ì–¼ UI Invoke ìš©
     void EnableCh02Tutorial1()
     {
         EnableRawImage(Ch02_Tutorial_1);
@@ -303,7 +302,7 @@ public class UI_Canvas : MonoBehaviour
     {
         UnableRawImage(Ch02_Tutorial_1);
 
-        // ¿­¸Å UI È°¼ºÈ­ 
+        // ì—´ë§¤ UI í™œì„±í™” 
         EnableRawImage(fruit_0_2);
     }
 
@@ -313,7 +312,7 @@ public class UI_Canvas : MonoBehaviour
         Ch02Tuto2Fin = true;
     }
 
-    // Ã©ÅÍ 3 Æ©Åä¸®¾ó UI Invoke ¿ë
+    // ì±•í„° 3 íŠœí† ë¦¬ì–¼ UI Invoke ìš©
     void EnableCh03Tutorial1()
     {
         EnableRawImage(Ch03_Tutorial_1);
@@ -340,7 +339,7 @@ public class UI_Canvas : MonoBehaviour
 
     /**************************************************************************************************/
 
-    // Ã©ÅÍ1 Á¡ÇÁ Æ©Åä¸®¾ó UI ºñÈ°¼ºÈ­ & ÇÃ·¹ÀÌ¾î ½ºÇÇµå ÃÊ±âÈ­ 
+    // ì±•í„°1 ì í”„ íŠœí† ë¦¬ì–¼ UI ë¹„í™œì„±í™” & í”Œë ˆì´ì–´ ìŠ¤í”¼ë“œ ì´ˆê¸°í™” 
     void Ch01Jump_Speed()
     {
         UnableRawImage(Ch01_Tutorial_Jump);
@@ -348,7 +347,7 @@ public class UI_Canvas : MonoBehaviour
         JumpUIFin = true;
     }
 
-    // Ã©ÅÍ1 ¿­¸Å Àü´Ş Æ©Åä¸®¾ó UI ºñÈ°¼ºÈ­ & ÇÃ·¹ÀÌ¾î ½ºÇÇµå ÃÊ±âÈ­ 
+    // ì±•í„°1 ì—´ë§¤ ì „ë‹¬ íŠœí† ë¦¬ì–¼ UI ë¹„í™œì„±í™” & í”Œë ˆì´ì–´ ìŠ¤í”¼ë“œ ì´ˆê¸°í™” 
     void Ch01Jump_Friend()
     {
         UnableRawImage(Ch01_Tutorial_Friend);
@@ -356,7 +355,7 @@ public class UI_Canvas : MonoBehaviour
         FriendUIFin = true;
     }
 
-    // Ã©ÅÍ2 ¹® UI ºñÈ°¼ºÈ­ & ÇÃ·¹ÀÌ¾î ½ºÇÇµå ÃÊ±âÈ­ 
+    // ì±•í„°2 ë¬¸ UI ë¹„í™œì„±í™” & í”Œë ˆì´ì–´ ìŠ¤í”¼ë“œ ì´ˆê¸°í™” 
     void Ch02_Door_Speed()
     {
         UnableRawImage(Ch02_Door);

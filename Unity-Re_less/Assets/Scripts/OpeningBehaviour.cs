@@ -133,7 +133,7 @@ namespace Reless
                 // 튜토리얼 생략
                 
                 yield return new WaitForSeconds(4f);
-                GameManager.Instance.CurrentPhase = GameManager.Phase.Chapter1;
+                GameManager.Instance.CurrentPhase = GamePhase.Chapter1;
                 GameManager.Instance.LoadMainScene();
                 
                 // 오프닝에서 했던 일을 되돌립니다.
