@@ -19,11 +19,11 @@ public class SnapPointActiveHandler : MonoBehaviour
     void Update()
     {
         // 현재 챕터와 일치하는 경우에만 SnapInteractable을 활성화합니다.
-        _snapInteractable.enabled = GameManager.Instance.CurrentPhase switch
+        _snapInteractable.enabled = GameManager.Instance.CurrentChapter switch
         {
-            GameManager.Phase.Chapter1 => chapter == 1,
-            GameManager.Phase.Chapter2 => chapter == 2,
-            GameManager.Phase.Chapter3 => chapter == 3,
+            Chapter.Chapter1 => chapter == 1,
+            Chapter.Chapter2 => chapter == 2,
+            Chapter.Chapter3 => chapter == 3,
             _ => false
         };
     }

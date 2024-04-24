@@ -1,7 +1,7 @@
 using System;
-using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using UnityEngine;
+using static Reless.Chapter;
 
 namespace Reless
 {
@@ -48,17 +48,17 @@ namespace Reless
         private void Start()
         {
             // 튜토리얼 이후/엔딩 전 (= 챕터 중)에 MainScene으로 진입했다면
-            if (_gameManager.CurrentPhase is > GameManager.Phase.Tutorial and < GameManager.Phase.Ending)
+            if (_gameManager.CurrentChapter is not null)
             {
                 // 펜 활성화
                 EnablePen();
 
                 // 챕터별로 그릴 오브젝트 생성
-                (GameObject sktech, GameObject obtaining) drawingPrefabPair = _gameManager.CurrentPhase switch
+                (GameObject sktech, GameObject obtaining) drawingPrefabPair = _gameManager.CurrentChapter switch
                 {
-                    GameManager.Phase.Chapter1 => (_sketchObjectPrefabs.chapter01, _obtainingObjectPrefabs.chapter01),
-                    GameManager.Phase.Chapter2 => (_sketchObjectPrefabs.chapter02, _obtainingObjectPrefabs.chapter02),
-                    GameManager.Phase.Chapter3 => (_sketchObjectPrefabs.chapter03, _obtainingObjectPrefabs.chapter03),
+                    Chapter1 => (_sketchObjectPrefabs.chapter01, _obtainingObjectPrefabs.chapter01),
+                    Chapter2 => (_sketchObjectPrefabs.chapter02, _obtainingObjectPrefabs.chapter02),
+                    Chapter3 => (_sketchObjectPrefabs.chapter03, _obtainingObjectPrefabs.chapter03),
                     _ => throw new ArgumentOutOfRangeException()
                 };
                 SetupSketchObject(drawingPrefabPair.sktech, drawingPrefabPair.obtaining);
@@ -108,11 +108,11 @@ namespace Reless
         [Button]
         public void AchieveEnterCondition()
         {
-            AchieveEnterCondition(_gameManager.CurrentPhase switch
-            {
-                GameManager.Phase.Chapter1 => 1,
-                GameManager.Phase.Chapter2 => 2,
-                GameManager.Phase.Chapter3 => 3,
+            AchieveEnterCondition(_gameManager.CurrentChapter switch
+            { 
+                Chapter1 => 1, 
+                Chapter2 => 2,
+                Chapter3 => 3,
                 _ => 0
             });
         }

@@ -54,45 +54,34 @@ namespace Reless
                 SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive);
             }
         }
-
-        public enum Phase
-        {
-            Title,
-            Opening,
-            Tutorial,
-            Chapter1,
-            Chapter2,
-            Chapter3,
-            Ending,
-        }
         
-        private Phase _currentPhase;
+        private GamePhase _currentPhase;
 
         [ShowNativeProperty]
-        public Phase CurrentPhase
+        public GamePhase CurrentPhase
         {
             get => _currentPhase;
             set
             {
                 // 클램프
-                if (value < Phase.Title) _currentPhase = Phase.Title;
-                else if (value > Phase.Ending) _currentPhase = Phase.Ending;
+                if (value < GamePhase.Title) _currentPhase = GamePhase.Title;
+                else if (value > GamePhase.Ending) _currentPhase = GamePhase.Ending;
                 else _currentPhase = value;
 
                 switch (_currentPhase)
                 {
-                    case Phase.Title: StartTitle(); break;
-                    case Phase.Opening: OnOpening?.Invoke(); break;
-                    case Phase.Tutorial: StartTutorial(); break;
-                    case Phase.Chapter1: StartChapter1(); break;
-                    case Phase.Chapter2: StartChapter2(); break;
-                    case Phase.Chapter3: StartChapter3(); break;
-                    case Phase.Ending: OnEnding(); break;
+                    case GamePhase.Title: StartTitle(); break;
+                    case GamePhase.Opening: OnOpening?.Invoke(); break;
+                    case GamePhase.Tutorial: StartTutorial(); break;
+                    case GamePhase.Chapter1: StartChapter1(); break;
+                    case GamePhase.Chapter2: StartChapter2(); break;
+                    case GamePhase.Chapter3: StartChapter3(); break;
+                    case GamePhase.Ending: OnEnding(); break;
                 }
 
                 switch (_currentPhase)
                 {
-                    case Phase.Chapter1 or Phase.Chapter2 or Phase.Chapter3:
+                    case GamePhase.Chapter1 or GamePhase.Chapter2 or GamePhase.Chapter3:
                         spawnedWallHints.ForEach(wallHint => wallHint.SetActive(true)); break;
                         default: spawnedWallHints.ForEach(wallHint => wallHint.SetActive(false)); break;
                 }
@@ -100,6 +89,13 @@ namespace Reless
                 PopupBookActive = _currentPhase;
             }
         }
+
+        /// <summary>
+        /// 현재 페이즈가 챕터 중인 경우 해당 챕터를 반환합니다.
+        /// 페이즈가 챕터 중이 아닌 경우 null을 반환합니다.
+        /// </summary>
+        public Chapter? CurrentChapter => Enum.IsDefined(typeof(Chapter), (Chapter)CurrentPhase) ? (Chapter)CurrentPhase : null;
+
 
         [NonSerialized]
         public List<GameObject> spawnedWallHints = new List<GameObject>();
@@ -199,15 +195,15 @@ namespace Reless
             {
                 // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingApproachDoor(
-                    onApproach: () => { CurrentPhase = Phase.Opening; },
-                    until: () => _currentPhase is not Phase.Title));
+                    onApproach: () => { CurrentPhase = GamePhase.Opening; },
+                    until: () => _currentPhase is not GamePhase.Title));
             }
             else
             {
                 // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingEnterRoom(
-                    onEnter: () => { CurrentPhase = Phase.Opening; },
-                    until: () => _currentPhase is not Phase.Title));
+                    onEnter: () => { CurrentPhase = GamePhase.Opening; },
+                    until: () => _currentPhase is not GamePhase.Title));
             }
         }
         
@@ -261,7 +257,7 @@ namespace Reless
         
         private PopupBook _popupBook;
 
-        private Phase PopupBookActive
+        private GamePhase PopupBookActive
         {
             set
             {
@@ -269,8 +265,8 @@ namespace Reless
 
                 _popupBook.gameObject.SetActive(value switch
                 {
-                    <= Phase.Tutorial => false,
-                    > Phase.Tutorial => true,
+                    <= GamePhase.Tutorial => false,
+                    > GamePhase.Tutorial => true,
                 });
             }
         }
