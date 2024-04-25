@@ -1,7 +1,7 @@
 using System.Collections;
 using Reless.MR;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace Reless
 {
@@ -55,7 +55,7 @@ namespace Reless
             
             _roomManager.HidePassthroughEffectMesh = true;
             
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("ExitDream"));
+            UnityEngine.SceneManagement.SceneManager.SetActiveScene(SceneManager.GetScene(BuildScene.ExitDream));
             
             var sppPassthroughParent = new GameObject("SppPassthroughMeshes");
             
@@ -74,7 +74,7 @@ namespace Reless
             sppPassthroughParent.transform.position =
                 centerEyeAnchor.TransformPoint(Vector3.zero) - centerEyeAnchor.localPosition;
 
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("VR Room"));
+            UnitySceneManager.SetActiveScene(SceneManager.GetScene(BuildScene.VRRoom));
             //clonedRoom.transform.position = FindObjectOfType<OVRCameraRig>().centerEyeAnchor.TransformPoint(Vector3.zero);
         }
 
