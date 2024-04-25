@@ -1,63 +1,32 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
 using Reless.MR;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using static Reless.BuildScene;
 
 namespace Reless
 {
     /// <summary>
-    /// 게임의 전반을 관리하는 클래스입니다.
-    /// NOTE: 향후 분리될 수 있음
+    /// 게임의 전반을 관리하는 싱글톤 클래스입니다.
     /// </summary>
-    public class GameManager : MonoBehaviour
+    public class GameManager
     {
-        public static GameManager Instance 
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    // 씬에서 게임 매니저 오브젝트를 찾습니다.
-                    _instance = FindAnyObjectByType<GameManager>();
-                    
-                    if (_instance == null)
-                    {
-                        Debug.LogWarning($"{nameof(GameManager)}: There is no instance in the scene. Creating new one.");
-                        _instance = new GameObject(nameof(GameManager)).AddComponent<GameManager>();
-                    }
-                }
-                
-                // 게임 매니저 오브젝트는 씬이 바뀌어도 파괴되지 않습니다.
-                DontDestroyOnLoad(_instance.gameObject);
-                return _instance;
-            }
-        }
-        private static GameManager _instance;
-        
-        public static bool NotInThisScene => _instance == null;
+        public static GameManager Instance => instance ??= new GameManager();
+        private static GameManager instance;
 
-        public void Awake()
+        [RuntimeInitializeOnLoadMethod]
+        private static void Initialize()
         {
-            if (_instance is not null && _instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            
-            if (SceneManager.GetActiveScene().name == "MainScene")
-            {
-                SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive);
-            }
+            // 메인 씬에서만 시작 시에 바로 방을 셋업합니다.
+            if (SceneManager.ActiveScene is MainScene) RoomManager.SetupRoom();
         }
-        
-        private GamePhase _currentPhase;
 
-        [ShowNativeProperty]
+        /// <summary>
+        /// 게임의 현재 진행 단계
+        /// </summary>
         public GamePhase CurrentPhase
         {
             get => _currentPhase;
@@ -89,6 +58,7 @@ namespace Reless
                 PopupBookActive = _currentPhase;
             }
         }
+        private GamePhase _currentPhase;
 
         /// <summary>
         /// 현재 페이즈가 챕터 중인 경우 해당 챕터를 반환합니다.
@@ -99,6 +69,8 @@ namespace Reless
 
         [NonSerialized]
         public List<GameObject> spawnedWallHints = new List<GameObject>();
+        
+        public static Action OnTitle { get; set; }
         
         public static Action OnOpening { get; set; }
 
@@ -124,9 +96,11 @@ namespace Reless
 
         private void StartTitle()
         {
-            SceneManager.LoadSceneAsync("MainScene");
+            SceneManager.LoadAsync(MainScene);
+            OnTitle?.Invoke();
         }
         
+        // TODO: Input System으로 전환
         private void Update()
         {
             ForcePhaseControlling();
@@ -178,7 +152,7 @@ namespace Reless
             get
             {
                 Instance._cameraRig = Instance._cameraRig.AsUnityNull();
-                Instance._cameraRig ??= FindAnyObjectByType<OVRCameraRig>();
+                Instance._cameraRig ??= UnityEngine.Object.FindAnyObjectByType<OVRCameraRig>();
                 Assert.IsNotNull(Instance._cameraRig, "OVRCameraRig not found.");
                 return Instance._cameraRig;
             }
@@ -186,72 +160,6 @@ namespace Reless
         private OVRCameraRig _cameraRig;
 
         public static Transform EyeAnchor => CameraRig.centerEyeAnchor;
-
-        public void OnSceneLoaded()
-        {
-            _startedInRoom = RoomManager.Instance.Room.IsPositionInRoom(EyeAnchor.position);
-
-            if (_startedInRoom)
-            {
-                // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
-                StartCoroutine(CheckingApproachDoor(
-                    onApproach: () => { CurrentPhase = GamePhase.Opening; },
-                    until: () => _currentPhase is not GamePhase.Title));
-            }
-            else
-            {
-                // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
-                StartCoroutine(CheckingEnterRoom(
-                    onEnter: () => { CurrentPhase = GamePhase.Opening; },
-                    until: () => _currentPhase is not GamePhase.Title));
-            }
-        }
-        
-        /// <summary>
-        /// 방 안에서 시작했는지 여부
-        /// </summary>
-        [ShowNonSerializedField]
-        private bool _startedInRoom;        
-        
-        private IEnumerator CheckingEnterRoom(Action onEnter, Func<bool> until)
-        {
-            while (!until())
-            {
-                if (RoomManager.Instance.Room.IsPositionInRoom(EyeAnchor.position))
-                {
-                    onEnter?.Invoke();
-                    yield break;
-                }
-                
-                yield return null;
-            }
-        }
-        
-        private IEnumerator CheckingApproachDoor(Action onApproach, Func<bool> until)
-        {
-            while (!until())
-            {
-                var distance = RoomManager.Instance.ClosestDoorDistance(EyeAnchor.position, out _);
-                if (distance == 0f)
-                {
-                    Debug.LogWarning("Door not found.");
-                    yield break;
-                }
-                
-                if (distance < 0.5f)
-                {
-                    onApproach?.Invoke();
-                    yield break;
-                }
-                
-                yield return null;
-            }
-        }
-          
-        private void RestartCurrentPhase()
-        {
-            CurrentPhase = _currentPhase;
-        }
 
         public PopupBook PopupBook { set => _popupBook ??= value; }
         
@@ -271,13 +179,12 @@ namespace Reless
             }
         }
         
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
         public AsyncOperation LoadMainScene()
         {
             // 메인 씬을 로드할 때는 현실 룸을 다시 활성화합니다.
             if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = true;
 
-            var asyncLoad = SceneManager.LoadSceneAsync("MainScene");
+            var asyncLoad = SceneManager.LoadAsync(MainScene);
             asyncLoad.completed += operation =>
             {
                 Debug.Log("MainScene Loaded");
@@ -285,13 +192,12 @@ namespace Reless
             return asyncLoad;
         }
         
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
         public AsyncOperation LoadVRScene()
         {
             // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
             if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = false;
             
-            var asyncLoad = SceneManager.LoadSceneAsync("VR Room");
+            var asyncLoad = SceneManager.LoadAsync(VRRoom);
             asyncLoad.completed += operation =>
             {
                 Debug.Log("VR Room Loaded");
@@ -299,45 +205,16 @@ namespace Reless
             return asyncLoad;
         }
 
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
         public AsyncOperation LoadExitDreamScene()
         {
-            var asyncLoad = SceneManager.LoadSceneAsync("ExitDream", LoadSceneMode.Additive);
+            var asyncLoad = SceneManager.LoadAsync(ExitDream, LoadSceneMode.Additive);
             asyncLoad.completed += operation =>
             {
                 Debug.Log("ExitDreamScene Loaded");
             };
             return asyncLoad;
         }
-        
-#if UNITY_EDITOR
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void SetPreviousPhase()
-        {
-            CurrentPhase--;
-        }
-        
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void SetNextPhase()
-        {
-            CurrentPhase++;
-        }
 
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void EnableAppSW()
-        {
-            OVRManager.SetSpaceWarp(true);
-        }
-        
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void DisableAppSW()
-        {
-            OVRManager.SetSpaceWarp(false);
-        }
-
-        [ShowNativeProperty]
-        private bool SpaceWarpEnabled => OVRManager.GetSpaceWarp();
-#endif
         private void ToggleSpaceWarp()
         {
             OVRManager.SetSpaceWarp(!OVRManager.GetSpaceWarp());

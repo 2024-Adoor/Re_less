@@ -21,10 +21,6 @@ public class GoToPassthrough : MonoBehaviour
 	/// </summary>
 	private bool _loadExitRoomExecuted = false;
 	
-	/// <summary>
-	/// 게임매니저 없이 시작되었습니다 (MainScene에서 넘어오지 않음)
-	/// </summary>
-	private bool _startedDirectly = GameManager.NotInThisScene;
 
 	// 페이드 UI
 	private FadeUI fadeUI;

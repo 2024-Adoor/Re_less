@@ -20,6 +20,9 @@ namespace Reless.MR
         [NonSerialized]
         public MRUKRoom Room;
         
+        [ShowNativeProperty]
+        public bool StartedInRoom { get; private set; }
+        
         [SerializeField]
         private List<EffectMesh> virtualRoomEffectMeshes;
         
@@ -144,7 +147,6 @@ namespace Reless.MR
             
             OffsetPassthroughEffectMeshes();
             
-            GameManager.Instance.OnSceneLoaded();
             OnMRUKSceneLoaded?.Invoke();
         }
 
@@ -237,17 +239,26 @@ namespace Reless.MR
         {
             get
             {
-                if (instance.IsUnityNull() && yetLoadScene)
-                {
-                    // 인스턴스가 없으면 RoomSetup 씬이 로드되지 않은 것입니다. 씬을 한 번만 로드합니다.
-                    SceneManager.LoadSceneAsync("RoomSetup", LoadSceneMode.Additive);
-                    yetLoadScene = false;
-                }
+                // 인스턴스가 없으면 방을 셋업합니다.
+                if (instance.IsUnityNull()) SetupRoom();
                 
                 return instance.AsUnityNull();
             }
         }
         private static RoomManager instance;
+
+        /// <summary>
+        /// RoomSetup 씬을 로드하여 방을 셋업합니다.
+        /// </summary>
+        public static void SetupRoom()
+        {
+            // 기존에 로드 호출이 없었던 경우에만 호출하여 중복 로드를 방지합니다.
+            if (yetLoadScene)
+            {
+                SceneManager.LoadAsync(BuildScene.RoomSetup, LoadSceneMode.Additive);
+                yetLoadScene = false;
+            }
+        }
         
         /// <summary>
         /// 씬을 아직 로드한 적 없으면 true

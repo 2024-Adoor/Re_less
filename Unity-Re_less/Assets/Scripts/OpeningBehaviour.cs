@@ -50,6 +50,11 @@ namespace Reless
             GameManager.OnOpening += StartOpening;
         }
 
+        private void OnDestroy()
+        {
+            GameManager.OnOpening -= StartOpening;
+        }
+
         /// <summary>
         /// 오프닝을 시작합니다.
         /// </summary>
@@ -63,7 +68,7 @@ namespace Reless
             {
                 yield return LoadingOpeningScene();
                 
-                var openingScene = SceneManager.GetSceneByName("Opening");
+                var openingScene = SceneManager.GetScene(BuildScene.Opening);
                 var rootGameObjects = openingScene.GetRootGameObjects();
                 var rootGameObject = rootGameObjects.First(go => go.name == "Root");
                 RedundantResolve(rootGameObjects);
@@ -115,7 +120,7 @@ namespace Reless
                 yield return new WaitForSeconds(3f);
                 
                 // 오프닝 씬 언로드
-                SceneManager.UnloadSceneAsync("Opening");
+                SceneManager.UnloadAsync(BuildScene.Opening);
                 
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
@@ -149,7 +154,7 @@ namespace Reless
         /// </summary>
         private IEnumerator LoadingOpeningScene()
         {
-            var asyncLoad = SceneManager.LoadSceneAsync("Opening", LoadSceneMode.Additive);
+            var asyncLoad = SceneManager.LoadAsync(BuildScene.Opening, LoadSceneMode.Additive);
             asyncLoad.allowSceneActivation = false;
             
             yield return new WaitForSeconds(1f);
