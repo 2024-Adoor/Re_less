@@ -6,6 +6,8 @@ public class Chat_Character : MonoBehaviour
 {
     public GameObject Player;
     public GameObject Character;
+    AniManage _AniManage;
+    Cat_AniManage _Cat_AniManage;
     
     public Material[] chatMaterials; // Material ¹è¿­
     public bool isChatFin = false;
@@ -20,22 +22,45 @@ public class Chat_Character : MonoBehaviour
 
     void Update()
     {   
-        AniManage _AniManage = Character.GetComponent<AniManage>();
-
-        if (_AniManage.isChange && !isChatFin)
-        {   
-            GetComponent<Renderer>().enabled = true;
-            StartCoroutine(Delay_Change(1.5f));
-            isChatFin = true;
-        }
-
-        if(Chat == chatMaterials.Length)
+        if(Character.name == "Character_Cat")
         {
-            _AniManage.animationComponent.Stop();
-            _AniManage.animationComponent.clip = doorAni;
-            _AniManage.animationComponent.Play();
+            _Cat_AniManage = Character.GetComponent<Cat_AniManage>();
 
-            Chat++;
+            if (_Cat_AniManage.isChange && !isChatFin)
+            {   
+                GetComponent<Renderer>().enabled = true;
+                StartCoroutine(Delay_Change(1.5f));
+                isChatFin = true;
+            }
+
+            if(Chat == chatMaterials.Length)
+            {
+                _Cat_AniManage.animationComponent.Stop();
+                _Cat_AniManage.animationComponent.clip = doorAni;
+                _Cat_AniManage.animationComponent.Play();
+
+                Chat++;
+            }
+        }
+        else
+        {
+            _AniManage = Character.GetComponent<AniManage>();
+
+            if (_AniManage.isChange && !isChatFin)
+            {   
+                GetComponent<Renderer>().enabled = true;
+                StartCoroutine(Delay_Change(1.5f));
+                isChatFin = true;
+            }
+
+            if(Chat == chatMaterials.Length)
+            {
+                _AniManage.animationComponent.Stop();
+                _AniManage.animationComponent.clip = doorAni;
+                _AniManage.animationComponent.Play();
+
+                Chat++;
+            }
         }
     }
 
