@@ -43,9 +43,8 @@ namespace Reless
         // Start is called before the first frame update
         void Start()
         {
-            var actions = new InputActions();
-            _moveAction = InputSystem.actions["Move"];
-            _jumpAction = InputSystem.actions["Jump"];
+            _moveAction = GameManager.InputActions.VR.Move;
+            _jumpAction = GameManager.InputActions.VR.Jump;
             _jumpAction.performed += _ =>
             {
                 if (!hasJumped) _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);

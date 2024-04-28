@@ -160,6 +160,22 @@ namespace Reless
         private OVRCameraRig _cameraRig;
 
         public static Transform EyeAnchor => CameraRig.centerEyeAnchor;
+        
+        public static InputActions InputActions
+        {
+            get
+            {
+                if (Instance._inputActions is null)
+                {
+                    Instance._inputActions = new InputActions();
+                    Instance._inputActions.Enable();
+                }
+                
+                return Instance._inputActions;
+            }
+        } 
+        
+        private InputActions _inputActions;
 
         public PopupBook PopupBook { set => _popupBook ??= value; }
         
