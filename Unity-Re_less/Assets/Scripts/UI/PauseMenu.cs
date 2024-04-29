@@ -11,11 +11,9 @@ namespace Reless.UI
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField]
-        private TMP_Text framerate;
+        private Framerate framerate;
         
         private bool _showFramerate;
-        
-        private Coroutine _checkFramerate;
         
         public bool ShowFramerate
         {
@@ -23,29 +21,13 @@ namespace Reless.UI
             {
                 _showFramerate = value;
                 framerate.gameObject.SetActive(value);
-                
-                if (_showFramerate)
-                {
-                    var updateInterval = new WaitForSecondsRealtime(0.5f);
-                    _checkFramerate = StartCoroutine(CheckFramerate(updateInterval));
-                }
             }
         }
 
         private void Start()
         {
+            Disable();
             framerate.gameObject.SetActive(_showFramerate);
-        }
-        
-        private IEnumerator CheckFramerate(WaitForSecondsRealtime updateInterval)
-        {
-            while (true)
-            {
-                yield return updateInterval;
-                framerate.text = $"FPS: {1 / Time.unscaledDeltaTime}";
-                
-                if (_showFramerate is false) yield break;
-            }
         }
         
         public void Enable()
