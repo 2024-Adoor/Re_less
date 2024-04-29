@@ -1,16 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Reless.UI
 {
+    /// <summary>
+    /// UI를 제어하는 클래스입니다.
+    /// </summary>
     public class UIControl : MonoBehaviour
     {
         private InputActions _inputActions;
         private InputAction _openPauseMenuAction;
         
-        [SerializeField] private GameObject _pauseMenu;
+        [SerializeField] 
+        private PauseMenu pauseMenu;
         
         // Start is called before the first frame update
         private void Start()
@@ -23,19 +25,21 @@ namespace Reless.UI
 
         private void TogglePauseMenu()
         {
-            bool opened = _pauseMenu.activeSelf;
+            bool opened = pauseMenu.isActiveAndEnabled;
             
             if (opened)
             {
                 _inputActions.VR.Enable();
                 _inputActions.MR.Enable();
+                pauseMenu.Disable();
             }
             else
             {
                 _inputActions.VR.Disable();
                 _inputActions.MR.Disable();
+                pauseMenu.Enable();
             }
-            _pauseMenu.SetActive(!opened);
+            
         }
     }
 }
