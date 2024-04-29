@@ -4,14 +4,15 @@ using NaughtyAttributes;
 
 namespace Reless.MR
 {
-    
     /// <summary>
-    /// 작성 중
+    /// 방의 크기를 키웁니다.
     /// </summary>
     public class RoomEnlarger : MonoBehaviour
     {
-        [SerializeField, ReadOnly]
-        private RoomManager roomManager;
+        /// <summary>
+        /// RoomManager 레퍼런스
+        /// </summary>
+        private RoomManager RoomManager { get; set; }
         
         /// <summary>
         /// 방의 크기를 키울 때 사용할 크기 배율입니다.
@@ -25,12 +26,19 @@ namespace Reless.MR
         [SerializeField]
         private float enlargingDuration;
         
+        /// <summary>
+        /// 방이 커지는 애니메이션의 커브입니다.
+        /// </summary>
         [SerializeField]
         private AnimationCurve animationCurve;
         
-        private void OnValidate()
+        private void Start()
         {
-            roomManager = FindObjectOfType<RoomManager>();
+            RoomManager = RoomManager.Instance;
+            if (RoomManager is null)
+            {
+                RoomManager.OnMRUKSceneLoaded += () => RoomManager = RoomManager.Instance;
+            }
         }
 
         /// <summary>
@@ -47,18 +55,18 @@ namespace Reless.MR
                 for (float elapsedTime = 0f; elapsedTime < enlargingDuration; elapsedTime += Time.deltaTime)
                 {
                     float scale = Mathf.Lerp(1f, enlargedScale, Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)));
-                    roomManager.Room.transform.localScale = Vector3.one * scale;
+                    RoomManager.Room.transform.localScale = Vector3.one * scale;
                     yield return null;
                 }
                 
                 // 최종 값으로 방의 크기 변경
-                roomManager.Room.transform.localScale = Vector3.one * enlargedScale;
+                RoomManager.Room.transform.localScale = Vector3.one * enlargedScale;
             }
         }
         
         public void RestoreRoomScale()
         {
-            roomManager.Room.transform.localScale = Vector3.one;
+            RoomManager.Room.transform.localScale = Vector3.one;
         }
     }
 }

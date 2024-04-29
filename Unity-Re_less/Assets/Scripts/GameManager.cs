@@ -14,6 +14,9 @@ namespace Reless
     /// </summary>
     public class GameManager
     {
+        /// <summary>
+        /// 싱글톤 인스턴스
+        /// </summary>
         public static GameManager Instance => instance ??= new GameManager();
         private static GameManager instance;
 
@@ -32,10 +35,13 @@ namespace Reless
             get => _currentPhase;
             set
             {
-                // 클램프
-                if (value < GamePhase.Title) _currentPhase = GamePhase.Title;
-                else if (value > GamePhase.Ending) _currentPhase = GamePhase.Ending;
-                else _currentPhase = value;
+                // 유효한 값으로 제한합니다.
+                _currentPhase = value switch
+                {
+                    < GamePhase.Title => GamePhase.Title,
+                    > GamePhase.Ending => GamePhase.Ending,
+                    _ => value
+                };
 
                 switch (_currentPhase)
                 {
@@ -104,12 +110,6 @@ namespace Reless
         private void Update()
         {
             ForcePhaseControlling();
-
-            if (OVRInput.GetDown(OVRInput.RawButton.Y))
-            {
-                Debug.Log("On Y Button Pressed");
-                ToggleSpaceWarp();
-            }
         }
 
         /// <summary>
@@ -147,20 +147,33 @@ namespace Reless
             }
         }
 
+        /// <summary>
+        /// 현재 씬의 OVRCameraRig를 반환합니다.
+        /// </summary>
         public static OVRCameraRig CameraRig
         {
             get
             {
+                // 캐시된 값이 없다면 찾아 캐시합니다.
                 Instance._cameraRig = Instance._cameraRig.AsUnityNull();
                 Instance._cameraRig ??= UnityEngine.Object.FindAnyObjectByType<OVRCameraRig>();
+                
+                // OVRCameraRig는 씬에서 찾을 수 있어야 합니다.
                 Assert.IsNotNull(Instance._cameraRig, "OVRCameraRig not found.");
+                
                 return Instance._cameraRig;
             }
         }
         private OVRCameraRig _cameraRig;
 
+        /// <summary>
+        /// 카메라(플레이어의 머리)의 중앙 눈 앵커를 반환합니다.
+        /// </summary>
         public static Transform EyeAnchor => CameraRig.centerEyeAnchor;
         
+        /// <summary>
+        /// 프로젝트 전체에서 사용할 InputActions 인스턴스를 반환합니다.
+        /// </summary>
         public static InputActions InputActions
         {
             get
@@ -174,7 +187,6 @@ namespace Reless
                 return Instance._inputActions;
             }
         } 
-        
         private InputActions _inputActions;
 
         public PopupBook PopupBook { set => _popupBook ??= value; }
@@ -229,11 +241,6 @@ namespace Reless
                 Debug.Log("ExitDreamScene Loaded");
             };
             return asyncLoad;
-        }
-
-        private void ToggleSpaceWarp()
-        {
-            OVRManager.SetSpaceWarp(!OVRManager.GetSpaceWarp());
         }
     }
 }

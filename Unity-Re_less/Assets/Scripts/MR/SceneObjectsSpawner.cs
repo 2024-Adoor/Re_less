@@ -61,16 +61,27 @@ namespace Reless.MR
         /// <summary>
         /// RoomManager 레퍼런스
         /// </summary>
-        [SerializeField]
-        private RoomManager roomManager;
-        
-        private void OnValidate()
+        private RoomManager RoomManager { get; set; }
+
+        private void Awake()
         {
-            roomManager = FindAnyObjectByType<RoomManager>();
+            if (RoomManager.Instance is null)
+            {
+                Debug.LogWarning("RoomManager is not loaded yet.");
+                RoomManager.OnMRUKSceneLoaded += () => RoomManager = RoomManager.Instance;
+                RoomManager.OnMRUKSceneLoaded += SpawnAll;
+            }
+            else
+            {
+                Debug.Log("RoomManager is already loaded.");
+                RoomManager = RoomManager.Instance;
+                SpawnAll();
+            }
         }
         
         public void SpawnAll()
         {
+            Debug.Log("Spawning all scene objects.");
             SpawnOuterPrefabs();
             SpawnPopupBook();
             SpawnWallHint();
@@ -186,14 +197,14 @@ namespace Reless.MR
         private void SpawnWallHint()
         {
             {
-                var hint = Spawn(wallHintPrefabs[0], roomManager.KeyWall);
+                var hint = Spawn(wallHintPrefabs[0], RoomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(0.75f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
                 hint.SetActive(false);
             }
             {
-                var hint = Spawn(wallHintPrefabs[1], roomManager.KeyWall);
+                var hint = Spawn(wallHintPrefabs[1], RoomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(0.25f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
@@ -201,7 +212,7 @@ namespace Reless.MR
 
             }
             {
-                var hint = Spawn(wallHintPrefabs[2], roomManager.KeyWall);
+                var hint = Spawn(wallHintPrefabs[2], RoomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(-0.25f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);
@@ -209,7 +220,7 @@ namespace Reless.MR
 
             }
             {
-                var hint = Spawn(wallHintPrefabs[3], roomManager.KeyWall);
+                var hint = Spawn(wallHintPrefabs[3], RoomManager.KeyWall);
                 hint.transform.Rotate(Vector3.right, 90);
                 hint.transform.Translate(-0.75f, 0.05f, 0);
                 GameManager.Instance.spawnedWallHints.Add(hint);

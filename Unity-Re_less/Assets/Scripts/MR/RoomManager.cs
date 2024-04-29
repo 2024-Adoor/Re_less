@@ -17,11 +17,28 @@ namespace Reless.MR
     /// </summary>
     public class RoomManager : MonoBehaviour
     {
+        /// <summary>
+        /// RoomManager의 싱글톤 인스턴스를 반환합니다.
+        /// 아직 룸 로드가 되지 않았다면 null을 반환합니다.
+        /// </summary>
+        [CanBeNull]
+        public static RoomManager Instance 
+        {
+            get
+            {
+                // 인스턴스가 없으면 방을 셋업합니다.
+                if (instance.IsUnityNull()) SetupRoom();
+                
+                return instance.AsUnityNull();
+            }
+        }
+        private static RoomManager instance;
+        
+        /// <summary>
+        /// 현재 방의 MRUKRoom 인스턴스
+        /// </summary>
         [NonSerialized]
         public MRUKRoom Room;
-        
-        [ShowNativeProperty]
-        public bool StartedInRoom { get; private set; }
         
         [SerializeField]
         private List<EffectMesh> virtualRoomEffectMeshes;
@@ -81,7 +98,6 @@ namespace Reless.MR
              return Vector3.Distance(position, doorPosition);
         }
         
-
         /// <summary>
         /// 문이 하나라면 해당 문을 캐시합니다.
         /// </summary>
@@ -97,9 +113,10 @@ namespace Reless.MR
         
         private void Awake()
         {
+            // Awake 시점에 인스턴스는 없거나 (룸 로드가 끝나지 않음) 하나여야 합니다.
             Assert.IsTrue(instance is null || instance == this, "there are multiple RoomManager instances.");
         }
-        
+
         public void OnSceneLoaded()
         {
             Debug.Log($"{nameof(RoomManager)}: MRUK Scene loaded.");
@@ -108,6 +125,7 @@ namespace Reless.MR
             instance = this;
             Debug.Log("dont destroy on load");
             DontDestroyOnLoad(instance.gameObject);
+            DontDestroyOnLoad(MRUK.Instance);
             
             DebugRoomInfo();
             
@@ -148,6 +166,8 @@ namespace Reless.MR
             OffsetPassthroughEffectMeshes();
             
             OnMRUKSceneLoaded?.Invoke();
+            
+            
         }
 
         [Button]
@@ -169,8 +189,6 @@ namespace Reless.MR
 
         public bool RoomObjectActive { set => gameObject.SetActive(value); }
             
-        
-
         private void DebugRoomInfo()
         {
             var rooms = MRUK.Instance.Rooms;
@@ -228,27 +246,10 @@ namespace Reless.MR
             .GetComponentsInChildren<MeshRenderer>()
             .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).gameObject;
         
-
-        // Update is called once per frame
-        void Update()
-        {
-        }
         
-        [CanBeNull]
-        public static RoomManager Instance 
-        {
-            get
-            {
-                // 인스턴스가 없으면 방을 셋업합니다.
-                if (instance.IsUnityNull()) SetupRoom();
-                
-                return instance.AsUnityNull();
-            }
-        }
-        private static RoomManager instance;
 
         /// <summary>
-        /// RoomSetup 씬을 로드하여 방을 셋업합니다.
+        /// RoomSetup 씬을 로드하여 방을 셋업하고 RoomManager의 인스턴스를 생성합니다.
         /// </summary>
         public static void SetupRoom()
         {
@@ -273,7 +274,7 @@ namespace Reless.MR
 
         private void OnValidate()
         {
-            roomEnlarger = FindObjectOfType<RoomEnlarger>();
+            if (roomEnlarger.IsUnityNull()) roomEnlarger = FindAnyObjectByType<RoomEnlarger>();
         }
     }
 }
