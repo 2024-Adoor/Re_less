@@ -105,11 +105,17 @@ namespace Reless
         {
             ""name"": ""UI"",
             ""id"": ""1346303a-8661-4504-aedf-87cd5a642bc1"",
+            ""actions"": [],
+            ""bindings"": []
+        },
+        {
+            ""name"": ""Constant"",
+            ""id"": ""1b4b0f88-7a11-4b8c-8b62-d5bbdbdba400"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""TogglePauseMenu"",
                     ""type"": ""Button"",
-                    ""id"": ""4093bb37-24f2-46aa-8b8a-0e85664117e3"",
+                    ""id"": ""ea7ad10b-bf50-4958-bf9c-87ccdd18f3dd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -119,12 +125,12 @@ namespace Reless
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""d3acc52b-b797-4561-8924-be3cdea217ff"",
-                    ""path"": """",
+                    ""id"": ""75d15f7f-6f88-4c62-a828-459d3844ef22"",
+                    ""path"": ""<OculusTouchController>{LeftHand}/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""TogglePauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -159,7 +165,9 @@ namespace Reless
             m_MR_Newaction = m_MR.FindAction("New action", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-            m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
+            // Constant
+            m_Constant = asset.FindActionMap("Constant", throwIfNotFound: true);
+            m_Constant_TogglePauseMenu = m_Constant.FindAction("TogglePauseMenu", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -167,6 +175,7 @@ namespace Reless
             Debug.Assert(!m_VR.enabled, "This will cause a leak and performance issues, InputActions.VR.Disable() has not been called.");
             Debug.Assert(!m_MR.enabled, "This will cause a leak and performance issues, InputActions.MR.Disable() has not been called.");
             Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
+            Debug.Assert(!m_Constant.enabled, "This will cause a leak and performance issues, InputActions.Constant.Disable() has not been called.");
         }
 
         public void Dispose()
@@ -328,12 +337,10 @@ namespace Reless
         // UI
         private readonly InputActionMap m_UI;
         private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-        private readonly InputAction m_UI_Newaction;
         public struct UIActions
         {
             private @InputActions m_Wrapper;
             public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Newaction => m_Wrapper.m_UI_Newaction;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -343,16 +350,10 @@ namespace Reless
             {
                 if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
             {
-                @Newaction.started -= instance.OnNewaction;
-                @Newaction.performed -= instance.OnNewaction;
-                @Newaction.canceled -= instance.OnNewaction;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -370,6 +371,52 @@ namespace Reless
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // Constant
+        private readonly InputActionMap m_Constant;
+        private List<IConstantActions> m_ConstantActionsCallbackInterfaces = new List<IConstantActions>();
+        private readonly InputAction m_Constant_TogglePauseMenu;
+        public struct ConstantActions
+        {
+            private @InputActions m_Wrapper;
+            public ConstantActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @TogglePauseMenu => m_Wrapper.m_Constant_TogglePauseMenu;
+            public InputActionMap Get() { return m_Wrapper.m_Constant; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(ConstantActions set) { return set.Get(); }
+            public void AddCallbacks(IConstantActions instance)
+            {
+                if (instance == null || m_Wrapper.m_ConstantActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_ConstantActionsCallbackInterfaces.Add(instance);
+                @TogglePauseMenu.started += instance.OnTogglePauseMenu;
+                @TogglePauseMenu.performed += instance.OnTogglePauseMenu;
+                @TogglePauseMenu.canceled += instance.OnTogglePauseMenu;
+            }
+
+            private void UnregisterCallbacks(IConstantActions instance)
+            {
+                @TogglePauseMenu.started -= instance.OnTogglePauseMenu;
+                @TogglePauseMenu.performed -= instance.OnTogglePauseMenu;
+                @TogglePauseMenu.canceled -= instance.OnTogglePauseMenu;
+            }
+
+            public void RemoveCallbacks(IConstantActions instance)
+            {
+                if (m_Wrapper.m_ConstantActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IConstantActions instance)
+            {
+                foreach (var item in m_Wrapper.m_ConstantActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_ConstantActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public ConstantActions @Constant => new ConstantActions(this);
         private int m_MetaQuestSchemeIndex = -1;
         public InputControlScheme MetaQuestScheme
         {
@@ -390,7 +437,10 @@ namespace Reless
         }
         public interface IUIActions
         {
-            void OnNewaction(InputAction.CallbackContext context);
+        }
+        public interface IConstantActions
+        {
+            void OnTogglePauseMenu(InputAction.CallbackContext context);
         }
     }
 }

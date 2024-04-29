@@ -80,11 +80,17 @@
         {
             "name": "UI",
             "id": "1346303a-8661-4504-aedf-87cd5a642bc1",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "Constant",
+            "id": "1b4b0f88-7a11-4b8c-8b62-d5bbdbdba400",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "TogglePauseMenu",
                     "type": "Button",
-                    "id": "4093bb37-24f2-46aa-8b8a-0e85664117e3",
+                    "id": "ea7ad10b-bf50-4958-bf9c-87ccdd18f3dd",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -94,12 +100,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "d3acc52b-b797-4561-8924-be3cdea217ff",
-                    "path": "",
+                    "id": "75d15f7f-6f88-4c62-a828-459d3844ef22",
+                    "path": "<OculusTouchController>{LeftHand}/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "TogglePauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
