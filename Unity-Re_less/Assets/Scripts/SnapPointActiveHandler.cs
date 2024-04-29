@@ -1,30 +1,31 @@
 using Oculus.Interaction;
-using Reless;
 using UnityEngine;
+using static Reless.Chapter;
 
-public class SnapPointActiveHandler : MonoBehaviour
+namespace Reless
 {
-    [SerializeField, Range(1, 3)]
-    private int chapter;
-    
-    private SnapInteractable _snapInteractable;
-    
-    // Start is called before the first frame update
-    void Start()
+    public class SnapPointActiveHandler : MonoBehaviour
     {
-        _snapInteractable = GetComponentInChildren<SnapInteractable>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // 현재 챕터와 일치하는 경우에만 SnapInteractable을 활성화합니다.
-        _snapInteractable.enabled = GameManager.Instance.CurrentChapter switch
+        [SerializeField]
+        private Chapter chapter;
+    
+        private SnapInteractable _snapInteractable;
+    
+        void Start()
         {
-            Chapter.Chapter1 => chapter == 1,
-            Chapter.Chapter2 => chapter == 2,
-            Chapter.Chapter3 => chapter == 3,
-            _ => false
-        };
+            _snapInteractable = GetComponentInChildren<SnapInteractable>();
+        }
+
+        private void Update()
+        {
+            // 현재 챕터와 일치하는 경우에만 SnapInteractable을 활성화합니다.
+            _snapInteractable.enabled = GameManager.Instance.CurrentChapter switch
+            {
+                Chapter1 => chapter == Chapter1,
+                Chapter2 => chapter == Chapter2,
+                Chapter3 => chapter == Chapter3,
+                _ => false
+            };
+        }
     }
 }

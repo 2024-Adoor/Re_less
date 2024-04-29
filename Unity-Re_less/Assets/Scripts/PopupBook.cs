@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -8,7 +7,6 @@ namespace Reless
 {
     /// <summary>
     /// 팝업북과 관련된 동작을 담당하는 클래스입니다.
-    /// <remarks> 현재 구조화 중, 구현 예정 </remarks> 
     /// </summary>
     public class PopupBook : MonoBehaviour
     {
@@ -16,7 +14,7 @@ namespace Reless
         /// 현재 펼쳐진 페이지의 쪽수를 나타냅니다.
         /// </summary>
         [ShowNonSerializedField]
-        private int _currentPageIndex = 0;
+        private int _currentPageIndex;
 
         /// <summary>
         /// 페이지 메시의 두께
