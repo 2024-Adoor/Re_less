@@ -23,6 +23,11 @@ namespace Reless
             return UnityEngine.SceneManagement.SceneManager.GetSceneByBuildIndex((int)scene);
         }
         
+        public static BuildScene AsBuildScene(this UnityEngine.SceneManagement.Scene scene)
+        {
+            return (BuildScene)scene.buildIndex;
+        }
+        
         /// <summary>
         /// 현재 활성화된 씬
         /// </summary>

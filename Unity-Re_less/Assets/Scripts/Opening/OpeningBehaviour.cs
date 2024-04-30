@@ -53,7 +53,6 @@ namespace Reless.Opening
                 var openingScene = SceneManager.GetScene(BuildScene.Opening);
                 var rootGameObjects = openingScene.GetRootGameObjects();
                 var rootGameObject = rootGameObjects.First(go => go.name == "Root");
-                RedundantResolve(rootGameObjects);
                 TransformOpeningScene(rootGameObject);
 
                 yield return new WaitForSeconds(3);
@@ -115,20 +114,6 @@ namespace Reless.Opening
             rootGameObject.transform.parent = keyWall.transform;
             rootGameObject.transform.localPosition = new Vector3(0, (-keyWall.PlaneRect?.height ?? 0) / 2, 0);
             rootGameObject.transform.localRotation = Quaternion.AngleAxis(180, Vector3.up);
-        }
-
-        private void RedundantResolve(GameObject[] rootGameObjects)
-        {
-            foreach (var go in rootGameObjects)
-            {
-                if (go.GetComponent<Camera>() != null || 
-                    go.name == "Directional Light"
-                    )
-                {
-                    Debug.Log($"Destroying {go.name}");
-                    Destroy(go);
-                }
-            }
         }
         
         /// <summary>
