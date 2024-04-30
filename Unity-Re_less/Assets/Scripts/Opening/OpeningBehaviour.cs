@@ -5,31 +5,13 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
-namespace Reless
+namespace Reless.Opening
 {
     /// <summary>
     /// 게임 오프닝을 담당합니다.
     /// </summary>
     public class OpeningBehaviour : MonoBehaviour
     {
-        /// <summary>
-        /// 벽이 열릴 때의 애니메이션의 커브
-        /// </summary>
-        [SerializeField] 
-        private AnimationCurve wallOpening;
-
-        /// <summary>
-        /// 최초로 벽이 열릴 때의 애니메이션의 커브
-        /// </summary>
-        [SerializeField] 
-        private AnimationCurve wallOpeningFirst;
-        
-        /// <summary>
-        /// 벽이 닫힐 때의 애니메이션의 커브
-        /// </summary>
-        [SerializeField] 
-        private AnimationCurve wallClosing;
-
         /// <summary>
         /// 오프닝이 진행되는 벽
         /// </summary>
@@ -73,51 +55,10 @@ namespace Reless
                 var rootGameObject = rootGameObjects.First(go => go.name == "Root");
                 RedundantResolve(rootGameObjects);
                 TransformOpeningScene(rootGameObject);
-                
-                yield return new WaitForSeconds(3f);
-                yield return RotatingOpeningWall(wallOpeningFirst);
-                _openingAnimator.EnableScene(0);
-                yield return new WaitForSeconds(3f);
-                
-                _openingAnimator.DisableScene(0);
-                _openingAnimator.EnableScene(1);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(3f);
-                
-                _openingAnimator.DisableScene(1);
-                _openingAnimator.EnableScene(2);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(3f);
-                
-                _openingAnimator.DisableScene(2);
-                _openingAnimator.EnableScene(3);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(3f);
-                
-                _openingAnimator.DisableScene(3);
-                _openingAnimator.EnableScene(4);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(4f);
-                
-                _openingAnimator.DisableScene(4);
-                _openingAnimator.EnableScene(5);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(5f);
-                
-                _openingAnimator.DisableScene(5);
-                _openingAnimator.EnableScene(6);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(3f);
-                
-                _openingAnimator.DisableScene(6);
-                _openingAnimator.EnableScene(7);
-                yield return RotatingOpeningWall(wallOpening);
-                yield return new WaitForSeconds(3f);
-                
-                _openingAnimator.DisableScene(7);
-                
-                yield return RotatingOpeningWall(wallClosing);
-                yield return new WaitForSeconds(3f);
+
+                yield return new WaitForSeconds(3);
+                yield return _openingAnimator.Play();
+                yield return new WaitForSeconds(3);
                 
                 // 오프닝 씬 언로드
                 SceneManager.UnloadAsync(BuildScene.Opening);
@@ -227,8 +168,8 @@ namespace Reless
                 yield return null;
             }
         }
-
-        private IEnumerator RotatingOpeningWall(AnimationCurve curve)
+        
+        public IEnumerator RotatingOpeningWall(AnimationCurve curve)
         {
             // 회전 초기화
             ResetTransformOpeningWall();
