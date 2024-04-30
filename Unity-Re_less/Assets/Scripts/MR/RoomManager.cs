@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -9,6 +10,7 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 namespace Reless.MR
 {
@@ -35,117 +37,140 @@ namespace Reless.MR
         private static RoomManager instance;
         
         /// <summary>
-        /// 현재 방의 MRUKRoom 인스턴스
+        /// RoomSetup 씬을 아직 로드한 적 없으면 true
+        /// </summary>
+        private static bool yetLoadScene = true;
+
+        /// <summary>
+        /// MRUK 씬이 로드되었을 때 호출될 액션
+        /// RoomManager의 인스턴스가 null인 경우 작업을 연기하는 데 사용됩니다.
+        /// </summary>
+        public static Action OnMRUKSceneLoaded { get; set; }
+        
+        /// <summary>
+        /// 현재 방의 MRUKRoom 레퍼런스
         /// </summary>
         [NonSerialized]
         public MRUKRoom Room;
         
+        /// <summary>
+        /// VR Room의 모델과 텍스처를 재현하는 데 사용되는 이펙트 메시들
+        /// </summary>
         [SerializeField]
         private List<EffectMesh> virtualRoomEffectMeshes;
         
+        /// <summary>
+        /// 패스스루 이펙트 메시
+        /// </summary>
         [SerializeField]
         private EffectMesh passthroughRoom;
         
+        /// <summary>
+        /// Surface Projected PassThrough 이펙트 메시
+        /// </summary>
         [SerializeField]
         private EffectMesh sppPassThroughRoom;
         
+        /// <summary>
+        /// 방의 엣지 이펙트 메시
+        /// </summary>
         [SerializeField]
         private EffectMesh edgeEffect;
         
         public ReadOnlyCollection<GameObject> PassthroughEffectMeshes => _passthroughEffectMeshes.AsReadOnly();
-        
         private readonly List<GameObject> _passthroughEffectMeshes = new();
 
         public ReadOnlyCollection<GameObject> SppPassThroughMeshes => _sppPassThroughMeshes.AsReadOnly();
-        
         private readonly List<GameObject> _sppPassThroughMeshes = new();
         
+        /// <summary>
+        /// MRUK의 keyWall을 반환합니다.
+        /// </summary>
         public MRUKAnchor KeyWall => _keyWall;
-        
         private MRUKAnchor _keyWall;
 
         /// <summary>
-        /// 주어진 위치에서 가장 가까운 문 사이의 거리를 반환합니다.
-        /// </summary>
-        /// <param name="position">대상 위치</param>
-        /// <param name="doorPosition">가장 가까운 문의 위치, 문이 없으면 Vector3.zero</param>
-        /// <returns>문의 위치, 문이 없으면 0</returns>
-        public float ClosestDoorDistance(Vector3 position, out Vector3 doorPosition)
-        {
-            // 캐시된 단일 문 위치가 있으면 바로 반환합니다.
-            if (_uniqueDoorPosition is not null)
-            {
-                doorPosition = _uniqueDoorPosition.Value;
-                return Vector3.Distance(position, _uniqueDoorPosition.Value);
-            };
-            
-            _doors ??= Room.Anchors
-                .Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME)
-                .AsReadOnlyCollection();
-            
-            // 문이 하나라면 해당 문을 캐시합니다.
-             if (_doors.Count == 1)
-             {
-                 _uniqueDoorPosition = _doors.First().transform.position;
-                 doorPosition = _uniqueDoorPosition.Value;
-                 return Vector3.Distance(position, _uniqueDoorPosition.Value);
-             }
-
-             // 여러 문 중 현재 위치에서 가장 가까운 문을 찾아 반환합니다.
-             doorPosition = _doors.OrderBy(door => Vector3.Distance(door.transform.position, position))
-                 .FirstOrDefault()?.transform.position ?? Vector3.zero;
-             
-             return Vector3.Distance(position, doorPosition);
-        }
-        
-        /// <summary>
-        /// 문이 하나라면 해당 문을 캐시합니다.
+        /// 방에 문이 하나라면 해당 문을 캐시합니다.
+        /// 문이 하나가 아니면 null입니다.
         /// </summary>
         private Vector3? _uniqueDoorPosition;
 
+        /// <summary>
+        /// 방의 문 앵커들
+        /// </summary>
         private ICollection<MRUKAnchor> _doors;
-        
 
+        /// <summary>
+        /// RoomEnlarger 레퍼런스
+        /// </summary>
         [ReadOnly]
         public RoomEnlarger roomEnlarger;
 
+        /// <summary>
+        /// 오프닝에 쓰일 열리는 벽 오브젝트를 반환합니다.
+        /// </summary>
         public GameObject OpeningWall => FindCreatedEffectMesh(_keyWall, passthroughRoom);
+        
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Initialize()
+        {
+            // RoomSetup 씬에서 시작했다면 이미 현재 씬이므로 yetLoadScene을 false로 설정합니다.
+            if (SceneManager.ActiveScene is BuildScene.RoomSetup) { yetLoadScene = false; }
+        }
+        
+        /// <summary>
+        /// RoomSetup 씬을 로드하여 방을 셋업하도록 합니다.
+        /// </summary>
+        public static void SetupRoom()
+        {
+            // 기존에 로드 호출이 없었던 경우에만 호출하여 중복 로드를 방지합니다.
+            if (yetLoadScene)
+            {
+                SceneManager.LoadAsync(BuildScene.RoomSetup, LoadSceneMode.Additive);
+                yetLoadScene = false;
+            }
+        }
         
         private void Awake()
         {
-            // Awake 시점에 인스턴스는 없거나 (룸 로드가 끝나지 않음) 하나여야 합니다.
+            // Awake 시점에 인스턴스는 아직 대입되지 않았거나(룸 로드가 끝나지 않음) 하나여야 합니다.
             Assert.IsTrue(instance is null || instance == this, "there are multiple RoomManager instances.");
         }
 
+        /// <summary>
+        /// MRUK 씬이 로드되었을 때 호출됩니다.
+        /// </summary>
         public void OnSceneLoaded()
         {
-            Debug.Log($"{nameof(RoomManager)}: MRUK Scene loaded.");
-            
+            Debug.Log($"{nameof(RoomManager)}: MRUK Scene Loaded.");
             Assert.IsNull(instance, "RoomManager is singleton but already exists.");
-            instance = this;
-            Debug.Log("dont destroy on load");
-            DontDestroyOnLoad(instance.gameObject);
-            DontDestroyOnLoad(MRUK.Instance);
             
             DebugRoomInfo();
+            
+            // MRUK 씬이 로드될 때 RoomManager의 싱글톤 인스턴스를 대입합니다.
+            instance = this;
+            
+            // RoomManager와 MRUK를 씬이 바뀌어도 파괴되지 않도록 설정합니다.
+            DontDestroyOnLoad(instance.gameObject);
+            DontDestroyOnLoad(MRUK.Instance);
             
             // 생성된 방을 자식으로 설정합니다.
             Room = MRUK.Instance.GetCurrentRoom();
             Room.transform.parent = this.transform;
             
-            // 가장 긴 벽을 찾습니다.
+            // 키 월을 찾습니다.
             _keyWall = Room.GetKeyWall(out _);
             
+            // 이펙트 메시들을 생성합니다.
             edgeEffect.CreateMesh();
             passthroughRoom.CreateMesh();
             sppPassThroughRoom.CreateMesh();
 
+            // 생성된 SPP 패스스루 메시들을 찾아 리스트에 저장합니다.
             FindAndAddSppPassThroughMesh(Room.CeilingAnchor);
             FindAndAddSppPassThroughMesh(Room.FloorAnchor);
-            foreach (var wall in Room.WallAnchors)
-            {
-                FindAndAddSppPassThroughMesh(wall);
-            }
+            Room.WallAnchors.ForEach(FindAndAddSppPassThroughMesh);
             
             void FindAndAddSppPassThroughMesh(MRUKAnchor anchor)
             {
@@ -163,11 +188,10 @@ namespace Reless.MR
                 }
             }
             
+            // 패스스루 이펙트 메쉬들을 약간 오프셋합니다.
             OffsetPassthroughEffectMeshes();
             
             OnMRUKSceneLoaded?.Invoke();
-            
-            
         }
 
         [Button]
@@ -187,8 +211,12 @@ namespace Reless.MR
             }
         }
 
+        /// <summary>
+        /// 현실 룸 전체를 활성화 또는 비활성화합니다.
+        /// </summary>
         public bool RoomObjectActive { set => gameObject.SetActive(value); }
             
+        [Conditional("UNITY_EDITOR")]
         private void DebugRoomInfo()
         {
             var rooms = MRUK.Instance.Rooms;
@@ -246,31 +274,39 @@ namespace Reless.MR
             .GetComponentsInChildren<MeshRenderer>()
             .First(mesh => mesh.sharedMaterial == effectMesh.MeshMaterial).gameObject;
         
-        
-
         /// <summary>
-        /// RoomSetup 씬을 로드하여 방을 셋업하고 RoomManager의 인스턴스를 생성합니다.
+        /// 주어진 위치에서 가장 가까운 문 사이의 거리를 반환합니다.
         /// </summary>
-        public static void SetupRoom()
+        /// <param name="position">대상 위치</param>
+        /// <param name="doorPosition">가장 가까운 문의 위치, 문이 없으면 Vector3.zero</param>
+        /// <returns>문의 위치, 문이 없으면 0</returns>
+        public float ClosestDoorDistance(Vector3 position, out Vector3 doorPosition)
         {
-            // 기존에 로드 호출이 없었던 경우에만 호출하여 중복 로드를 방지합니다.
-            if (yetLoadScene)
+            // 캐시된 단일 문 위치가 있으면 바로 반환합니다.
+            if (_uniqueDoorPosition is not null)
             {
-                SceneManager.LoadAsync(BuildScene.RoomSetup, LoadSceneMode.Additive);
-                yetLoadScene = false;
+                doorPosition = _uniqueDoorPosition.Value;
+                return Vector3.Distance(position, _uniqueDoorPosition.Value);
+            };
+            
+            _doors ??= Room.Anchors
+                .Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME)
+                .AsReadOnlyCollection();
+            
+            // 문이 하나라면 해당 문을 캐시합니다.
+            if (_doors.Count == 1)
+            {
+                _uniqueDoorPosition = _doors.First().transform.position;
+                doorPosition = _uniqueDoorPosition.Value;
+                return Vector3.Distance(position, _uniqueDoorPosition.Value);
             }
-        }
-        
-        /// <summary>
-        /// 씬을 아직 로드한 적 없으면 true
-        /// </summary>
-        private static bool yetLoadScene = true;
 
-        /// <summary>
-        /// MRUK 씬이 로드되었을 때 호출될 액션
-        /// RoomManager의 인스턴스가 null인 경우 작업을 연기하는 데 사용됩니다.
-        /// </summary>
-        public static Action OnMRUKSceneLoaded { get; set; }
+            // 여러 문 중 현재 위치에서 가장 가까운 문을 찾아 반환합니다.
+            doorPosition = _doors.OrderBy(door => Vector3.Distance(door.transform.position, position))
+                .FirstOrDefault()?.transform.position ?? Vector3.zero;
+             
+            return Vector3.Distance(position, doorPosition);
+        }
 
         private void OnValidate()
         {
