@@ -63,10 +63,13 @@ public class Broken_Watch : MonoBehaviour
                     {
                         // 예를 들어, 자식 오브젝트의 스크립트를 수정하거나 실행하기
                         CH02obj _CH02obj = childObject.GetComponent<CH02obj>();
+
+
                         if (_CH02obj != null)
                         {
                             // ChildScript의 public 메서드나 변수에 접근하여 원하는 작업 수행
                             _CH02obj.isMoving = false;
+                            _CH02obj.Speed = 0f;
                         }
                     }
                 }

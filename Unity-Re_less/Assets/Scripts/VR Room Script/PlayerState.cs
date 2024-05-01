@@ -57,10 +57,22 @@ public class PlayerState : MonoBehaviour
     // EndTrigger 머테리얼
     public Material EndMaterial;
 
+    // 챕터 2 열매 다 먹었을 때 화살표 활성화
+    public GameObject[] Ch02Arrows;
+
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+
+        // 배열을 반복하여 작업 수행
+        foreach (GameObject obj in Ch02Arrows)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(false);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -147,6 +159,17 @@ public class PlayerState : MonoBehaviour
             }
         }
 
+        if(fruitCount == 2)
+        {
+            // 배열을 반복하여 작업 수행
+            foreach (GameObject obj in Ch02Arrows)
+            {
+                if (obj != null)
+                {
+                    obj.SetActive(true);
+                }
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
