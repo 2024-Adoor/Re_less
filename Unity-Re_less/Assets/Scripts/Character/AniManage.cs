@@ -15,6 +15,7 @@ public class AniManage : MonoBehaviour
     public AnimationClip SleepOutAni;       // SleepOut Animation Clip
     public AnimationClip IdleAni;           // IDLE Animation Clip 
     public bool isChange = false;
+    public bool isSleepOut = false;
 
     // Sound
     public AudioClip HealingSound;
@@ -28,12 +29,12 @@ public class AniManage : MonoBehaviour
         SleepOutEffect.Stop();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {   
+    void Update()
+    {
         PlayerState _PlayerState = Player.GetComponent<PlayerState>();
 
-        if (collision.gameObject.CompareTag("Player"))
-        {   
+        if(isSleepOut)
+        {
             // Animation 컴포넌트의 현재 Animation을 중지하고 새 Animation Clip으로 변경
             if (animationComponent != null && SleepOutAni != null && _PlayerState.fruitCount > 0 && !isChange)
             {

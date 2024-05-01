@@ -7,14 +7,14 @@ namespace Reless
     public class CreateTrigger : MonoBehaviour
     {
         public GameObject nextTrigger;
-        public float delayInSeconds = 2f; // 딜레이 초 설정 
+        public float delayInSeconds = 3f; // 딜레이 초 설정 
 
         private Renderer objectRenderer; // 렌더러 컴포넌트 저장
 
         // Start is called before the first frame update
         void Start()
         {
-            // nextTrigger.SetActive(false);
+            nextTrigger.SetActive(false);
         }
 
         // Update is called once per frame
@@ -22,13 +22,12 @@ namespace Reless
         {
             objectRenderer = GetComponent<Renderer>(); // 렌더러 컴포넌트 가져오기
 
-            // 현재 머테리얼 이름이 "Green"이고 이전 머테리얼 이름이 "Yellow"인 경우
+            // 현재 머테리얼 이름이 "Green"인 경우
             if (objectRenderer.material.name == "Green (Instance)")
             {
                 // 다음 트리거를 활성화
                 nextTrigger.SetActive(true);
 
-                // "Yellow"에서 "Green"으로 변경된 경우에만 실행
                 StartCoroutine(TriggerSequence());
             }
         }

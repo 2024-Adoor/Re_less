@@ -7,6 +7,7 @@ public class Cat_AniManage : MonoBehaviour
 {
     public Animation animationComponent;    // Animation 컴포넌트 참조
     public GameObject Player;               // Player
+    public bool isSleepOut = false;
 
     // VFX
     public ParticleSystem SleepingEffect;
@@ -35,12 +36,12 @@ public class Cat_AniManage : MonoBehaviour
         eyes2.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {   
+    void Update()
+    {
         PlayerState _PlayerState = Player.GetComponent<PlayerState>();
 
-        if (collision.gameObject.CompareTag("Player"))
-        {   
+        if(isSleepOut)
+        {
             // Animation 컴포넌트의 현재 Animation을 중지하고 새 Animation Clip으로 변경
             if (animationComponent != null && SleepOutAni != null && _PlayerState.fruitCount > 0 && !isChange)
             {
