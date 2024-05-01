@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using Reless.MR;
 using UnityEngine;
@@ -45,15 +46,12 @@ namespace Reless.Opening
             SetupOpeningWallPivot();
             
             StartCoroutine(StartRoutine());
-            
+
             IEnumerator StartRoutine()
             {
                 yield return LoadingOpeningScene();
                 
-                var openingScene = SceneManager.GetScene(BuildScene.Opening);
-                var rootGameObjects = openingScene.GetRootGameObjects();
-                var rootGameObject = rootGameObjects.First(go => go.name == "Root");
-                TransformOpeningScene(rootGameObject);
+                TransformToOpeningScene();
 
                 yield return new WaitForSeconds(3);
                 yield return _openingAnimator.Play();
@@ -72,7 +70,6 @@ namespace Reless.Opening
                 yield return new WaitForSeconds(2f);
                 
                 // 방에서 작아지기
-                Destroy(rootGameObject);
                 RoomManager.Instance.roomEnlarger.EnlargeRoom();
                 
                 // 튜토리얼 생략
@@ -108,12 +105,39 @@ namespace Reless.Opening
             _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
         }
         
-        private void TransformOpeningScene(GameObject rootGameObject)
+        /// <summary>
+        /// 공간을 오프닝 씬이 보여지도록 상대적으로 변환합니다.
+        /// </summary>
+        private static void TransformToOpeningScene()
         {
-            var keyWall = RoomManager.Instance.KeyWall;
-            rootGameObject.transform.parent = keyWall.transform;
-            rootGameObject.transform.localPosition = new Vector3(0, (-keyWall.PlaneRect?.height ?? 0) / 2, 0);
-            rootGameObject.transform.localRotation = Quaternion.AngleAxis(180, Vector3.up);
+            var roomManager = RoomManager.Instance;
+            Assert.IsNotNull(roomManager);
+            
+            var room = roomManager.Room.transform;
+            
+            // 변환 전 룸에 상대적인 트래킹 스페이스 저장
+            var initialTrackingSpacePosition = room.InverseTransformPoint(GameManager.CameraRig.trackingSpace.position);
+            var initialTrackingSpaceRotation = Quaternion.Inverse(room.rotation) * GameManager.CameraRig.trackingSpace.rotation;
+            
+            // 방을 기준이 되는 오프닝 벽의 -forward가 월드 forward를 바라보도록 회전
+            var targetRotation = Quaternion.LookRotation(-roomManager.KeyWall.transform.forward, Vector3.up);
+            room.rotation *= Quaternion.Inverse(targetRotation);
+
+            // 기준이 되는 오프닝 벽의 하단이 월드의 중앙에 오도록 룸을 이동
+            Vector3 targetPosition; 
+            {
+                // 오프닝 벽의 중앙에서 하단까지의 길이
+                float centerToBottom = default;
+                try { centerToBottom = (roomManager.KeyWall.PlaneRect?.height ?? throw new Exception()) / 2; } catch (Exception e) { Debug.LogError(e); }
+                
+                // 하단으로 오프셋
+                targetPosition = roomManager.KeyWall.transform.position - new Vector3(0, centerToBottom, 0);
+            }
+            room.position -= targetPosition;
+            
+            // 트래킹 스페이스를 변환된 룸에 대해서 변환
+            GameManager.CameraRig.trackingSpace.position = room.TransformPoint(initialTrackingSpacePosition);
+            GameManager.CameraRig.trackingSpace.rotation = room.rotation * initialTrackingSpaceRotation;
         }
         
         /// <summary>
