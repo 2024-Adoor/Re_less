@@ -8,7 +8,7 @@ namespace Reless
     /// </summary>
     public class ExcludeOnAdditiveLoad : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             // 활성 씬이 오브젝트가 속한 씬이 아니라면 Additive로 로드된 것으로 간주
             if (SceneManager.ActiveScene != gameObject.scene.AsBuildScene())
