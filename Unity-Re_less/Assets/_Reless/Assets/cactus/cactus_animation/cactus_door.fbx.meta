@@ -1,6 +1,5 @@
 fileFormatVersion: 2
 guid: 1b47be6842d3b49478e5bd87ce637ee5
-guid: 5e9edba6c5aa7084ab55e738e2813136
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -32,7 +31,6 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
     clipAnimations:
     - serializedVersion: 16
       name: cactus_door
