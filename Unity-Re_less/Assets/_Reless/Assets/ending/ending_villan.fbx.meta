@@ -1,59 +1,9 @@
 fileFormatVersion: 2
-guid: f044c82d58068614ba13f24bc38cf6ae
+guid: 6c6e99d67d56dbf479ffd3516847b090
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_mainM
-    second: {fileID: 2100000, guid: f6605fe51c62b1647ad8aa6889dee065, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo1
-    second: {fileID: 2100000, guid: d3aeb457d17ae974d8d31161da53b86b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo10
-    second: {fileID: 2100000, guid: fe002c706c4220c479b5e850649c3bc9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo10_2
-    second: {fileID: 2100000, guid: d51da2cfa9e27024e8c8485ffc7fc104, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo2
-    second: {fileID: 2100000, guid: 992ed3e939b92a14eb696c8a4aeca6b6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo5
-    second: {fileID: 2100000, guid: 6cfc2ab2c64658b46a67ee4d9827fa1d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo6
-    second: {fileID: 2100000, guid: 9cdbd55ea4a046b429ebb5beacea28ad, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo7
-    second: {fileID: 2100000, guid: 1b0695046b432114391b70de00ca97ac, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo8
-    second: {fileID: 2100000, guid: d0c1a3519ece727498ffc955c305f8d9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polaroid_photo9
-    second: {fileID: 2100000, guid: e58c81be1b3ec8b4fa65ec017043d1c9, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
