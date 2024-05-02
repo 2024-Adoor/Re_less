@@ -25,6 +25,9 @@ public class ChapterControl : MonoBehaviour
 
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
+
+    // 챕터별 라이트 조절
+    public Light spotLight; 
     
     // UI 트리거용 
     public int CH02_RespawnCount = 0;
@@ -93,6 +96,9 @@ public class ChapterControl : MonoBehaviour
     private void SetupChapter01()
     {
         SpawnPlayer(SpawnPoint01, -40);
+
+        // 챕터 1 Spot Light Intensity 조절
+        spotLight.intensity = 100f;
         
         // 챕터 1 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch02_Objects);
@@ -104,6 +110,9 @@ public class ChapterControl : MonoBehaviour
     private void SetupChapter02()
     {
         SpawnPlayer(SpawnPoint02, 120);
+
+        // 챕터 2 Spot Light Intensity 조절
+        spotLight.intensity = 300f;
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
         SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
@@ -122,6 +131,9 @@ public class ChapterControl : MonoBehaviour
     {
         SpawnPlayer(SpawnPoint03, 150);
         
+        // 챕터 3 Spot Light Intensity 조절
+        spotLight.intensity = 1500f;
+
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch01_Objects);
         SetActiveFalse(Ch02_Objects);
