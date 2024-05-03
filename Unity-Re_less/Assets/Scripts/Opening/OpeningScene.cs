@@ -11,5 +11,10 @@ namespace Reless.Opening
         /// 장면의 지속 시간
         /// </summary>
         public float duration;
+
+        /// <summary>
+        /// 장면의 자막
+        /// </summary>
+        public string subtitle;
     }
 }

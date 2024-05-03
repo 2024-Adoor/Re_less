@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -17,6 +18,12 @@ namespace Reless.Opening
         /// 오프닝 애니메이션의 각 장면들
         /// </summary>
         public List<OpeningScene> scenes;
+        
+        /// <summary>
+        /// 자막 텍스트 레퍼런스
+        /// </summary>
+        [SerializeField]
+        private TMP_Text subtitle;
         
         /// <summary>
         /// OpeningBehaviour 레퍼런스
@@ -78,6 +85,9 @@ namespace Reless.Opening
             {
                 // 현재 오프닝 씬 활성화
                 SetActiveScene(scene);
+                
+                // 자막 변경
+                subtitle.text = scene.subtitle;
                 
                 // 벽을 넘깁니다.
                 yield return _openingBehaviour switch { not null => _openingBehaviour.RotatingOpeningWall(wallOpening),
