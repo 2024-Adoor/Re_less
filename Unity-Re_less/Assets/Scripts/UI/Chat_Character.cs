@@ -5,6 +5,8 @@ using UnityEngine;
 public class Chat_Character : MonoBehaviour
 {
     public GameObject Player;
+    ChapterControl _ChapterControl;
+
     public GameObject Character;
     AniManage _AniManage;
     Cat_AniManage _Cat_AniManage;
@@ -15,9 +17,15 @@ public class Chat_Character : MonoBehaviour
     public AnimationClip doorAni;
     int Chat = 0;
 
+    public GameObject Obstacle;
+
+    // 챕터 클리어용 
+    bool isClear = false;
+
     void Start()
     {
         GetComponent<Renderer>().enabled = false;
+        _ChapterControl = Player.GetComponent<ChapterControl>();
     }
 
     void Update()
@@ -30,6 +38,7 @@ public class Chat_Character : MonoBehaviour
             {   
                 GetComponent<Renderer>().enabled = true;
                 StartCoroutine(Delay_Change(1.5f));
+
                 isChatFin = true;
             }
 
@@ -50,6 +59,7 @@ public class Chat_Character : MonoBehaviour
             {   
                 GetComponent<Renderer>().enabled = true;
                 StartCoroutine(Delay_Change(1.5f));
+
                 isChatFin = true;
             }
 
@@ -60,6 +70,33 @@ public class Chat_Character : MonoBehaviour
                 _AniManage.animationComponent.Play();
 
                 Chat++;
+            }
+
+            
+        }
+
+        if(Character.name == "Character_Clock")
+        {
+            if(isChatFin && Chat >  chatMaterials.Length && !isClear)
+            {
+                // 길을 막는 오브젝트 비활성화
+                Obstacle.SetActive(false);
+
+                // 챕터 2 시작
+                _ChapterControl.SetupChapter02();
+                isClear =  true;
+            }
+        }
+        else if(Character.name == "Character_Cactus")
+        {
+            if(isChatFin && Chat >  chatMaterials.Length && !isClear)
+            {
+                // 길을 막는 오브젝트 비활성화
+                Obstacle.SetActive(false);
+
+                // 챕터 2 시작
+                _ChapterControl.SetupChapter03();
+                isClear =  true;
             }
         }
     }

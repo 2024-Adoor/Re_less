@@ -154,6 +154,8 @@ public class SujiEndingTest : MonoBehaviour
             EndTriggerRender.enabled = true;
         }
 
+        
+
         if(RotateFin && !isIDle)
         {
             animationComponent.Stop();

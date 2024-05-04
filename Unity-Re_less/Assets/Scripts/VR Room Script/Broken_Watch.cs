@@ -8,7 +8,7 @@ public class Broken_Watch : MonoBehaviour
     public GameObject newPrefab1;  // 변경할 프리팹1
     public GameObject newPrefab2;  // 변경할 프리팹2
     public Vector3 RotationOffset;              // 변경할 프리팹 위치 
-    public bool isBroken;
+    public bool isBroken = false;
 
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
@@ -17,9 +17,16 @@ public class Broken_Watch : MonoBehaviour
 
     GameObject newObject_1;
 
-    void Start()
+    void Update()
     {
-        CH02_Cars.SetActive(false);
+        if(isBroken)
+        {
+            CH02_Cars.SetActive(true);
+        }
+        else
+        {
+            CH02_Cars.SetActive(false);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -47,32 +54,8 @@ public class Broken_Watch : MonoBehaviour
                 SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
                 SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
 
-                spawnCH02Obj1.isSpawn = false;
-                spawnCH02Obj2.isSpawn = false;
-
-                CH02_Cars.SetActive(true);
-
-                // A 오브젝트의 모든 자식 오브젝트에 접근하기
-                for (int i = 0; i < CH02_Cars.transform.childCount; i++)
-                {
-                    // i번째 자식 오브젝트 가져오기
-                    GameObject childObject = CH02_Cars.transform.GetChild(i).gameObject;
-
-                    // 자식 오브젝트에 접근하여 스크립트 실행 또는 수정하기
-                    if (childObject != null)
-                    {
-                        // 예를 들어, 자식 오브젝트의 스크립트를 수정하거나 실행하기
-                        CH02obj _CH02obj = childObject.GetComponent<CH02obj>();
-
-
-                        if (_CH02obj != null)
-                        {
-                            // ChildScript의 public 메서드나 변수에 접근하여 원하는 작업 수행
-                            _CH02obj.isMoving = false;
-                            _CH02obj.Speed = 0f;
-                        }
-                    }
-                }
+                spawnCH02Obj1.StopSpawn();
+                spawnCH02Obj2.StopSpawn();
             }
         }
     }

@@ -107,9 +107,9 @@ public class ChapterControl : MonoBehaviour
         SetActiveTrue(Ch01_Objects);
     }
     
-    private void SetupChapter02()
+    public void SetupChapter02()
     {
-        SpawnPlayer(SpawnPoint02, 120);
+        //SpawnPlayer(SpawnPoint02, 120);
 
         // 챕터 2 Spot Light Intensity 조절
         spotLight.intensity = 300f;
@@ -121,22 +121,22 @@ public class ChapterControl : MonoBehaviour
         spawnCH02Obj2.isSpawn = true;
         
         // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
-        SetActiveFalse(Ch01_Objects);
-        SetActiveFalse(Ch03_Objects);
+        //SetActiveFalse(Ch01_Objects);
+        //SetActiveFalse(Ch03_Objects);
         
         SetActiveTrue(Ch02_Objects);
     }
     
-    private void SetupChapter03()
+    public void SetupChapter03()
     {
-        SpawnPlayer(SpawnPoint03, 150);
+        //SpawnPlayer(SpawnPoint03, 150);
         
         // 챕터 3 Spot Light Intensity 조절
         spotLight.intensity = 1500f;
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
-        SetActiveFalse(Ch01_Objects);
-        SetActiveFalse(Ch02_Objects);
+        //SetActiveFalse(Ch01_Objects);
+        //SetActiveFalse(Ch02_Objects);
         
         SetActiveTrue(Ch03_Objects);
     }
@@ -145,7 +145,10 @@ public class ChapterControl : MonoBehaviour
     {
         foreach(GameObject gameObject in ChapterObjects) // Material 배열 순회
         {
-            gameObject.SetActive(false);
+            if(gameObject != null) // GameObject가 null이 아닌 경우에만 활성화
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
     
@@ -153,7 +156,10 @@ public class ChapterControl : MonoBehaviour
     {
         foreach(GameObject gameObject in ChapterObjects) 
         {
-            gameObject.SetActive(true);
+            if(gameObject != null) // GameObject가 null이 아닌 경우에만 활성화
+            {
+                gameObject.SetActive(true);
+            }
         }
     }
     
