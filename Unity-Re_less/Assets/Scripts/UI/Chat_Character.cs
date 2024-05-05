@@ -16,18 +16,14 @@ public class Chat_Character : MonoBehaviour
 
     public AnimationClip doorAni;
     int Chat = 0;
-
-<<<<<<< HEAD
     
-    // é�� Ŭ����� 
-    public GameObject Obstacle;
-=======
+    // é�� Ŭ����� 
     public GameObject Obstacle;
     
     private Renderer _renderer;
 
     // 챕터 클리어용 
->>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
+
     bool isClear = false;
     public Canvas  UI;
     UI_Canvas _UI_Canvas;
@@ -38,12 +34,16 @@ public class Chat_Character : MonoBehaviour
         _renderer.enabled = false;
     }
 
+    private void Awake()
+    {
+        _renderer = GetComponent<Renderer>();
+        _renderer.enabled = false;
+    }
+
     void Start()
     {
         _ChapterControl = Player.GetComponent<ChapterControl>();
-<<<<<<< HEAD
         _UI_Canvas = UI.GetComponent<UI_Canvas>();
-=======
         
         if(Character.name == "Character_Cat")
         {
@@ -53,7 +53,6 @@ public class Chat_Character : MonoBehaviour
         {
             _AniManage = Character.GetComponent<AniManage>();
         }
->>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
     }
 
     void Update()
@@ -104,15 +103,15 @@ public class Chat_Character : MonoBehaviour
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
-
-<<<<<<< HEAD
-                // é�� 2 ����
+                // é�� 2 ����
                 _ChapterControl.SetupChapter02();
                 _UI_Canvas.Chapter02_StartUI();
-=======
+
                 // 챕터 2 시작
                 _ChapterControl.CurrentChapter = Chapter.Chapter2;
->>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
+
+                // 챕터 2 시작
+                _ChapterControl.CurrentChapter = Chapter.Chapter2;
                 isClear =  true;
             }
         }
@@ -123,14 +122,15 @@ public class Chat_Character : MonoBehaviour
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
 
-<<<<<<< HEAD
-                // é�� 3 ����
+                // é�� 3 ����
                 _ChapterControl.SetupChapter03();
                 _UI_Canvas.Chapter03_StartUI();
-=======
+
                 // 챕터 3 시작
                 _ChapterControl.CurrentChapter = Chapter.Chapter3;
->>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
+
+                // 챕터 3 시작
+                _ChapterControl.CurrentChapter = Chapter.Chapter3;
                 isClear =  true;
             }
         }

@@ -33,11 +33,8 @@ public class ChapterControl : MonoBehaviour
     // UI 트리거용 
     public int CH02_RespawnCount = 0;
 
-<<<<<<< HEAD
     private bool _temp_UseStartControlLogic = false;
-=======
     public Volume volume;
->>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
     
     // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
     public GameObject[] Ch01_Objects; 
