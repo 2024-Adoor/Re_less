@@ -21,6 +21,9 @@ public class SpawnCH02obj : MonoBehaviour
     private float spawnTimer = 0f; // 프리팹 생성 타이머
     public bool isSpawn = true; // 프리팹 생성 플래그
 
+    // 프리팹 생성 종료후 활성화할 오브젝트
+    public GameObject Ch02_Cars;
+
     void Update()
     {
         // 타이머 업데이트
@@ -41,6 +44,11 @@ public class SpawnCH02obj : MonoBehaviour
     // 프리팹 생성 메서드
     void SpawnOBJ()
     {
+        if(Ch02_Cars != null)
+        {
+            Ch02_Cars.SetActive(false);
+        }
+
         // 랜덤한 프리팹 선택
         PrefabRotationPair pair = prefabRotations[Random.Range(0, prefabRotations.Length)];
 
@@ -63,5 +71,10 @@ public class SpawnCH02obj : MonoBehaviour
     public void StopSpawn()
     {
         isSpawn = false;
+
+        if(Ch02_Cars != null)
+        {
+            Ch02_Cars.SetActive(true);
+        }
     }
 }
