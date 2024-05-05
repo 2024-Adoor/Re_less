@@ -13,20 +13,11 @@ public class Broken_Watch : MonoBehaviour
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
 
-    public GameObject CH02_Cars;
-
     GameObject newObject_1;
 
     void Update()
     {
-        if(isBroken)
-        {
-            CH02_Cars.SetActive(true);
-        }
-        else
-        {
-            CH02_Cars.SetActive(false);
-        }
+        
     }
 
     private void OnCollisionEnter(Collision collision)

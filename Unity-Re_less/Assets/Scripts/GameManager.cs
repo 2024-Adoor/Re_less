@@ -48,9 +48,9 @@ namespace Reless
                     case GamePhase.Title: StartTitle(); break;
                     case GamePhase.Opening: OnOpening?.Invoke(); break;
                     case GamePhase.Tutorial: StartTutorial(); break;
-                    case GamePhase.Chapter1: StartChapter1(); break;
-                    case GamePhase.Chapter2: StartChapter2(); break;
-                    case GamePhase.Chapter3: StartChapter3(); break;
+                    case GamePhase.Chapter1: OnChapter1?.Invoke(); break;
+                    case GamePhase.Chapter2: OnChapter2?.Invoke(); break;
+                    case GamePhase.Chapter3: OnChapter3?.Invoke(); break;
                     case GamePhase.Ending: OnEnding(); break;
                 }
 
@@ -79,6 +79,12 @@ namespace Reless
         public static Action OnTitle { get; set; }
         
         public static Action OnOpening { get; set; }
+        
+        public static Action OnChapter1 { get; set; }
+        
+        public static Action OnChapter2 { get; set; }
+        
+        public static Action OnChapter3 { get; set; }
 
         private void OnEnding()
         {
