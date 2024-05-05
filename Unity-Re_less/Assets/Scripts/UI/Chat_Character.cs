@@ -34,12 +34,6 @@ public class Chat_Character : MonoBehaviour
         _renderer.enabled = false;
     }
 
-    private void Awake()
-    {
-        _renderer = GetComponent<Renderer>();
-        _renderer.enabled = false;
-    }
-
     void Start()
     {
         _ChapterControl = Player.GetComponent<ChapterControl>();
@@ -104,14 +98,12 @@ public class Chat_Character : MonoBehaviour
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
                 // é�� 2 ����
-                _ChapterControl.SetupChapter02();
+                //_ChapterControl.SetupChapter02();
                 _UI_Canvas.Chapter02_StartUI();
 
                 // 챕터 2 시작
                 _ChapterControl.CurrentChapter = Chapter.Chapter2;
 
-                // 챕터 2 시작
-                _ChapterControl.CurrentChapter = Chapter.Chapter2;
                 isClear =  true;
             }
         }
@@ -123,14 +115,12 @@ public class Chat_Character : MonoBehaviour
                 Obstacle.SetActive(false);
 
                 // é�� 3 ����
-                _ChapterControl.SetupChapter03();
+                //_ChapterControl.SetupChapter03();
                 _UI_Canvas.Chapter03_StartUI();
 
                 // 챕터 3 시작
                 _ChapterControl.CurrentChapter = Chapter.Chapter3;
 
-                // 챕터 3 시작
-                _ChapterControl.CurrentChapter = Chapter.Chapter3;
                 isClear =  true;
             }
         }
