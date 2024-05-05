@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Reless;
 using UnityEngine;
 
 public class Trigger_ChangeMaterial : MonoBehaviour
@@ -24,6 +26,7 @@ public class Trigger_ChangeMaterial : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             rendMaterial.material = newMaterial;
+            GetComponent<CreateTrigger>()?.Create();
         }
     }
 }

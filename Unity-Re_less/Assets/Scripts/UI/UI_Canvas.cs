@@ -97,27 +97,17 @@ public class UI_Canvas : MonoBehaviour
         // 챕터 1 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1)
         {
-            _PlayerControl.speed = 0f;
-
-            // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableCh01Tutorial1", 0.2f);
-            Invoke("UnableCh01Tutorial1", 3.2f);
-            Invoke("EnableCh01Tutorial2", 3.2f);    // 플레이어 속도 초기화 (4f)
-            Invoke("UnableCh01Tutorial2", 6.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화 
+            Chapter01_StartUI();
         }
         // 챕터 2 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
-            // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableCh02Tutorial1", 0.2f);
-            Invoke("UnableCh02Tutorial1", 3.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화
+            Chapter02_StartUI();
         }
         // 챕터 3 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter3)
         {
-            // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-            Invoke("EnableCh03Tutorial1", 0.2f);
-            Invoke("UnableCh03Tutorial1", 3.2f);
+            Chapter03_StartUI();
         }
     }
 
@@ -165,7 +155,7 @@ public class UI_Canvas : MonoBehaviour
         }
 
         // 챕터 1 - 열매 먹었을 때 UI 변경
-        if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && _PlayerState.fruitCount == 1)
+        if(_ChapterControl.chapterCount == 1 && _PlayerState.fruitCount == 1)
         {
             UnableRawImage(fruit_0_1);
             EnableRawImage(fruit_1_1);
@@ -194,7 +184,7 @@ public class UI_Canvas : MonoBehaviour
         }
         
         // 챕터 2 - 열매 먹었을 때 UI 변경
-        if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
+        if(_ChapterControl.chapterCount == 2)
         {
             if(_PlayerState.fruitCount == 1)
             {
@@ -250,6 +240,43 @@ public class UI_Canvas : MonoBehaviour
             UnableRawImage(CantAwake);
         }
     }
+
+    /**************************************************************************************************/
+    // 챕터 시작시 나오는 UI 
+    public void Chapter01_StartUI()
+    {
+        _PlayerControl.speed = 0f;
+
+        // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
+        Invoke("EnableCh01Tutorial1", 0.2f);
+        Invoke("UnableCh01Tutorial1", 3.2f);
+        Invoke("EnableCh01Tutorial2", 3.2f);    // 플레이어 속도 초기화 (4f)
+        Invoke("UnableCh01Tutorial2", 6.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화 
+    }
+
+    public void Chapter02_StartUI()
+    {
+        // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
+        Invoke("EnableCh02Tutorial1", 0.2f);
+        Invoke("UnableCh02Tutorial1", 3.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화
+    }
+
+    public void Chapter03_StartUI()
+    {
+        UnableRawImage(fruit_2_2);
+        UnableRawImage(fruit_1_2);
+        UnableRawImage(fruit_0_2);
+        UnableRawImage(fruit_0_1);
+        UnableRawImage(fruit_1_1);
+
+        // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
+        Invoke("EnableCh03Tutorial1", 0.2f);
+        Invoke("UnableCh03Tutorial1", 3.2f);
+    }
+
+
+
+
 
     /**************************************************************************************************/
 

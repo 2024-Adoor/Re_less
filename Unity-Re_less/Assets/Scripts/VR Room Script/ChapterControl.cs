@@ -15,6 +15,7 @@ public class ChapterControl : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Chapter setChapterTo;
+    private Chapter _cachedSetChapterTo;
 #endif
     
     // 챕터별 스폰포인트 
@@ -32,14 +33,19 @@ public class ChapterControl : MonoBehaviour
     // UI 트리거용 
     public int CH02_RespawnCount = 0;
 
-    public Volume volume;
-
+<<<<<<< HEAD
     private bool _temp_UseStartControlLogic = false;
+=======
+    public Volume volume;
+>>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
     
     // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
     public GameObject[] Ch01_Objects; 
     public GameObject[] Ch02_Objects; 
     public GameObject[] Ch03_Objects;
+
+    // 챕터카운트 
+    public int chapterCount = 1;
 
     /// <summary>
     /// 현재 챕터
@@ -47,9 +53,10 @@ public class ChapterControl : MonoBehaviour
     public Chapter CurrentChapter
     {
         get => _currentChapter;
-        private set
+        set
         {
             _currentChapter = value;
+            GameManager.Instance.CurrentPhase = (GamePhase)value;
             switch (_currentChapter)
             {
                 case Chapter.Chapter1: SetupChapter01(); break;
@@ -86,11 +93,12 @@ public class ChapterControl : MonoBehaviour
     private void Update()
     {
 #if UNITY_EDITOR
-        if (setChapterTo != CurrentChapter)
+        if (_cachedSetChapterTo != setChapterTo)
         {
             Debug.Log($"Changing chapter to {setChapterTo}");
             CurrentChapter = setChapterTo;
         }
+        _cachedSetChapterTo = setChapterTo = CurrentChapter;
 #endif
     }
     private void SetupChapter01()
@@ -107,7 +115,7 @@ public class ChapterControl : MonoBehaviour
         SetActiveTrue(Ch01_Objects);
     }
     
-    public void SetupChapter02()
+    private void SetupChapter02()
     {
         //SpawnPlayer(SpawnPoint02, 120);
 
@@ -120,6 +128,13 @@ public class ChapterControl : MonoBehaviour
         spawnCH02Obj1.isSpawn = true;
         spawnCH02Obj2.isSpawn = true;
         
+        // 열매 카운트 초기화
+        PlayerState _PlayerState = GetComponent<PlayerState>();
+        _PlayerState.fruitCount = -1;
+
+        // 챕터 카운트 2
+        chapterCount ++;
+
         // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
         //SetActiveFalse(Ch01_Objects);
         //SetActiveFalse(Ch03_Objects);
@@ -127,12 +142,15 @@ public class ChapterControl : MonoBehaviour
         SetActiveTrue(Ch02_Objects);
     }
     
-    public void SetupChapter03()
+    private void SetupChapter03()
     {
         //SpawnPlayer(SpawnPoint03, 150);
         
         // 챕터 3 Spot Light Intensity 조절
         spotLight.intensity = 1500f;
+
+        // 챕터 카운트 3
+        chapterCount ++;
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
         //SetActiveFalse(Ch01_Objects);

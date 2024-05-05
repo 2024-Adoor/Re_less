@@ -5,7 +5,7 @@ using UnityEngine.XR;
 
 public class Cat_AniManage : MonoBehaviour
 {
-    public Animation animationComponent;    // Animation ÄÄÆ÷³ÍÆ® ÂüÁ¶
+    public Animation animationComponent;    // Animation ì»´í¬ë„ŒíŠ¸ ì°¸ì¡°
     public GameObject Player;               // Player
     public bool isSleepOut = false;
 
@@ -24,6 +24,8 @@ public class Cat_AniManage : MonoBehaviour
     // eyes
     public GameObject eyes1;
     public GameObject eyes2;
+    
+    private PlayerState _playerState;
 
     void Start()
     {
@@ -34,16 +36,17 @@ public class Cat_AniManage : MonoBehaviour
 
         eyes1.SetActive(false);
         eyes2.SetActive(false);
+        
+        _playerState = Player.GetComponent<PlayerState>();
     }
 
     void Update()
     {
-        PlayerState _PlayerState = Player.GetComponent<PlayerState>();
 
         if(isSleepOut)
         {
-            // Animation ÄÄÆ÷³ÍÆ®ÀÇ ÇöÀç AnimationÀ» ÁßÁöÇÏ°í »õ Animation ClipÀ¸·Î º¯°æ
-            if (animationComponent != null && SleepOutAni != null && _PlayerState.fruitCount > 0 && !isChange)
+            // Animation ì»´í¬ë„ŒíŠ¸ì˜ í˜„ì¬ Animationì„ ì¤‘ì§€í•˜ê³  ìƒˆ Animation Clipìœ¼ë¡œ ë³€ê²½
+            if (animationComponent != null && SleepOutAni != null && _playerState.fruitCount > 0 && !isChange)
             {
                 SleepingEffect.Stop();
                 SleepOutEffect.Play();
@@ -59,23 +62,23 @@ public class Cat_AniManage : MonoBehaviour
 
                 StartCoroutine(WaitForSleepOutAnimation());
 
-                _PlayerState.fruitCount--;
+                _playerState.fruitCount--;
             }
         }
     }
 
     private IEnumerator WaitForSleepOutAnimation()
     {
-        yield return new WaitForSeconds(animationComponent.clip.length); // SleepOutAni ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ ±æÀÌ¸¸Å­ ´ë±â
+        yield return new WaitForSeconds(animationComponent.clip.length); // SleepOutAni ì• ë‹ˆë©”ì´ì…˜ì˜ ê¸¸ì´ë§Œí¼ ëŒ€ê¸°
     
-        // Animation ÀÌº¥Æ®¸¦ ÅëÇØ È£ÃâµÉ ÇÔ¼ö È£Ãâ
+        // Animation ì´ë²¤íŠ¸ë¥¼ í†µí•´ í˜¸ì¶œë  í•¨ìˆ˜ í˜¸ì¶œ
         OnSleepOutAnimationComplete();
     }
     
-    // Animation ÀÌº¥Æ®¿¡¼­ È£ÃâµÉ ÇÔ¼ö
+    // Animation ì´ë²¤íŠ¸ì—ì„œ í˜¸ì¶œë  í•¨ìˆ˜
     private void OnSleepOutAnimationComplete()
     {
-        // IDLE ¾Ö´Ï¸ŞÀÌ¼Ç Å¬¸³À¸·Î ÀüÈ¯
+        // IDLE ì• ë‹ˆë©”ì´ì…˜ í´ë¦½ìœ¼ë¡œ ì „í™˜
         if (animationComponent != null && IdleAni != null)
         {
             animationComponent.Stop();

@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using Reless;
 using UnityEngine;
 
 public class Chat_Character : MonoBehaviour
@@ -11,32 +11,58 @@ public class Chat_Character : MonoBehaviour
     AniManage _AniManage;
     Cat_AniManage _Cat_AniManage;
     
-    public Material[] chatMaterials; // Material ¹è¿­
+    public Material[] chatMaterials; // Material ë°°ì—´
     public bool isChatFin = false;
 
     public AnimationClip doorAni;
     int Chat = 0;
 
-    public GameObject Obstacle;
-
+<<<<<<< HEAD
+    
     // Ã©ÅÍ Å¬¸®¾î¿ë 
+    public GameObject Obstacle;
+=======
+    public GameObject Obstacle;
+    
+    private Renderer _renderer;
+
+    // ì±•í„° í´ë¦¬ì–´ìš© 
+>>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
     bool isClear = false;
+    public Canvas  UI;
+    UI_Canvas _UI_Canvas;
+
+    private void Awake()
+    {
+        _renderer = GetComponent<Renderer>();
+        _renderer.enabled = false;
+    }
 
     void Start()
     {
-        GetComponent<Renderer>().enabled = false;
         _ChapterControl = Player.GetComponent<ChapterControl>();
+<<<<<<< HEAD
+        _UI_Canvas = UI.GetComponent<UI_Canvas>();
+=======
+        
+        if(Character.name == "Character_Cat")
+        {
+            _Cat_AniManage = Character.GetComponent<Cat_AniManage>();
+        }
+        else
+        {
+            _AniManage = Character.GetComponent<AniManage>();
+        }
+>>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
     }
 
     void Update()
     {   
         if(Character.name == "Character_Cat")
         {
-            _Cat_AniManage = Character.GetComponent<Cat_AniManage>();
-
             if (_Cat_AniManage.isChange && !isChatFin)
             {   
-                GetComponent<Renderer>().enabled = true;
+                _renderer.enabled = true;
                 StartCoroutine(Delay_Change(1.5f));
 
                 isChatFin = true;
@@ -53,8 +79,6 @@ public class Chat_Character : MonoBehaviour
         }
         else
         {
-            _AniManage = Character.GetComponent<AniManage>();
-
             if (_AniManage.isChange && !isChatFin)
             {   
                 GetComponent<Renderer>().enabled = true;
@@ -71,7 +95,6 @@ public class Chat_Character : MonoBehaviour
 
                 Chat++;
             }
-
             
         }
 
@@ -79,11 +102,17 @@ public class Chat_Character : MonoBehaviour
         {
             if(isChatFin && Chat >  chatMaterials.Length && !isClear)
             {
-                // ±æÀ» ¸·´Â ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+                // ê¸¸ì„ ë§‰ëŠ” ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
                 Obstacle.SetActive(false);
 
+<<<<<<< HEAD
                 // Ã©ÅÍ 2 ½ÃÀÛ
                 _ChapterControl.SetupChapter02();
+                _UI_Canvas.Chapter02_StartUI();
+=======
+                // ì±•í„° 2 ì‹œì‘
+                _ChapterControl.CurrentChapter = Chapter.Chapter2;
+>>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
                 isClear =  true;
             }
         }
@@ -91,30 +120,37 @@ public class Chat_Character : MonoBehaviour
         {
             if(isChatFin && Chat >  chatMaterials.Length && !isClear)
             {
-                // ±æÀ» ¸·´Â ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+                // ê¸¸ì„ ë§‰ëŠ” ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
                 Obstacle.SetActive(false);
 
-                // Ã©ÅÍ 2 ½ÃÀÛ
+<<<<<<< HEAD
+                // Ã©ÅÍ 3 ½ÃÀÛ
                 _ChapterControl.SetupChapter03();
+                _UI_Canvas.Chapter03_StartUI();
+=======
+                // ì±•í„° 3 ì‹œì‘
+                _ChapterControl.CurrentChapter = Chapter.Chapter3;
+>>>>>>> a3a251dd35a8654f70b70db7ed57debbf921917b
                 isClear =  true;
             }
         }
+
+
     }
 
     IEnumerator Delay_Change(float delayTime)
     {   
-        foreach(Material material in chatMaterials) // Material ¹è¿­ ¼øÈ¸
+        foreach(Material material in chatMaterials) // Material ë°°ì—´ ìˆœíšŒ
         {
-            yield return new WaitForSeconds(delayTime); // µô·¹ÀÌ
-            ChangeMaterial(material); // ´ÙÀ½ Material·Î º¯°æ
+            yield return new WaitForSeconds(delayTime); // ë”œë ˆì´
+            ChangeMaterial(material); // ë‹¤ìŒ Materialë¡œ ë³€ê²½
             Chat++;
         }
     }
 
-    // ¸ÓÅ×¸®¾ó º¯°æ
+    // ë¨¸í…Œë¦¬ì–¼ ë³€ê²½
     public void ChangeMaterial(Material newMaterial)
     {
-        Renderer renderer = GetComponent<Renderer>();
-        renderer.material = newMaterial; 
+        _renderer.material = newMaterial; 
     }
 }
