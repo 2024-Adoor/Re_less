@@ -15,6 +15,7 @@ public class ChapterControl : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Chapter setChapterTo;
+    private Chapter _cachedSetChapterTo;
 #endif
     
     // 챕터별 스폰포인트 
@@ -33,8 +34,6 @@ public class ChapterControl : MonoBehaviour
     public int CH02_RespawnCount = 0;
 
     public Volume volume;
-
-    private bool _temp_UseStartControlLogic = false;
     
     // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
     public GameObject[] Ch01_Objects; 
@@ -47,9 +46,10 @@ public class ChapterControl : MonoBehaviour
     public Chapter CurrentChapter
     {
         get => _currentChapter;
-        private set
+        set
         {
             _currentChapter = value;
+            GameManager.Instance.CurrentPhase = (GamePhase)value;
             switch (_currentChapter)
             {
                 case Chapter.Chapter1: SetupChapter01(); break;
@@ -86,11 +86,12 @@ public class ChapterControl : MonoBehaviour
     private void Update()
     {
 #if UNITY_EDITOR
-        if (setChapterTo != CurrentChapter)
+        if (_cachedSetChapterTo != setChapterTo)
         {
             Debug.Log($"Changing chapter to {setChapterTo}");
             CurrentChapter = setChapterTo;
         }
+        _cachedSetChapterTo = setChapterTo = CurrentChapter;
 #endif
     }
     private void SetupChapter01()
@@ -107,7 +108,7 @@ public class ChapterControl : MonoBehaviour
         SetActiveTrue(Ch01_Objects);
     }
     
-    public void SetupChapter02()
+    private void SetupChapter02()
     {
         //SpawnPlayer(SpawnPoint02, 120);
 
@@ -127,7 +128,7 @@ public class ChapterControl : MonoBehaviour
         SetActiveTrue(Ch02_Objects);
     }
     
-    public void SetupChapter03()
+    private void SetupChapter03()
     {
         //SpawnPlayer(SpawnPoint03, 150);
         

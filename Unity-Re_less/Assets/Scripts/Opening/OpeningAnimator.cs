@@ -34,6 +34,7 @@ namespace Reless.Opening
         /// <summary>
         /// 벽이 열릴 때의 애니메이션의 커브
         /// </summary>
+        [Header("Wall Animation Curves")]
         [SerializeField] 
         private AnimationCurve wallOpening;
 
@@ -61,7 +62,7 @@ namespace Reless.Opening
 
             if (SceneManager.ActiveScene is not BuildScene.Opening)
             {
-                Assert.IsNotNull(_openingBehaviour, message: "Opening 씬에서 직접 실행한 것이 아닌 OpeningBehaviour는 null이 아니어야 합니다.");
+                Assert.IsNotNull(_openingBehaviour, message: "Opening 씬에서 직접 실행한 것이 아닌 한 OpeningBehaviour는 null이 아니어야 합니다.");
                 
                 // 씬 시작 시 오프닝 씬 비활성화 보장
                 DeactivateAllScenes();
