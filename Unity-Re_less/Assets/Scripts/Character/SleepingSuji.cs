@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class SleepingSuji : MonoBehaviour
 {
+    public Animation animationComponent;    // Animation 컴포넌트 참조
+
     public GameObject KeyboardEnter;        // Keyboard
     public GameObject Ch03Fruit;
     public GameObject SujiPrefab;
 
+    public AnimationClip SleepOutAni;       // SleepOut Animation Clip
+
+    public AnimationClip JumpInAni;         // JumpIn Animation Clip
+    public AnimationClip JumpOutAni;        // JumpOut Animation Clip
+
     public bool isSleepOut = false;
     public bool isDetected = false;
+
+    // 애니메이션 제어
+    bool isChange = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,14 +33,31 @@ public class SleepingSuji : MonoBehaviour
         Keyboard _Keyboard = KeyboardEnter.GetComponent<Keyboard>();
         SujiManage _SujiManage = SujiPrefab.GetComponent<SujiManage>();
 
+        // 열매 부딪혔을때 SleepOut 애니메이션 클립으로 전환 
         if(isDetected && _Keyboard.enterDown)
         {
-            _SujiManage.isSleepOut = true;
-            Destroy(gameObject);
+            // SleepOut 애니메이션 클립으로 전환
+            if (animationComponent != null && SleepOutAni != null && !isChange)
+            {
+                Debug.Log("Suji SleepOut");
+                animationComponent.Stop();
+                animationComponent.clip = SleepOutAni;
+                animationComponent.Play();
+
+                isChange = true;
+                isSleepOut = false;
+            }
+
+            // _SujiManage.isSleepOut = true;
+            // Destroy(gameObject);
             Destroy(Ch03Fruit);
 
-            Debug.Log("Suji isSleepOut true - SleepingSuji");
+            Debug.Log("Suji is SleepOut true - SleepingSuji");
         }
+
+        // 잠에서 깨는 애니메이션 끝났을 때 점프
+
+
     }
 
 

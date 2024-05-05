@@ -11,6 +11,10 @@ public class SujiManage : MonoBehaviour
     private Vector3 offset = new Vector3(0f, 0.5f, 0f);
 
     public AnimationClip SleepOutAni;       // SleepOut Animation Clip
+
+    public AnimationClip JumpInAni;         // JumpIn Animation Clip
+    public AnimationClip JumpOutAni;        // JumpOut Animation Clip
+
     public AnimationClip IdleAni;           // IDLE Animation Clip 
     public bool isChange = false;
     public bool isSleepOut = false;
