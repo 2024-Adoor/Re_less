@@ -44,6 +44,7 @@ public class ChapterControl : MonoBehaviour
     // 챕터카운트 
     public int chapterCount = 1;
 
+
     /// <summary>
     /// 현재 챕터
     /// </summary>
