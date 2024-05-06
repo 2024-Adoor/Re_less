@@ -16,15 +16,24 @@ public class SujiManage : MonoBehaviour
     public float rotationSpeed = 5f;        // 회전 속도
     public float moveSpeed = 5f;            // 이동 속도
     Quaternion targetRotation;
+    Quaternion targetRotation2;
 
     public Transform JumpTarget;            // 점프 목적지? 
 
     public bool isChange = false;
     public bool isSleepOut = false;
     bool isDelay = true;
+    bool isJumpInAni = true;
+
     bool isJump = false;
     bool isMove = false;
+    bool isRotateFin = false;
+    bool isJumpFin = false;
     bool isMoveFin = false;
+    
+    // 정면회전 & 대사 시작
+    bool isRotate2 = false;
+    bool isRotateFin2 = false;
 
     // VFX 
     public ParticleSystem SleepOutEffect;
@@ -52,7 +61,7 @@ public class SujiManage : MonoBehaviour
             if(isDelay)
             {
                 // 딜레이 n초 진행 후 else 코드 실행 
-                StartCoroutine(Wait()); // Wait() 코루틴을 시작합니다.
+                StartCoroutine(Wait3f()); // Wait() 코루틴을 시작합니다.
             }
             else
             {
@@ -70,28 +79,79 @@ public class SujiManage : MonoBehaviour
                 }
 
                 // 회전 로직
-                if (isRotate)
+                if (isRotate && !isRotateFin)
                 {
+                    Debug.Log("회전 로직 진행중");
+
                     // Lerp 함수를 사용하여 부드럽게 회전합니다.
                     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                     
                     // 현재 회전 각도와 목표 회전 각도가 거의 같으면 회전을 완료했다고 가정하고 isRotate를 false로 설정
                     if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
                     {
-                        isRotate = false;
+                        isRotateFin = true;
                         isMove = true;
+
+                        // 애니메이션 변경 - JumpIn
+                        if (animationComponent != null && JumpInAni != null)
+                        {
+                            animationComponent.Stop();
+                            animationComponent.clip = JumpInAni;
+                        }
+
+                        Debug.Log("isRotateFin = true");
                     }
                 }
 
                 // 회전 끝남 & 점프와 이동 시작
-                if(isJump)
+                if(isMove && !isMoveFin)
                 {
-                    //MoveToTarget(JumpTarget);
-                }
+                    Debug.Log("target으로 이동중");
 
-                if(isMove)
+                    if(isJumpInAni)
+                    {
+                        animationComponent.Play();
+
+                        // 2초 뒤 재생 멈춤 
+                        StartCoroutine(Wait2f());
+                    }
+                    else
+                    {
+                        MoveNPC(target.position, 3f);
+
+                        if (Vector3.Distance(transform.position, target.position) < 0.1f)
+                        {
+                            // 애니메이션 변경 - JumpOut
+                            if (animationComponent != null && JumpOutAni != null)
+                            {
+                                animationComponent.Stop();
+                                animationComponent.clip = JumpOutAni;
+                            }
+                            animationComponent.Play();
+                            isMoveFin = true;
+                            isRotate2 = true;
+                            Debug.Log("isMoveFin = true");
+                        }
+                    }
+                }
+                
+                // 이동 끝남 -> 정면으로 회전 & IDLE 애니메이션 재생 & 대사 시작
+                // 정면 회전 조정
+                if(!isRotate2)
                 {
-                    MoveNPC(target.position, 2f);
+                    // 목표 회전 각도 설정
+                    targetRotation2 = Quaternion.Euler(0, -90, 0);
+                }
+                else if(isRotate2 && !isRotateFin2 && isMoveFin)
+                {
+                    // Lerp 함수를 사용하여 부드럽게 회전합니다.
+                    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation2, Time.deltaTime * rotationSpeed);
+
+                    // 현재 회전 각도와 목표 회전 각도가 거의 같으면 회전을 완료했다
+                    if (Quaternion.Angle(transform.rotation, targetRotation2) < 1f)
+                    {
+                        isRotateFin2 = true;
+                    }
                 }
             }
         }
@@ -118,11 +178,17 @@ public class SujiManage : MonoBehaviour
         }
     }
 
-    // n초 딜레이
-    private IEnumerator Wait()
+    // 3초 딜레이
+    private IEnumerator Wait3f()
     {
         yield return new WaitForSeconds(3f);
         isDelay = false;
+    }
+
+    private IEnumerator Wait2f()
+    {
+        yield return new WaitForSeconds(1f);
+        isJumpInAni = false;
     }
 
     // 일정한 시간 동안 서서히 이동시키는 함수
