@@ -33,7 +33,7 @@ public class SujiManage : MonoBehaviour
     
     // 정면회전 & 대사 시작
     bool isRotate2 = false;
-    bool isRotateFin2 = false;
+    public bool isRotateFin2 = false;
 
     // VFX 
     public ParticleSystem SleepOutEffect;
@@ -47,6 +47,7 @@ public class SujiManage : MonoBehaviour
 
     void Start()
     {
+        SujiChat.SetActive(false);
         gameObject.SetActive(false);
         SleepOutEffect.Play();
     }
@@ -151,6 +152,7 @@ public class SujiManage : MonoBehaviour
                     if (Quaternion.Angle(transform.rotation, targetRotation2) < 1f)
                     {
                         isRotateFin2 = true;
+                        SujiChat.SetActive(true);
                     }
                 }
             }

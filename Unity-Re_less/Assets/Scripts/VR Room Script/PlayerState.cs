@@ -19,8 +19,6 @@ public class PlayerState : MonoBehaviour
     public bool canEnd = false;
     public bool isYUp = false;
 
-    public GameObject DeleteCharacters;
-
     public GameObject Suji_Surprised;
     public GameObject Characters_Surprised;
     bool isSurprised = false;
@@ -57,6 +55,14 @@ public class PlayerState : MonoBehaviour
     // EndTrigger 머테리얼
     public Material EndMaterial;
 
+    // 엔딩 채팅 관련
+    bool isEndChatFin = false;
+    bool isEndChatStart = true;
+    public GameObject EndChat_Suji;
+    public GameObject EndChat_Clock;
+    public GameObject EndChat_Cat;
+    public GameObject EndChat_Cactus;
+
     // 챕터 2 열매 다 먹었을 때 화살표 활성화
     public GameObject[] Ch02Arrows;
 
@@ -64,6 +70,10 @@ public class PlayerState : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        EndChat_Suji.SetActive(false);
+        EndChat_Clock.SetActive(false);
+        EndChat_Cat.SetActive(false);
+        EndChat_Cactus.SetActive(false);
 
         // 배열을 반복하여 작업 수행
         foreach (GameObject obj in Ch02Arrows)
@@ -86,7 +96,14 @@ public class PlayerState : MonoBehaviour
         // 엔딩요건이 충족되면 Delay 후 isYUp true 
         if(canEnd)
         {
-            if (!isDelayedActionStarted)
+            // 엔딩 전 대사 시작
+            if(isEndChatStart)
+            {
+                StartCoroutine(ShowDialogue());
+                isEndChatStart = false;
+            }
+
+            if (!isDelayedActionStarted && isEndChatFin)
             {
                 elapsedTime += Time.deltaTime;
                 if (elapsedTime >= delayTime)
@@ -115,7 +132,6 @@ public class PlayerState : MonoBehaviour
             {
                 // 애들 프리팹 변경 (IDLE -> Surprised)
                 Destroy(Suji);
-                // Destroy(DeleteCharacters);
 
                 // 새로운 프리팹 생성
                 GameObject newSuji = Instantiate(Suji_Surprised, Suji_Surprised.transform.position, Suji_Surprised.transform.rotation);
@@ -269,4 +285,29 @@ public class PlayerState : MonoBehaviour
         transform.position = newPosition;
     }
 
+    // 엔딩 대사 함수
+    IEnumerator ShowDialogue()
+    {
+        // 1. 수지 대사
+        EndChat_Suji.SetActive(true);
+        yield return new WaitForSeconds(1f); // 대사를 보여줄 시간
+
+        // 2. 시계토끼 대사
+        EndChat_Suji.SetActive(false);
+        EndChat_Clock.SetActive(true);
+        yield return new WaitForSeconds(1f); // 대사를 보여줄 시간
+
+        // 3. 체셔캣 대사
+        EndChat_Clock.SetActive(false);
+        EndChat_Cat.SetActive(true);
+        yield return new WaitForSeconds(1f); // 대사를 보여줄 시간
+
+        // 4. 선인장 대사
+        EndChat_Cat.SetActive(false);
+        EndChat_Cactus.SetActive(true);
+        yield return new WaitForSeconds(1f); // 대사를 보여줄 시간
+
+        EndChat_Cactus.SetActive(false);        
+        isEndChatFin = true;
+    }
 }

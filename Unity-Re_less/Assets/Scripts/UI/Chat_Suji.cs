@@ -34,7 +34,8 @@ public class Chat_Suji : MonoBehaviour
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
         
-        if (!isChatFin)
+        // isRotateFin2 = true
+        if (!isChatFin && _SujiManage.isRotateFin2)
         {   
             GetComponent<Renderer>().enabled = true;
             StartCoroutine(Delay_Change(1.5f));
