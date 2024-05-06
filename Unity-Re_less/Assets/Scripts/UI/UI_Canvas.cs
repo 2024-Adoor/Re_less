@@ -44,6 +44,15 @@ public class UI_Canvas : MonoBehaviour
     public RawImage fruit_1_2;
     public RawImage fruit_2_2;
 
+    // 열매받은 캐릭터 UI RawImage
+    public RawImage Ch01_Sleeping;
+    public RawImage Ch01_SleepOut;
+    public RawImage Ch02_Sleeping;
+    public RawImage Ch02_SleepOut_1;
+    public RawImage Ch02_SleepOut_2;
+    public RawImage Ch03_Sleeping;
+    public RawImage Ch03_SleepOut;
+
     // UI 컨트롤을 위한 bool 값
     bool JumpUIFin = false;
     bool FriendUIFin = false;
@@ -53,14 +62,24 @@ public class UI_Canvas : MonoBehaviour
     bool EndUIFin = false;
     bool MonitorFin = false;
     
+    // Chapter 01 Clock
+    public GameObject Clock;
+    AniManage Clock_AniManage;
+
     // Chapter 02 Watch 
     public GameObject Watch;
+    public GameObject Cat;
+    public GameObject Cactus;
+    Cat_AniManage Cat_AniManage;
+    AniManage Cactus_AniManage;
 
     // Chapter 03 Monitor Button
     public GameObject MonitorButton;
     OnOffMonitor _OnOffMonitor;
 
     // Chapter 03 Suji
+    public GameObject SleepingSuji;
+    SleepingSuji _SleepingSuji;
     public GameObject Suji;
     SujiEndingTest _SujiEndingTest;
 
@@ -93,6 +112,13 @@ public class UI_Canvas : MonoBehaviour
         UnableRawImage(fruit_1_2);
         UnableRawImage(fruit_2_2);
 
+        UnableRawImage(Ch01_Sleeping);
+        UnableRawImage(Ch01_SleepOut);
+        UnableRawImage(Ch02_Sleeping);
+        UnableRawImage(Ch02_SleepOut_1);
+        UnableRawImage(Ch02_SleepOut_2);
+        UnableRawImage(Ch03_Sleeping);
+        UnableRawImage(Ch03_SleepOut);
 
         // 챕터 1 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1)
@@ -161,6 +187,16 @@ public class UI_Canvas : MonoBehaviour
             EnableRawImage(fruit_1_1);
         }
 
+        // 챕터 1 - 열매 전달해줬을 때 UI 변경 
+        // Clock AniManage.cs isSleepOut == true
+        Clock_AniManage = Clock.GetComponent<AniManage>();
+        if(Clock_AniManage.isSleepOut)
+        {
+            UnableRawImage(fruit_1_1);
+            UnableRawImage(Ch01_Sleeping);
+            EnableRawImage(Ch01_SleepOut);
+        }
+
         // 챕터 2 - 리스폰 했을 때, 시계  UI 
         if(_ChapterControl.CH02_RespawnCount > 0 && !WatchUIFin)
         {
@@ -202,8 +238,28 @@ public class UI_Canvas : MonoBehaviour
                     EnableRawImage(Ch02_Tutorial_2);
                     Invoke("UnableCh02Tutorial2", 3f);
                 }
-                
             }
+        }
+
+        // 챕터 2 - 열매 전달해줬을 때 UI 변경
+        // Cat Cat_AniManage.cs isSleepOut == true
+        // Cactus AniManage.cs isSleepOut == true
+        Cat_AniManage = Cat.GetComponent<Cat_AniManage>();
+        Cactus_AniManage = Cactus.GetComponent<AniManage>();
+        if(Cat_AniManage.isSleepOut)
+        {
+            UnableRawImage(fruit_2_2);
+            EnableRawImage(fruit_1_2);
+
+            UnableRawImage(Ch02_Sleeping);
+            EnableRawImage(Ch02_SleepOut_1);
+        }
+        if(Cactus_AniManage.isSleepOut)
+        {
+            UnableRawImage(fruit_1_2);
+
+            UnableRawImage(Ch02_SleepOut_1);
+            EnableRawImage(Ch02_SleepOut_2);
         }
 
         // é�� 3 - ����� ��ư ������ ��, ����� ����� UI
@@ -213,9 +269,21 @@ public class UI_Canvas : MonoBehaviour
             Invoke("UnableCh03Tutorial2", 3f);
         }
 
+        // 챕터 3 - 수지랑 열매 닿았을 때
+        if(SleepingSuji != null)
+        {
+            _SleepingSuji = SleepingSuji.GetComponent<SleepingSuji>();
+        }
+        if(_SleepingSuji.isDetected)
+        {
+            UnableRawImage(Ch03_Sleeping);
+            EnableRawImage(Ch03_SleepOut);
+        }
+
         // 챕터 3 - 수지가 움직일 때, 수지 UI
         if(_SujiEndingTest.canMove)
         {
+            UnableRawImage(Ch03_SleepOut);
             EnableRawImage(Ch03_Suji);
         }
         else
@@ -256,22 +324,19 @@ public class UI_Canvas : MonoBehaviour
 
     public void Chapter02_StartUI()
     {
+        UnableRawImage(Ch01_SleepOut);
+
         // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-        Invoke("EnableCh02Tutorial1", 0.2f);
-        Invoke("UnableCh02Tutorial1", 3.2f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화
+        Invoke("EnableCh02Tutorial1", 2f);
+        Invoke("UnableCh02Tutorial1", 5f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화
     }
 
     public void Chapter03_StartUI()
     {
-        UnableRawImage(fruit_2_2);
-        UnableRawImage(fruit_1_2);
-        UnableRawImage(fruit_0_2);
-        UnableRawImage(fruit_0_1);
-        UnableRawImage(fruit_1_1);
-
+        UnableRawImage(Ch02_SleepOut_2);
         // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-        Invoke("EnableCh03Tutorial1", 0.2f);
-        Invoke("UnableCh03Tutorial1", 3.2f);
+        Invoke("EnableCh03Tutorial1", 2f);
+        Invoke("UnableCh03Tutorial1", 5f);
     }
 
 
@@ -317,6 +382,9 @@ public class UI_Canvas : MonoBehaviour
 
         // 열매 UI 활성화 
         EnableRawImage(fruit_0_1);
+        
+        // Sleeping UI 활성화
+        EnableRawImage(Ch01_Sleeping);
     }
 
     // 챕터 2 튜토리얼 UI Invoke 용
@@ -331,6 +399,9 @@ public class UI_Canvas : MonoBehaviour
 
         // 열매 UI 활성화 
         EnableRawImage(fruit_0_2);
+
+        // Sleeping UI 활성화
+        EnableRawImage(Ch02_Sleeping);
     }
 
     void UnableCh02Tutorial2()
@@ -348,6 +419,9 @@ public class UI_Canvas : MonoBehaviour
     void UnableCh03Tutorial1()
     {
         UnableRawImage(Ch03_Tutorial_1);
+
+        // Sleeping UI 활성화
+        EnableRawImage(Ch03_Sleeping);
     }
 
     void UnableCh03Tutorial2()
