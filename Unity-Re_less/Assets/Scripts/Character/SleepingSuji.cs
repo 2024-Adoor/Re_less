@@ -20,6 +20,7 @@ public class SleepingSuji : MonoBehaviour
 
     // 애니메이션 제어
     bool isChange = false;
+    bool isJump = false;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +57,10 @@ public class SleepingSuji : MonoBehaviour
         }
 
         // 잠에서 깨는 애니메이션 끝났을 때 점프
-
+        if(isChange && isJump)
+        {
+            
+        }
 
     }
 
