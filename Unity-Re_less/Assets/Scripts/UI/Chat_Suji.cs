@@ -34,7 +34,7 @@ public class Chat_Suji : MonoBehaviour
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
         
-        if (_SujiManage.isEffectStop && !isChatFin)
+        if (!isChatFin)
         {   
             GetComponent<Renderer>().enabled = true;
             StartCoroutine(Delay_Change(1.5f));

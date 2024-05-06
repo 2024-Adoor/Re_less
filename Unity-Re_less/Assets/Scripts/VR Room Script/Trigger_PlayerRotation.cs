@@ -35,13 +35,7 @@ namespace Reless
                 isRotate = true;
 
                 // 플레이어를 y축으로 90도 회전하기 위한 목표 회전 각도 계산
-                targetRotation = Quaternion.Euler(0, -60
-                
-                
-                
-                
-                
-                , 0) * Player.transform.rotation;
+                targetRotation = Quaternion.Euler(0, -60, 0) * Player.transform.rotation;
             }
         }
 

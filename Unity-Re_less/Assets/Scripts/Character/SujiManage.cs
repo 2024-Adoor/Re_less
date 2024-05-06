@@ -7,21 +7,24 @@ public class SujiManage : MonoBehaviour
     public Animation animationComponent;    // Animation 컴포넌트 참조
     public GameObject SujiChat;
 
-    public Transform Target;                 // 깨어난 후 이동할 위치 
-    private Vector3 offset = new Vector3(0f, 0.5f, 0f);
-
-    public AnimationClip SleepOutAni;       // SleepOut Animation Clip
-
     public AnimationClip JumpInAni;         // JumpIn Animation Clip
     public AnimationClip JumpOutAni;        // JumpOut Animation Clip
-
     public AnimationClip IdleAni;           // IDLE Animation Clip 
+
+    // 점프 + 이동
+    public Transform target;                // 이동 목적지
+    public float rotationSpeed = 5f;        // 회전 속도
+    public float moveSpeed = 5f;            // 이동 속도
+    Quaternion targetRotation;
+
+    public Transform JumpTarget;            // 점프 목적지? 
+
     public bool isChange = false;
     public bool isSleepOut = false;
-
-    bool isIdle = false;
-    bool isPosition = false;
-    public bool isEffectStop = false;
+    bool isDelay = true;
+    bool isJump = false;
+    bool isMove = false;
+    bool isMoveFin = false;
 
     // VFX 
     public ParticleSystem SleepOutEffect;
@@ -35,6 +38,7 @@ public class SujiManage : MonoBehaviour
 
     void Start()
     {
+        gameObject.SetActive(false);
         SleepOutEffect.Play();
     }
 
@@ -42,39 +46,57 @@ public class SujiManage : MonoBehaviour
     {
         _PlayerState = Player.GetComponent<PlayerState>();
 
-
-        if(isSleepOut)
+        // SleepOut 애니메이션 끝나면 이펙트 종료 & 키보드 앞으로 점프 + 이동
+        if (animationComponent.IsPlaying("SleepOut") == false && !isChange)
         {
-            if(!isPosition)
+            if(isDelay)
             {
-                Debug.Log("Suji teleportation");
-                Vector3 newPosition = new Vector3(Target.position.x, 25.5f, Target.position.z);
-                gameObject.transform.position = newPosition;
-                isPosition = true;
+                // 딜레이 n초 진행 후 else 코드 실행 
+                StartCoroutine(Wait()); // Wait() 코루틴을 시작합니다.
             }
-            
-            // SleepOut 애니메이션 클립으로 전환
-            if (animationComponent != null && SleepOutAni != null && !isChange)
+            else
             {
-                Debug.Log("Suji SleepOut");
-                animationComponent.Stop();
-                animationComponent.clip = SleepOutAni;
-                animationComponent.Play();
+                // 이펙트 중지
+                SleepOutEffect.Stop();
 
-                isChange = true;
-                isIdle = true;
-                isSleepOut = false;
+                // 회전
+                if (!isRotate)
+                {
+                    // 회전을 하나만 수행하고 이후에는 더 이상 회전하지 않도록 isRotate를 true로 설정합니다.
+                    isRotate = true;
+                
+                    // 목표 회전 각도 설정
+                    targetRotation = Quaternion.Euler(0, -120, 0);
+                }
+
+                // 회전 로직
+                if (isRotate)
+                {
+                    // Lerp 함수를 사용하여 부드럽게 회전합니다.
+                    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                    
+                    // 현재 회전 각도와 목표 회전 각도가 거의 같으면 회전을 완료했다고 가정하고 isRotate를 false로 설정
+                    if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
+                    {
+                        isRotate = false;
+                        isMove = true;
+                    }
+                }
+
+                // 회전 끝남 & 점프와 이동 시작
+                if(isJump)
+                {
+                    //MoveToTarget(JumpTarget);
+                }
+
+                if(isMove)
+                {
+                    MoveNPC(target.position, 2f);
+                }
             }
         }
-        
-        if(isIdle & !isEffectStop) 
-        {
-            StartCoroutine(Wait());
-            SleepOutEffect.Stop();
-            isEffectStop = true;
-        }
-
-        // _PlayerState isTeleport true -> 회전 & 애니메이션 
+       
+        // _PlayerState isTeleport true -> 회전 & 애니메이션 // 플레이어가 방 한가운데 스폰되었을 때
         if(_PlayerState.isTeleport)
         {
             if(!isRotate)
@@ -96,10 +118,31 @@ public class SujiManage : MonoBehaviour
         }
     }
 
-
-    // SleepOut 길이만큼 대기 -> IDLE 재생 
+    // n초 딜레이
     private IEnumerator Wait()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(3f);
+        isDelay = false;
+    }
+
+    // 일정한 시간 동안 서서히 이동시키는 함수
+    public void MoveNPC(Vector3 destination, float duration)
+    {
+        StartCoroutine(MoveCoroutine(destination, duration));
+    }
+
+    private System.Collections.IEnumerator MoveCoroutine(Vector3 destination, float duration)
+    {
+        Vector3 initialPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(initialPosition, destination, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = destination; // 정확한 목표 위치로 이동
     }
 }
