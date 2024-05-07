@@ -181,7 +181,7 @@ public class UI_Canvas : MonoBehaviour
         }
 
         // 챕터 1 - 열매 먹었을 때 UI 변경
-        if(_ChapterControl.chapterCount == 1 && _PlayerState.fruitCount == 1)
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && _PlayerState.fruitCount == 1)
         {
             UnableRawImage(fruit_0_1);
             EnableRawImage(fruit_1_1);
@@ -220,7 +220,7 @@ public class UI_Canvas : MonoBehaviour
         }
         
         // 챕터 2 - 열매 먹었을 때 UI 변경
-        if(_ChapterControl.chapterCount == 2)
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
             if(_PlayerState.fruitCount == 1)
             {

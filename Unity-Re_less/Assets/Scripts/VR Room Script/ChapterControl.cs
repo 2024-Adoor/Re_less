@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Reless;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class ChapterControl : MonoBehaviour
 {   
@@ -32,18 +27,15 @@ public class ChapterControl : MonoBehaviour
     
     // UI 트리거용 
     public int CH02_RespawnCount = 0;
-
-    private bool _temp_UseStartControlLogic = false;
-    public Volume volume;
     
     // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
     public GameObject[] Ch01_Objects; 
     public GameObject[] Ch02_Objects; 
     public GameObject[] Ch03_Objects;
-
-    // 챕터카운트 
-    public int chapterCount = 1;
-
+    
+    private const float Ch01SpawnDirection = -40;
+    private const float Ch02SpawnDirection = 120;
+    private const float Ch03SpawnDirection = 150;
 
     /// <summary>
     /// 현재 챕터
@@ -83,11 +75,6 @@ public class ChapterControl : MonoBehaviour
 #endif
     }
 
-    void Start()
-    {
-        
-    }
-    
     private void Update()
     {
 #if UNITY_EDITOR
@@ -95,13 +82,23 @@ public class ChapterControl : MonoBehaviour
         {
             Debug.Log($"Changing chapter to {setChapterTo}");
             CurrentChapter = setChapterTo;
+            
+            // 챕터 변경시 플레이어 위치 변경
+            var spawnParams = setChapterTo switch
+            {
+                Chapter.Chapter1 => (point :SpawnPoint01, direction: Ch01SpawnDirection),
+                Chapter.Chapter2 => (point :SpawnPoint02, direction: Ch02SpawnDirection),
+                Chapter.Chapter3 => (point :SpawnPoint03, direction: Ch03SpawnDirection),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            SpawnPlayer(spawnParams.point, spawnParams.direction);
         }
         _cachedSetChapterTo = setChapterTo = CurrentChapter;
 #endif
     }
     private void SetupChapter01()
     {
-        SpawnPlayer(SpawnPoint01, -40);
+        SpawnPlayer(SpawnPoint01, Ch01SpawnDirection);
 
         // 챕터 1 Spot Light Intensity 조절
         spotLight.intensity = 100f;
@@ -130,9 +127,6 @@ public class ChapterControl : MonoBehaviour
         PlayerState _PlayerState = GetComponent<PlayerState>();
         _PlayerState.fruitCount = -1;
 
-        // 챕터 카운트 2
-        chapterCount ++;
-
         // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
         //SetActiveFalse(Ch01_Objects);
         //SetActiveFalse(Ch03_Objects);
@@ -146,9 +140,6 @@ public class ChapterControl : MonoBehaviour
         
         // 챕터 3 Spot Light Intensity 조절
         spotLight.intensity = 1500f;
-
-        // 챕터 카운트 3
-        chapterCount ++;
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
         //SetActiveFalse(Ch01_Objects);
