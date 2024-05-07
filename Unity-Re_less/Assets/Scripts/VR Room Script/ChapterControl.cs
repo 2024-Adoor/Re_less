@@ -111,7 +111,7 @@ public class ChapterControl : MonoBehaviour
         SpawnPlayer(SpawnPoint01, Ch01SpawnDirection);
 
         // 앰비언트 라이팅 조정
-        roomLighting.ApplyAmbientColorByChapter();
+        roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter1);
         
         // 챕터 1 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch02_Objects);
@@ -125,7 +125,7 @@ public class ChapterControl : MonoBehaviour
         //SpawnPlayer(SpawnPoint02, 120);
 
         // 앰비언트 라이팅 조정
-        roomLighting.ApplyAmbientColorByChapter();
+        roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter2);
 
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
@@ -136,7 +136,7 @@ public class ChapterControl : MonoBehaviour
         
         // 열매 카운트 초기화
         PlayerState _PlayerState = GetComponent<PlayerState>();
-        _PlayerState.fruitCount = -1;
+        _PlayerState.FruitCount = -1;
 
         // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch01_Objects);
@@ -150,7 +150,7 @@ public class ChapterControl : MonoBehaviour
         //SpawnPlayer(SpawnPoint03, 150);
         
         // 앰비언트 라이팅 조정
-        roomLighting.ApplyAmbientColorByChapter();
+        roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter3);
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch01_Objects);

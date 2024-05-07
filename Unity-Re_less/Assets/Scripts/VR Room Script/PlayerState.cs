@@ -1,81 +1,66 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Reless;
+using Reless.VR;
 
 public class PlayerState : MonoBehaviour
 {   
-    // Fruit Ä«¿îÆ® & Å¸ Ä³¸¯ÅÍ »óÈ£ÀÛ¿ë °ü¸® ½ºÅ©¸³Æ®ÀÔ´Ï´Ù. 
-    public int fruitCount = -1; 
+    // Fruit ì¹´ìš´íŠ¸ & íƒ€ ìºë¦­í„° ìƒí˜¸ì‘ìš© ê´€ë¦¬ ìŠ¤í¬ë¦½íŠ¸ì…ë‹ˆë‹¤. 
+    public int FruitCount
+    {
+        get => _fruitCount;
+        set
+        {
+            _fruitCount = value;
+            if (value == 2) { foreach (GameObject arrow in Ch02Arrows) { arrow.SetActive(true); } }
+        }
+    }
+    private int _fruitCount = -1; 
+    
     public bool isTrigger = false;
     public bool isCharacter = false;
     
-    // Ending ¿ä°Ç
+    // Ending ìš”ê±´
     public GameObject Suji;
     SujiEndingTest _SujiEndingTest;
     
-    public float upwardSpeed = 1f;
 
-    public bool canEnd = false;
     public bool isYUp = false;
 
-    public GameObject Suji_Surprised;
-    public GameObject Characters_Surprised;
-    bool isSurprised = false;
     public bool isTeleport = false;
 
-    // ¿£µù Æ÷ÀÎÆ® trigger -> Destroy Door 
+    // ì—”ë”© í¬ì¸íŠ¸ trigger -> Destroy Door 
     public GameObject door;
-    
-    // Ending RespawnTrigger & SpawnPoint 
-    public Transform RespawnTrigger;
-    public Transform EndSpawnPoint;
-    public GameObject Camera;
 
-    // Delay °ü¸®
-    private float elapsedTime = 0f;
-    private float delayTime = 2f;
-    private bool isDelayedActionStarted = false;
-
-    // UI Æ®¸®°Å °ü¸®
+    // UI íŠ¸ë¦¬ê±° ê´€ë¦¬
     public bool isJumpUI = false;
     public bool isFriendUI = false;
     public bool isDoorUI = false;
     public bool isCh02JumpUI = false;
     public bool isDisawakeUI_Trigger = false;
 
-    // Fade Æ®¸®°Å °ü¸®
+    // Fade íŠ¸ë¦¬ê±° ê´€ë¦¬
     public bool isFadeOut = false; 
     public bool isFadeIn = false;
 
-    // È¿°úÀ½ °ü¸®
+    // íš¨ê³¼ìŒ ê´€ë¦¬
     public AudioClip fruit_get;
     private AudioSource audioSource;
 
-    // EndTrigger ¸ÓÅ×¸®¾ó
+    // EndTrigger ë¨¸í…Œë¦¬ì–¼
     public Material EndMaterial;
 
-    // ¿£µù Ã¤ÆÃ °ü·Ã
-    bool isEndChatFin = false;
-    bool isEndChatStart = true;
-    public GameObject EndChat_Suji;
-    public GameObject EndChat_Clock;
-    public GameObject EndChat_Cat;
-    public GameObject EndChat_Cactus;
-
-    // Ã©ÅÍ 2 ¿­¸Å ´Ù ¸Ô¾úÀ» ¶§ È­»ìÇ¥ È°¼ºÈ­
+    // ì±•í„° 2 ì—´ë§¤ ë‹¤ ë¨¹ì—ˆì„ ë•Œ í™”ì‚´í‘œ í™œì„±í™”
     public GameObject[] Ch02Arrows;
+
+    private EndingBehaviour _endingBehaviour;
 
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        EndChat_Suji.SetActive(false);
-        EndChat_Clock.SetActive(false);
-        EndChat_Cat.SetActive(false);
-        EndChat_Cactus.SetActive(false);
 
-        // ¹è¿­À» ¹İº¹ÇÏ¿© ÀÛ¾÷ ¼öÇà
+        // ë°°ì—´ì„ ë°˜ë³µí•˜ì—¬ ì‘ì—… ìˆ˜í–‰
         foreach (GameObject obj in Ch02Arrows)
         {
             if (obj != null)
@@ -83,110 +68,16 @@ public class PlayerState : MonoBehaviour
                 obj.SetActive(false);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {   
+        
         if(Suji != null)
         {
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
-
-        // ¿£µù¿ä°ÇÀÌ ÃæÁ·µÇ¸é Delay ÈÄ isYUp true 
-        if(canEnd)
-        {
-            // ¿£µù Àü ´ë»ç ½ÃÀÛ
-            if(isEndChatStart)
-            {
-                StartCoroutine(ShowDialogue());
-                isEndChatStart = false;
-            }
-
-            if (!isDelayedActionStarted && isEndChatFin)
-            {
-                elapsedTime += Time.deltaTime;
-                if (elapsedTime >= delayTime)
-                {
-                    // µô·¹ÀÌ°¡ Á¾·áµÇ¸é ½ÇÇàÇÒ ÄÚµå
-                    Debug.Log("Delay Finish");
-                    // RigidbodyÀÇ Use Gravity¸¦ false·Î º¯°æ
-                    Rigidbody rb = GetComponent<Rigidbody>();
-                    if (rb != null)
-                    {
-                        rb.useGravity = false;
-                        isYUp = true;
-                    }
-                    isDelayedActionStarted = true;
-                }
-            }
-        }
-
-        // isYUp -> ÇÃ·¹ÀÌ¾î y°ª »ó½Â & Ä³¸¯ÅÍ ¾Ö´Ï¸ŞÀÌ¼Ç º¯°æ 
-        if(isYUp)
-        {
-            // ÇöÀç À§Ä¡¿¡¼­ ÀÏÁ¤ÇÑ ¼Óµµ·Î ÀÌµ¿
-            MoveToTargetY(RespawnTrigger);
-
-            if(!isSurprised)
-            {
-                // ¾Öµé ÇÁ¸®ÆÕ º¯°æ (IDLE -> Surprised)
-                Destroy(Suji);
-
-                // »õ·Î¿î ÇÁ¸®ÆÕ »ı¼º
-                GameObject newSuji = Instantiate(Suji_Surprised, Suji_Surprised.transform.position, Suji_Surprised.transform.rotation);
-                GameObject newCharacters = Instantiate(Characters_Surprised, Characters_Surprised.transform.position, Characters_Surprised.transform.rotation);
-
-                isSurprised = true;
-            }
-        }
-
-        if(Mathf.Approximately(transform.position.y, RespawnTrigger.position.y))
-        {
-            isFadeOut = true;
-            isYUp = false;
-            canEnd = false;
-            Debug.Log("Player on RespawnTrigger !!");
-            
-            if(isFadeIn)
-            {
-                Rigidbody rb = GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.useGravity = true;
-                }
-
-                transform.position = EndSpawnPoint.position + new Vector3(0f, 23f, 0f);
-
-                CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
-                capsuleCollider.radius = 5f;
-                capsuleCollider.height = 60f;
-
-                Camera.transform.position += new Vector3(0f, 20f, 0f);
-
-                PlayerControl _PlayerControl = GetComponent<PlayerControl>();
-                if(_PlayerControl != null)
-                {
-                    _PlayerControl.speed = 12f;
-                }
-
-                isTeleport = true;
-                Destroy(door);
-            }
-        }
-
-        if(fruitCount == 2)
-        {
-            // ¹è¿­À» ¹İº¹ÇÏ¿© ÀÛ¾÷ ¼öÇà
-            foreach (GameObject obj in Ch02Arrows)
-            {
-                if (obj != null)
-                {
-                    obj.SetActive(true);
-                }
-            }
-        }
+        
+        _endingBehaviour = FindAnyObjectByType<EndingBehaviour>();
     }
+
+    // NOTE: ì—…ë°ì´íŠ¸ í•¨ìˆ˜ì— ìˆëŠ” ì—”ë”© ì§„í–‰ EndingBehaviour.StartEnding()ìœ¼ë¡œ ì´ë™
 
     void OnTriggerEnter(Collider other)
     {
@@ -195,16 +86,16 @@ public class PlayerState : MonoBehaviour
 
         if(other.CompareTag("Fruit"))
         {
-            if(fruitCount == -1)
+            if(FruitCount == -1)
             {
-                fruitCount = 1;
+                FruitCount = 1;
             }
             else
             {
-                fruitCount++;
+                FruitCount++;
             }
             
-            // Ãæµ¹ÇÑ ¿ÀºêÁ§Æ® »èÁ¦
+            // ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸ ì‚­ì œ
             Destroy(other.gameObject);
             Debug.Log("Fruit detected");
 
@@ -216,7 +107,7 @@ public class PlayerState : MonoBehaviour
 
             otherRend.material = EndMaterial;
 
-            canEnd = true;
+            _endingBehaviour.StartEnding();
         }
 
         if(other.gameObject.name == "UI_JumpTutorial_Trigger")
@@ -237,10 +128,10 @@ public class PlayerState : MonoBehaviour
         }
     }
 
-    // Äİ¶óÀÌ´õ¶û Ãæµ¹ÇÒ¶§ 
+    // ì½œë¼ì´ë”ë‘ ì¶©ëŒí• ë•Œ 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Character") && fruitCount > 0)
+        if(collision.gameObject.CompareTag("Character") && FruitCount > 0)
         {
             isCharacter = true;
         }
@@ -254,7 +145,7 @@ public class PlayerState : MonoBehaviour
         }
     }
 
-    // Äİ¶óÀÌ´õ¶û Ãæµ¹ ¾ÈÇÒ¶§ 
+    // ì½œë¼ì´ë”ë‘ ì¶©ëŒ ì•ˆí• ë•Œ 
     void OnCollisionExit(Collision collision)
     {
         if(collision.gameObject.CompareTag("Character"))
@@ -264,50 +155,5 @@ public class PlayerState : MonoBehaviour
                 isDisawakeUI_Trigger = false;
             }
         }
-    }
-
-    // Å¸°ÙÀ§Ä¡±îÁö ÀÌµ¿ 
-    void MoveToTargetY(Transform target)
-    {   
-        // yÃà ¹æÇâÀ¸·ÎÀÇ °Å¸® °è»ê
-        float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
-    
-        // ÀÌµ¿ÇÏ´Âµ¥ ÇÊ¿äÇÑ ½Ã°£ °è»ê
-        float timeToReachTargetY = distanceToTargetY / upwardSpeed;
-    
-        // ¸ñÇ¥ ÁöÁ¡±îÁö ÀÏÁ¤ÇÑ ¼Óµµ·Î yÃà ÀÌµ¿
-        float newY = Mathf.MoveTowards(transform.position.y, target.position.y, upwardSpeed * Time.deltaTime);
-        
-        // ÇöÀç x¿Í z À§Ä¡¸¦ À¯ÁöÇÑ Ã¤·Î y°ªÀ» °»½ÅÇÏ¿© »õ·Î¿î À§Ä¡ ¼³Á¤
-        Vector3 newPosition = new Vector3(transform.position.x, newY, transform.position.z);
-        
-        // »õ·Î¿î À§Ä¡·Î ÀÌµ¿
-        transform.position = newPosition;
-    }
-
-    // ¿£µù ´ë»ç ÇÔ¼ö
-    IEnumerator ShowDialogue()
-    {
-        // 1. ¼öÁö ´ë»ç
-        EndChat_Suji.SetActive(true);
-        yield return new WaitForSeconds(1f); // ´ë»ç¸¦ º¸¿©ÁÙ ½Ã°£
-
-        // 2. ½Ã°èÅä³¢ ´ë»ç
-        EndChat_Suji.SetActive(false);
-        EndChat_Clock.SetActive(true);
-        yield return new WaitForSeconds(1f); // ´ë»ç¸¦ º¸¿©ÁÙ ½Ã°£
-
-        // 3. Ã¼¼ÅÄ¹ ´ë»ç
-        EndChat_Clock.SetActive(false);
-        EndChat_Cat.SetActive(true);
-        yield return new WaitForSeconds(1f); // ´ë»ç¸¦ º¸¿©ÁÙ ½Ã°£
-
-        // 4. ¼±ÀÎÀå ´ë»ç
-        EndChat_Cat.SetActive(false);
-        EndChat_Cactus.SetActive(true);
-        yield return new WaitForSeconds(1f); // ´ë»ç¸¦ º¸¿©ÁÙ ½Ã°£
-
-        EndChat_Cactus.SetActive(false);        
-        isEndChatFin = true;
     }
 }

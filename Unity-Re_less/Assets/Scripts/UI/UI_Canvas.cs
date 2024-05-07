@@ -181,7 +181,7 @@ public class UI_Canvas : MonoBehaviour
         }
 
         // 챕터 1 - 열매 먹었을 때 UI 변경
-        if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && _PlayerState.fruitCount == 1)
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && _PlayerState.FruitCount == 1)
         {
             UnableRawImage(fruit_0_1);
             EnableRawImage(fruit_1_1);
@@ -222,12 +222,12 @@ public class UI_Canvas : MonoBehaviour
         // 챕터 2 - 열매 먹었을 때 UI 변경
         if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
-            if(_PlayerState.fruitCount == 1)
+            if(_PlayerState.FruitCount == 1)
             {
                 UnableRawImage(fruit_0_2);
                 EnableRawImage(fruit_1_2);
             }
-            if(_PlayerState.fruitCount == 2)
+            if(_PlayerState.FruitCount == 2)
             {
                 UnableRawImage(fruit_1_2);
                 EnableRawImage(fruit_2_2);
@@ -299,7 +299,7 @@ public class UI_Canvas : MonoBehaviour
         }
 
         // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
-        if(_PlayerState.fruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
+        if(_PlayerState.FruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
         {
             EnableRawImage(CantAwake);
         }

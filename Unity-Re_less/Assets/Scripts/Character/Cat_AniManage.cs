@@ -46,7 +46,7 @@ public class Cat_AniManage : MonoBehaviour
         if(isSleepOut)
         {
             // Animation 컴포넌트의 현재 Animation을 중지하고 새 Animation Clip으로 변경
-            if (animationComponent != null && SleepOutAni != null && _playerState.fruitCount > 0 && !isChange)
+            if (animationComponent != null && SleepOutAni != null && _playerState.FruitCount > 0 && !isChange)
             {
                 SleepingEffect.Stop();
                 SleepOutEffect.Play();
@@ -62,7 +62,7 @@ public class Cat_AniManage : MonoBehaviour
 
                 StartCoroutine(WaitForSleepOutAnimation());
 
-                _playerState.fruitCount--;
+                _playerState.FruitCount--;
             }
         }
     }
