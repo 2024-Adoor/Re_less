@@ -32,7 +32,14 @@ namespace Reless.VR
     
         [SerializeField]
         private AmbientColor endingAmbientColor;
+        
+        [Header("References")]
+        [SerializeField]
+        private Light endingLight;
 
+        /// <summary>
+        /// 현재 챕터에 대한 앰비언트 라이팅을 적용합니다.
+        /// </summary>
         public void ApplyAmbientColorByChapter()
         {
             ApplyAmbientColor(GameManager.Instance.CurrentChapter switch
@@ -45,7 +52,14 @@ namespace Reless.VR
             );
         }
         
-        public void ApplyEndingAmbientColor() => ApplyAmbientColor(endingAmbientColor);
+        /// <summary>
+        /// 엔딩에 대한 앰비언트 라이팅을 적용합니다.
+        /// </summary>
+        public void ApplyEndingAmbientColor() 
+        {
+            ApplyAmbientColor(endingAmbientColor);
+            endingLight.enabled = true;
+        }
         
         private void ApplyAmbientColor(AmbientColor color)
         {
