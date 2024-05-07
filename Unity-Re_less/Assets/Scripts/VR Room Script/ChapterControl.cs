@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using NaughtyAttributes;
 using Reless;
+using Reless.VR;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChapterControl : MonoBehaviour
@@ -14,21 +18,23 @@ public class ChapterControl : MonoBehaviour
 #endif
     
     // 챕터별 스폰포인트 
+    [Header("Chapter Spawn Points")]
     public Transform SpawnPoint01;
     public Transform SpawnPoint02;
     public Transform SpawnPoint03;
     public Vector3 offset; 
 
+    [Header("Chapter02 Spawn Objects")]
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
 
-    // 챕터별 라이트 조절
-    public Light spotLight; 
-    
+    [Header("?")]
     // UI 트리거용 
+    [NonSerialized]
     public int CH02_RespawnCount = 0;
     
     // 챕터별로 해당 챕터에서만 나와야 하는 오브젝트
+    [Header("Chapter Objects")]
     public GameObject[] Ch01_Objects; 
     public GameObject[] Ch02_Objects; 
     public GameObject[] Ch03_Objects;
@@ -36,6 +42,10 @@ public class ChapterControl : MonoBehaviour
     private const float Ch01SpawnDirection = -40;
     private const float Ch02SpawnDirection = 120;
     private const float Ch03SpawnDirection = 150;
+    
+    [Header("References")]
+    [SerializeField]
+    private RoomLighting roomLighting;
 
     /// <summary>
     /// 현재 챕터
@@ -100,8 +110,8 @@ public class ChapterControl : MonoBehaviour
     {
         SpawnPlayer(SpawnPoint01, Ch01SpawnDirection);
 
-        // 챕터 1 Spot Light Intensity 조절
-        spotLight.intensity = 100f;
+        // 앰비언트 라이팅 조정
+        roomLighting.ApplyAmbientColorByChapter();
         
         // 챕터 1 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch02_Objects);
@@ -114,8 +124,9 @@ public class ChapterControl : MonoBehaviour
     {
         //SpawnPlayer(SpawnPoint02, 120);
 
-        // 챕터 2 Spot Light Intensity 조절
-        spotLight.intensity = 300f;
+        // 앰비언트 라이팅 조정
+        roomLighting.ApplyAmbientColorByChapter();
+
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
         SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
@@ -128,8 +139,8 @@ public class ChapterControl : MonoBehaviour
         _PlayerState.fruitCount = -1;
 
         // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
-        //SetActiveFalse(Ch01_Objects);
-        //SetActiveFalse(Ch03_Objects);
+        SetActiveFalse(Ch01_Objects);
+        SetActiveFalse(Ch03_Objects);
         
         SetActiveTrue(Ch02_Objects);
     }
@@ -138,12 +149,12 @@ public class ChapterControl : MonoBehaviour
     {
         //SpawnPlayer(SpawnPoint03, 150);
         
-        // 챕터 3 Spot Light Intensity 조절
-        spotLight.intensity = 1500f;
+        // 앰비언트 라이팅 조정
+        roomLighting.ApplyAmbientColorByChapter();
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
-        //SetActiveFalse(Ch01_Objects);
-        //SetActiveFalse(Ch02_Objects);
+        SetActiveFalse(Ch01_Objects);
+        SetActiveFalse(Ch02_Objects);
         
         SetActiveTrue(Ch03_Objects);
     }
@@ -194,4 +205,8 @@ public class ChapterControl : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        if (roomLighting.IsUnityNull()) { roomLighting = FindAnyObjectByType<RoomLighting>(); }
+    }
 }
