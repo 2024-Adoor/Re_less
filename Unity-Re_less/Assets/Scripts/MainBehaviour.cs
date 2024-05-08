@@ -1,5 +1,6 @@
 using System;
 using NaughtyAttributes;
+using Reless.MR;
 using UnityEngine;
 using static Reless.Chapter;
 
@@ -38,6 +39,11 @@ namespace Reless
         [SerializeField]
         private ObtainingObjectPrefabs _obtainingObjectPrefabs;
 
+        [SerializeField]
+        private GameObject polaroidsPrefab;
+        
+        private GameObject _polaroids;
+        
         private void Awake()
         {
             if (GameManager.CurrentPhase is GamePhase.Ending) OnEnding();
@@ -82,7 +88,13 @@ namespace Reless
         /// </summary>
         private void OnEnding()
         {
+            if (RoomManager.Instance is null) return;
             
+            // 팝업북 비활성화
+            GameManager.Instance.PopupBook.gameObject.SetActive(false);
+            
+            // 폴라로이드 생성
+            _polaroids = Instantiate(polaroidsPrefab, GameManager.Instance.PopupBook.transform.position, Quaternion.identity);
         }
 
         /// <summary>

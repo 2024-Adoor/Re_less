@@ -193,7 +193,10 @@ namespace Reless
         } 
         private InputActions _inputActions;
 
-        public PopupBook PopupBook { set => _popupBook ??= value; }
+        public PopupBook PopupBook {
+            get => _popupBook;
+            set => _popupBook ??= value;
+        }
         
         private PopupBook _popupBook;
 
@@ -205,7 +208,7 @@ namespace Reless
 
                 _popupBook.gameObject.SetActive(value switch
                 {
-                    <= GamePhase.Tutorial => false,
+                    <= GamePhase.Tutorial or GamePhase.Ending => false,
                     > GamePhase.Tutorial => true,
                 });
             }
