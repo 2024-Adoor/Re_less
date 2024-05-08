@@ -10,8 +10,6 @@ namespace Reless
     /// </summary>
     public class MainBehaviour : MonoBehaviour
     {
-        private GameManager _gameManager;
-    
         [SerializeField]
         private CloseEyesToSleepPose closeEyesToSleepPose;
         
@@ -42,13 +40,14 @@ namespace Reless
 
         private void Awake()
         {
-            _gameManager = GameManager.Instance;
+            if (GameManager.CurrentPhase is GamePhase.Ending) OnEnding();
+            else GameManager.OnEnding += OnEnding;
         }
         
         private void Start()
         {
             // 튜토리얼 이후/엔딩 전 (= 챕터 중)에 MainScene으로 진입했다면
-            if (_gameManager.CurrentChapter is not null)
+            if (GameManager.CurrentChapter is not null)
             {
                 // 펜 활성화
                 EnablePen();
@@ -71,6 +70,19 @@ namespace Reless
                 SetupSketchObject(drawingPrefabPair.sktech, drawingPrefabPair.obtaining);
                 */
             }
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.OnEnding -= OnEnding;
+        }
+
+        /// <summary>
+        /// 게임 단계가 엔딩일 때 할 일
+        /// </summary>
+        private void OnEnding()
+        {
+            
         }
 
         /// <summary>
@@ -119,7 +131,7 @@ namespace Reless
         [Button]
         public void AchieveEnterCondition()
         {
-            AchieveEnterCondition(_gameManager.CurrentChapter switch
+            AchieveEnterCondition(GameManager.CurrentChapter switch
             { 
                 Chapter1 => 1, 
                 Chapter2 => 2,

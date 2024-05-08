@@ -81,11 +81,11 @@ namespace Reless
         {
             if (_cachedSetGamePhaseTo != setGamePhaseTo)
             {
-                Debug.Log($"Current Phase : {_gameManager.CurrentPhase} -> Set Phase : {setGamePhaseTo}");
-                _gameManager.CurrentPhase = setGamePhaseTo;
+                Debug.Log($"Current Phase : {GameManager.CurrentPhase} -> Set Phase : {setGamePhaseTo}");
+                GameManager.CurrentPhase = setGamePhaseTo;
                 _cachedSetGamePhaseTo = setGamePhaseTo;
             }
-            _cachedSetGamePhaseTo = setGamePhaseTo = _gameManager.CurrentPhase;
+            _cachedSetGamePhaseTo = setGamePhaseTo = GameManager.CurrentPhase;
         }
     }
 }

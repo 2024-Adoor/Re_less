@@ -19,7 +19,7 @@ namespace Reless
         private void Update()
         {
             // 현재 챕터와 일치하는 경우에만 SnapInteractable을 활성화합니다.
-            _snapInteractable.enabled = GameManager.Instance.CurrentChapter switch
+            _snapInteractable.enabled = GameManager.CurrentChapter switch
             {
                 Chapter1 => chapter == Chapter1,
                 Chapter2 => chapter == Chapter2,

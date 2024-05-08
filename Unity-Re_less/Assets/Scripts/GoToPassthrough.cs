@@ -93,7 +93,7 @@ public class GoToPassthrough : MonoBehaviour
 			if(Ch01_Clear || Ch02_Clear || Ch03_Clear)
 			{
 				fadeUI.WhiteFadeOut();
-				GameManager.Instance.CurrentPhase++;
+				GameManager.CurrentPhase++;
 				GameManager.Instance.LoadMainScene();
 			}
 		}

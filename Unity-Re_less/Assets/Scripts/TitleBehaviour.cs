@@ -43,7 +43,7 @@ namespace Reless
             GameManager.OnTitle += StartCheck;
             
             // 이미 Title 단계라면 바로 실행합니다.
-            if (GameManager.Instance.CurrentPhase is GamePhase.Title) StartCheck();
+            if (GameManager.CurrentPhase is GamePhase.Title) StartCheck();
         }
         
         private void OnDisable()
@@ -63,15 +63,15 @@ namespace Reless
             {
                 // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingApproachDoor(
-                    onApproach: () => { GameManager.Instance.CurrentPhase = GamePhase.Opening; },
-                    until: () => GameManager.Instance.CurrentPhase is not GamePhase.Title));
+                    onApproach: () => { GameManager.CurrentPhase = GamePhase.Opening; },
+                    until: () => GameManager.CurrentPhase is not GamePhase.Title));
             }
             else
             {
                 // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingEnterRoom(
-                    onEnter: () => { GameManager.Instance.CurrentPhase = GamePhase.Opening; },
-                    until: () => GameManager.Instance.CurrentPhase is not GamePhase.Title));
+                    onEnter: () => { GameManager.CurrentPhase = GamePhase.Opening; },
+                    until: () => GameManager.CurrentPhase is not GamePhase.Title));
             }
         }
         

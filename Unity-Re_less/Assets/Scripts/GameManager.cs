@@ -30,38 +30,38 @@ namespace Reless
         /// <summary>
         /// 게임의 현재 진행 단계
         /// </summary>
-        public GamePhase CurrentPhase
+        public static GamePhase CurrentPhase
         {
-            get => _currentPhase;
+            get => Instance._currentPhase;
             set
             {
                 // 유효한 값으로 제한합니다.
-                _currentPhase = value switch
+                Instance._currentPhase = value switch
                 {
                     < GamePhase.Title => GamePhase.Title,
                     > GamePhase.Ending => GamePhase.Ending,
                     _ => value
                 };
 
-                switch (_currentPhase)
+                switch (Instance._currentPhase)
                 {
-                    case GamePhase.Title: StartTitle(); break;
+                    case GamePhase.Title: Instance.StartTitle(); break;
                     case GamePhase.Opening: OnOpening?.Invoke(); break;
-                    case GamePhase.Tutorial: StartTutorial(); break;
+                    case GamePhase.Tutorial: Instance.StartTutorial(); break;
                     case GamePhase.Chapter1: OnChapter1?.Invoke(); break;
                     case GamePhase.Chapter2: OnChapter2?.Invoke(); break;
                     case GamePhase.Chapter3: OnChapter3?.Invoke(); break;
-                    case GamePhase.Ending: OnEnding(); break;
+                    case GamePhase.Ending: OnEnding?.Invoke(); break;
                 }
 
-                switch (_currentPhase)
+                switch (Instance._currentPhase)
                 {
                     case GamePhase.Chapter1 or GamePhase.Chapter2 or GamePhase.Chapter3:
-                        spawnedWallHints.ForEach(wallHint => wallHint.SetActive(true)); break;
-                        default: spawnedWallHints.ForEach(wallHint => wallHint.SetActive(false)); break;
+                        Instance.spawnedWallHints.ForEach(wallHint => wallHint.SetActive(true)); break;
+                        default: Instance.spawnedWallHints.ForEach(wallHint => wallHint.SetActive(false)); break;
                 }
 
-                PopupBookActive = _currentPhase;
+                Instance.PopupBookActive = Instance._currentPhase;
             }
         }
         private GamePhase _currentPhase;
@@ -70,7 +70,7 @@ namespace Reless
         /// 현재 페이즈가 챕터 중인 경우 해당 챕터를 반환합니다.
         /// 페이즈가 챕터 중이 아닌 경우 null을 반환합니다.
         /// </summary>
-        public Chapter? CurrentChapter => Enum.IsDefined(typeof(Chapter), (Chapter)CurrentPhase) ? (Chapter)CurrentPhase : null;
+        public static Chapter? CurrentChapter => Enum.IsDefined(typeof(Chapter), (Chapter)CurrentPhase) ? (Chapter)CurrentPhase : null;
 
 
         [NonSerialized]
@@ -85,10 +85,8 @@ namespace Reless
         public static Action OnChapter2 { get; set; }
         
         public static Action OnChapter3 { get; set; }
-
-        private void OnEnding()
-        {
-        }
+        
+        public static Action OnEnding { get; set; }
 
         private void StartChapter3()
         {

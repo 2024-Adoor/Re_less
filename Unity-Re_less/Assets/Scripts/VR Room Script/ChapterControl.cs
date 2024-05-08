@@ -56,7 +56,7 @@ public class ChapterControl : MonoBehaviour
         set
         {
             _currentChapter = value;
-            GameManager.Instance.CurrentPhase = (GamePhase)value;
+            GameManager.CurrentPhase = (GamePhase)value;
             switch (_currentChapter)
             {
                 case Chapter.Chapter1: SetupChapter01(); break;
@@ -70,7 +70,7 @@ public class ChapterControl : MonoBehaviour
 
     private void Awake()
     {
-        if (GameManager.Instance.CurrentChapter is Chapter chapter)
+        if (GameManager.CurrentChapter is Chapter chapter)
         {
             CurrentChapter = chapter;
         }

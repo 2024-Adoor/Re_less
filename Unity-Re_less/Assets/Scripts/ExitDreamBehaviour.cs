@@ -128,7 +128,7 @@ namespace Reless
             var asyncLoad = _gameManager.LoadMainScene();
             
             // 꿈에서 나갈 때 게임 단계를 다음 단계로 바꿉니다.
-            GameManager.Instance.CurrentPhase++;
+            GameManager.CurrentPhase++;
             
             while (!asyncLoad.isDone)
             {
