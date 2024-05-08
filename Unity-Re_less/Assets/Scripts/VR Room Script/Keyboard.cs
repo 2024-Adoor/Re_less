@@ -20,6 +20,10 @@ public class Keyboard : MonoBehaviour
     public GameObject Mouse;
     Renderer MouseRend;
 
+    // Sound
+    public AudioClip EnterSound;
+    private AudioSource AudioSource;
+
     // VFX 
     public ParticleSystem PressEffect;
 
@@ -28,6 +32,7 @@ public class Keyboard : MonoBehaviour
         initialPosition = transform.position; // 초기 위치 저장
         PressEffect.Stop();
 
+        AudioSource = GetComponent<AudioSource>(); // AudioSource를 가져옴
         EnterPopupRender = EnterPopup.GetComponent<Renderer>();
         MouseRend = Mouse.GetComponent<Renderer>();
     }
@@ -60,6 +65,8 @@ public class Keyboard : MonoBehaviour
 
                 if(_Ch03_FruitSnap.isDetected)
                 {
+                    AudioSource.PlayOneShot(EnterSound);
+
                     hasCollided = true; // 충돌 여부 설정
                     PressEffect.Stop();
                     EnterPopupRender.enabled = false;
