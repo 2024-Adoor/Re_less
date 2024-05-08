@@ -15,6 +15,9 @@ namespace Reless.UI
         
         private bool _showFramerate;
         
+        [SerializeField]
+        private TMP_Text qualitySettingLabel;
+        
         public bool ShowFramerate
         {
             set
@@ -28,6 +31,7 @@ namespace Reless.UI
         {
             Disable();
             framerate.gameObject.SetActive(_showFramerate);
+            qualitySettingLabel.text = "Quality Setting Level: " + QualitySettings.names[QualitySettings.GetQualityLevel()];
         }
         
         public void Enable()
