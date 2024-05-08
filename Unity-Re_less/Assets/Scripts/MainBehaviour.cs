@@ -46,8 +46,8 @@ namespace Reless
         
         private void Awake()
         {
-            if (GameManager.CurrentPhase is GamePhase.Ending) OnEnding();
-            else GameManager.OnEnding += OnEnding;
+            OnEnding(GameManager.CurrentPhase);
+            GameManager.PhaseChanged += OnEnding;
         }
         
         private void Start()
@@ -80,21 +80,20 @@ namespace Reless
 
         private void OnDestroy()
         {
-            GameManager.OnEnding -= OnEnding;
+            GameManager.PhaseChanged -= OnEnding;
         }
 
         /// <summary>
-        /// 게임 단계가 엔딩일 때 할 일
+        /// 현재 게임 단계가 Ending이면 엔딩에 필요한 동작을 수행합니다.
         /// </summary>
-        private void OnEnding()
+        private void OnEnding(GamePhase phase)
         {
-            if (RoomManager.Instance is null) return;
+            if (phase is not GamePhase.Ending) return;
+
+            Transform popupBook = GameManager.Instance.PopupBook.transform;
             
-            // 팝업북 비활성화
-            GameManager.Instance.PopupBook.gameObject.SetActive(false);
-            
-            // 폴라로이드 생성
-            _polaroids = Instantiate(polaroidsPrefab, GameManager.Instance.PopupBook.transform.position, Quaternion.identity);
+            // 팝업북 위치에 폴라로이드 생성
+            _polaroids = Instantiate(polaroidsPrefab, popupBook.position, popupBook.rotation, popupBook.parent);
         }
 
         /// <summary>

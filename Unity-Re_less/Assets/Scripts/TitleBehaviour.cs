@@ -40,7 +40,7 @@ namespace Reless
 
         private void OnEnable()
         {
-            GameManager.OnTitle += StartCheck;
+            GameManager.PhaseChanged += OnTitle;
             
             // 이미 Title 단계라면 바로 실행합니다.
             if (GameManager.CurrentPhase is GamePhase.Title) StartCheck();
@@ -48,7 +48,14 @@ namespace Reless
         
         private void OnDisable()
         {
-            GameManager.OnTitle -= StartCheck;
+            GameManager.PhaseChanged -= OnTitle;
+        }
+        
+        private void OnTitle(GamePhase phase)
+        {
+            if (phase is not GamePhase.Title) return;
+            
+            StartCheck();
         }
 
         /// <summary>

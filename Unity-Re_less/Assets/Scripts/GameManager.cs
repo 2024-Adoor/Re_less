@@ -25,6 +25,8 @@ namespace Reless
         {
             // 메인 씬에서만 시작 시에 바로 방을 셋업합니다.
             if (SceneManager.ActiveScene is MainScene) RoomManager.SetupRoom();
+
+            PhaseChanged += phase => { if (phase is GamePhase.Title) SceneManager.LoadAsync(MainScene); };
         }
 
         /// <summary>
@@ -43,16 +45,7 @@ namespace Reless
                     _ => value
                 };
 
-                switch (Instance._currentPhase)
-                {
-                    case GamePhase.Title: Instance.StartTitle(); break;
-                    case GamePhase.Opening: OnOpening?.Invoke(); break;
-                    case GamePhase.Tutorial: Instance.StartTutorial(); break;
-                    case GamePhase.Chapter1: OnChapter1?.Invoke(); break;
-                    case GamePhase.Chapter2: OnChapter2?.Invoke(); break;
-                    case GamePhase.Chapter3: OnChapter3?.Invoke(); break;
-                    case GamePhase.Ending: OnEnding?.Invoke(); break;
-                }
+                PhaseChanged?.Invoke(Instance._currentPhase);
 
                 switch (Instance._currentPhase)
                 {
@@ -75,40 +68,11 @@ namespace Reless
 
         [NonSerialized]
         public List<GameObject> spawnedWallHints = new List<GameObject>();
-        
-        public static Action OnTitle { get; set; }
-        
-        public static Action OnOpening { get; set; }
-        
-        public static Action OnChapter1 { get; set; }
-        
-        public static Action OnChapter2 { get; set; }
-        
-        public static Action OnChapter3 { get; set; }
-        
-        public static Action OnEnding { get; set; }
 
-        private void StartChapter3()
-        {
-        }
-
-        private void StartChapter2()
-        {
-        }
-
-        private void StartChapter1()
-        {
-        }
-
-        private void StartTutorial()
-        {
-        }
-
-        private void StartTitle()
-        {
-            SceneManager.LoadAsync(MainScene);
-            OnTitle?.Invoke();
-        }
+        /// <summary>
+        /// 게임 진행 단계가 변경될 때 호출되는 이벤트입니다.
+        /// </summary>
+        public static event Action<GamePhase> PhaseChanged;
         
         // TODO: Input System으로 전환
         private void Update()

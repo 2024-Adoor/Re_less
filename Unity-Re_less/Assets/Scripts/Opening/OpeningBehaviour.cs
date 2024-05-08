@@ -30,12 +30,19 @@ namespace Reless.Opening
 
         private void Awake()
         {
-            GameManager.OnOpening += StartOpening;
+            GameManager.PhaseChanged += OnOpening;
         }
 
         private void OnDestroy()
         {
-            GameManager.OnOpening -= StartOpening;
+            GameManager.PhaseChanged -= OnOpening;
+        }
+        
+        private void OnOpening(GamePhase phase)
+        {
+            if (phase is not GamePhase.Opening) return;
+            
+            StartOpening();
         }
 
         /// <summary>
