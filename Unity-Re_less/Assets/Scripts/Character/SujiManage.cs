@@ -18,8 +18,6 @@ public class SujiManage : MonoBehaviour
     Quaternion targetRotation;
     Quaternion targetRotation2;
 
-    public Transform JumpTarget;            // 점프 목적지? 
-
     public bool isChange = false;
     public bool isSleepOut = false;
     bool isDelay = true;
@@ -45,11 +43,16 @@ public class SujiManage : MonoBehaviour
     bool isBye = false;
     bool isRotate = false;
 
+    // Sound
+    public AudioClip HealingSound;
+    private AudioSource HealingAudioSource;
+
     void Start()
     {
         SujiChat.SetActive(false);
         gameObject.SetActive(false);
         SleepOutEffect.Play();
+        HealingAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
