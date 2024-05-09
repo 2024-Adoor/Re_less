@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SujiEndingTest : MonoBehaviour
 {
-    public float moveSpeed = 8.0f; // ÀÌµ¿ ¼Óµµ
+    public float moveSpeed = 8.0f; // ì´ë™ ì†ë„
     public GameObject SujiChat; 
     public GameObject EndingCharacters;
 
-    // ÀÌµ¿ÇÏ±â À§ÇÑ °ªµé 
+    // ì´ë™í•˜ê¸° ìœ„í•œ ê°’ë“¤ 
     public Transform A;
     public Transform B;
     public Transform C;
@@ -31,17 +31,17 @@ public class SujiEndingTest : MonoBehaviour
     private bool CpointMove = false;
     private bool CFin = false;
 
-    public bool RotateFin = false;              // Suji ÀÌµ¿ Á¾·á ¿©ºÎ 
+    public bool RotateFin = false;              // Suji ì´ë™ ì¢…ë£Œ ì—¬ë¶€ 
     private bool isCharacters = false;
 
-    // ¾Ö´Ï¸ŞÀÌ¼Ç
-    public Animation animationComponent;    // Animation ÄÄÆ÷³ÍÆ® ÂüÁ¶
+    // ì• ë‹ˆë©”ì´ì…˜
+    public Animation animationComponent;    // Animation ì»´í¬ë„ŒíŠ¸ ì°¸ì¡°
     public AnimationClip RunAni;       // SleepOut Animation Clip
     public AnimationClip IdleAni;           // IDLE Animation Clip 
     bool isRun = false;
     bool isIDle = false;
 
-    // ¿£µù Æ®¸®°Å Àå¼Ò 
+    // ì—”ë”© íŠ¸ë¦¬ê±° ì¥ì†Œ 
     public GameObject EndTrigger;
     Renderer EndTriggerRender;
 
@@ -55,7 +55,7 @@ public class SujiEndingTest : MonoBehaviour
         EndTriggerRender.enabled = false;
     }
 
-    // Update ÇÔ¼ö´Â ¸Å ÇÁ·¹ÀÓ¸¶´Ù È£ÃâµË´Ï´Ù.
+    // Update í•¨ìˆ˜ëŠ” ë§¤ í”„ë ˆì„ë§ˆë‹¤ í˜¸ì¶œë©ë‹ˆë‹¤.
     void Update()
     {   
         // Chat_Suji _Chat_Suji = SujiChat.GetComponent<Chat_Suji>();
@@ -69,7 +69,7 @@ public class SujiEndingTest : MonoBehaviour
             ChangeAnimation();
             animationComponent.Play();
 
-            // A point±îÁö ÀÌµ¿ 
+            // A pointê¹Œì§€ ì´ë™ 
             if(!ApointRotate)
             {
                 transform.Rotate(0, -90, 0);
@@ -89,12 +89,12 @@ public class SujiEndingTest : MonoBehaviour
                 ApointMove = false;
                 if(!isCharacters)
                 {
-                    CreatePrefabInstance(EndingCharacters);
+                    //CreatePrefabInstance(EndingCharacters);
                     isCharacters = true;
                 }
             }
 
-            // B point±îÁö ÀÌµ¿ 
+            // B pointê¹Œì§€ ì´ë™ 
             if(AFin)
             {
                 if(!BpointRotate)
@@ -118,7 +118,7 @@ public class SujiEndingTest : MonoBehaviour
                 BpointMove = false;
             }
 
-            // C point±îÁö ÀÌµ¿ 
+            // C pointê¹Œì§€ ì´ë™ 
             if(BFin)
             {
                 if(!CpointRotate)
@@ -143,7 +143,7 @@ public class SujiEndingTest : MonoBehaviour
             }
         }
 
-        // ¸¶Áö¸· Turn
+        // ë§ˆì§€ë§‰ Turn
         if(CFin && !RotateFin)
         {
             canMove = false;
@@ -170,28 +170,28 @@ public class SujiEndingTest : MonoBehaviour
 
     }
     
-    // Å¸°ÙÀ§Ä¡±îÁö ÀÌµ¿ 
+    // íƒ€ê²Ÿìœ„ì¹˜ê¹Œì§€ ì´ë™ 
     void MoveToTarget(Transform target)
     {   
-        // ¸ñÇ¥ ÁöÁ¡±îÁöÀÇ °Å¸® °è»ê
+        // ëª©í‘œ ì§€ì ê¹Œì§€ì˜ ê±°ë¦¬ ê³„ì‚°
         float distanceToTarget = Vector3.Distance(new Vector3(transform.position.x, 0f, transform.position.z), new Vector3(target.position.x, 0f, target.position.z));
 
-        // ÀÌµ¿ÇÏ´Âµ¥ ÇÊ¿äÇÑ ½Ã°£ °è»ê
+        // ì´ë™í•˜ëŠ”ë° í•„ìš”í•œ ì‹œê°„ ê³„ì‚°
         float timeToReachTarget = distanceToTarget / moveSpeed;
 
-        // ÇöÀç À§Ä¡ÀÇ y °ªÀ» À¯ÁöÇÏ¸é¼­ ¸ñÇ¥ ÁöÁ¡À¸·Î ÀÏÁ¤ÇÑ ¼Óµµ·Î ÀÌµ¿
+        // í˜„ì¬ ìœ„ì¹˜ì˜ y ê°’ì„ ìœ ì§€í•˜ë©´ì„œ ëª©í‘œ ì§€ì ìœ¼ë¡œ ì¼ì •í•œ ì†ë„ë¡œ ì´ë™
         Vector3 newPosition = Vector3.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, target.position.z), moveSpeed * Time.deltaTime);
         transform.position = newPosition;
     }
 
-    // ÇÁ¸®ÆÕ »ı¼º 
+    // í”„ë¦¬íŒ¹ ìƒì„± 
     void CreatePrefabInstance(GameObject prefabToCreate)
     {
-        // ÇÁ¸®ÆÕÀÇ À§Ä¡¿Í È¸Àü Á¤º¸¸¦ °¡Á®¿É´Ï´Ù.
+        // í”„ë¦¬íŒ¹ì˜ ìœ„ì¹˜ì™€ íšŒì „ ì •ë³´ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
         Vector3 prefabPosition = prefabToCreate.transform.position;
         Quaternion prefabRotation = prefabToCreate.transform.rotation;
 
-        // ÇÁ¸®ÆÕÀ» ÇØ´ç À§Ä¡¿Í È¸ÀüÀ¸·Î »ı¼ºÇÕ´Ï´Ù.
+        // í”„ë¦¬íŒ¹ì„ í•´ë‹¹ ìœ„ì¹˜ì™€ íšŒì „ìœ¼ë¡œ ìƒì„±í•©ë‹ˆë‹¤.
         Instantiate(prefabToCreate, prefabPosition, prefabRotation);
     }
 

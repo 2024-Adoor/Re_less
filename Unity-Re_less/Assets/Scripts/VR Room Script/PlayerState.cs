@@ -23,9 +23,6 @@ public class PlayerState : MonoBehaviour
     // Ending 요건
     public GameObject Suji;
     SujiEndingTest _SujiEndingTest;
-    
-
-    public bool isYUp = false;
 
     public bool isTeleport = false;
 

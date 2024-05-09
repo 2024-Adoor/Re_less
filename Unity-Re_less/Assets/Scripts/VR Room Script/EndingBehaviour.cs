@@ -24,18 +24,24 @@ namespace Reless.VR
         [SerializeField]
         private GameObject endChatCactus;
         
+        [Header("Ending Characters")]
+        [SerializeField]
+        private GameObject suji;
         
+        [SerializeField]
+        private GameObject endingCharactersPrefab;
+
+        [Header("Surprised Characters")]
+        [SerializeField]
+        private GameObject sujiSurprisedPrefab; 
+        
+        [SerializeField] 
+        private GameObject CharactersSurprisedPrefab;
         
         [Header("")] 
 
         [SerializeField]
         private float upwardSpeed;
-        
-        [SerializeField]
-        private GameObject suji;
-
-        [SerializeField] 
-        private GameObject sujiSurprisedPrefab, CharactersSurprisedPrefab;
         
         [SerializeField]
         private Transform endRespawnTrigger;
@@ -68,6 +74,9 @@ namespace Reless.VR
             
             // 엔딩 앰비언트 라이팅 적용
             FindAnyObjectByType<RoomLighting>().ApplyEndingAmbientColor();
+
+            // 엔딩 캐릭터 생성
+            var endingCharacters = Instantiate(endingCharactersPrefab);
             
             StartCoroutine(Ending());
 
@@ -77,9 +86,11 @@ namespace Reless.VR
                 yield return new WaitForSeconds(2f);
                 _playerRigidbody.useGravity = false;
                 
-                // 애들 프리팹 변경 (IDLE -> Surprised)
+                // 기존 엔딩 캐릭터 제거
                 Destroy(suji);
+                Destroy(endingCharacters);
                 
+                // 놀라는 캐릭터 생성
                 //// : 프리팹에 정해진 위치를 불러와서 위치를 정하면 위치가 바뀌면 안맞을수도 있음... 가능하면 수정 필요
                 Instantiate(sujiSurprisedPrefab, sujiSurprisedPrefab.transform.position, sujiSurprisedPrefab.transform.rotation);
                 Instantiate(CharactersSurprisedPrefab, CharactersSurprisedPrefab.transform.position, CharactersSurprisedPrefab.transform.rotation);
