@@ -135,7 +135,7 @@ namespace Reless.Opening
             {
                 // 오프닝 벽의 중앙에서 하단까지의 길이
                 float centerToBottom = default;
-                try { centerToBottom = (roomManager.KeyWall.PlaneRect?.height ?? throw new Exception()) / 2; } catch (Exception e) { Debug.LogError(e); }
+                try { centerToBottom = (roomManager.KeyWall.PlaneRect?.height ?? throw new Exception()) / 2; } catch (Exception e) { Logger.LogException(e); }
                 
                 // 하단으로 오프셋
                 targetPosition = roomManager.KeyWall.transform.position - new Vector3(0, centerToBottom, 0);

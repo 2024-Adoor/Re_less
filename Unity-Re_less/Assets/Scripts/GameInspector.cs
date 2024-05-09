@@ -66,7 +66,7 @@ namespace Reless
         /// </summary>
         private void OnPhaseChanged()
         {
-            Debug.Log($"{nameof(GameInspector)}: set game phase to <b>{setGamePhaseTo}</b>");
+            Logger.Log($"{nameof(GameInspector)}: set game phase to <b>{setGamePhaseTo}</b>");
             GameManager.CurrentPhase = setGamePhaseTo;
         }
     }

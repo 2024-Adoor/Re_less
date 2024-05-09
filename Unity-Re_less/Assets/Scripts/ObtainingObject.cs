@@ -72,7 +72,7 @@ namespace Reless
         
         public void Snapped()
         {
-            Debug.Log($"Snapped: {gameObject.name}");
+            Logger.Log($"Snapped: {this.gameObject.name}");
 
             transform.localScale = Vector3.one;
             
@@ -86,7 +86,7 @@ namespace Reless
         // 가구현, 프리팹 이벤트에 등록 필요
         public void Unsnapped()
         {
-            Debug.Log($"Unsnapped: {gameObject.name}");
+            Logger.Log($"Unsnapped: {this.gameObject.name}");
 
             transform.localScale = Vector3.one * 5;
             

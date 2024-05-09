@@ -10,7 +10,6 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 
 namespace Reless.MR
 {
@@ -143,7 +142,7 @@ namespace Reless.MR
         /// </summary>
         public void OnSceneLoaded()
         {
-            Debug.Log($"{nameof(RoomManager)}: MRUK Scene Loaded.");
+            Logger.Log($"{nameof(RoomManager)}: MRUK Scene Loaded. Setting up Room.");
             Assert.IsNull(instance, "RoomManager is singleton but already exists.");
             
             DebugRoomInfo();
@@ -182,7 +181,7 @@ namespace Reless.MR
                     // 향후 더 나은 방법으로 수정 필요.
                     if (childMesh.GetComponent<MeshRenderer>() == null)
                     {
-                        Debug.Log($"SPP PassThrough Mesh Found. Adding to list.");
+                        Logger.Log($"SPP PassThrough Mesh Found. Adding to list.");
                         _sppPassThroughMeshes.Add(anchor.transform.GetChild(i).gameObject);
                     }
                 }
@@ -220,10 +219,10 @@ namespace Reless.MR
         private void DebugRoomInfo()
         {
             var rooms = MRUK.Instance.Rooms;
-            Debug.Log($"{nameof(RoomManager)}: Room count: {rooms.Count}");
+            Logger.Log($"{nameof(RoomManager)}: Room count: {rooms.Count}");
             foreach (var room in rooms)
             {
-                Debug.Log($"{nameof(RoomManager)}: Room name: {room.name}");
+                Logger.Log($"{nameof(RoomManager)}: Room name: {room.name}");
             }
         }
         

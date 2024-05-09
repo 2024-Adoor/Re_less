@@ -49,7 +49,7 @@ namespace Reless.UI
             set
             {
                 OVRManager.SetSpaceWarp(value);
-                Debug.Log(value ? "Enable" : "Disable" + " the SpaceWarp");
+                Logger.Log(value ? "Enable" : "Disable" + " the SpaceWarp");
             }
         }
     }

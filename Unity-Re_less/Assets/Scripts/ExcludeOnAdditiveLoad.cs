@@ -15,7 +15,7 @@ namespace Reless
             {
                 foreach (var excludeObject in gameObject.scene.GetRootGameObjects().Where(go => go.CompareTag("ExcludeOnAdditiveLoad")))
                 {
-                    Debug.Log($"{nameof(ExcludeOnAdditiveLoad)}: Destroy {excludeObject.name}");
+                    Logger.Log($"{nameof(ExcludeOnAdditiveLoad)}: Destroy {excludeObject.name}");
                     Destroy(excludeObject);
                 }
                 

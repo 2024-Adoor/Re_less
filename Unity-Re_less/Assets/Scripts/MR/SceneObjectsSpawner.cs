@@ -67,13 +67,13 @@ namespace Reless.MR
         {
             if (RoomManager.Instance is null)
             {
-                Debug.LogWarning("RoomManager is not loaded yet.");
+                Logger.LogWarning("RoomManager is not loaded yet.");
                 RoomManager.OnMRUKSceneLoaded += () => RoomManager = RoomManager.Instance;
                 RoomManager.OnMRUKSceneLoaded += SpawnAll;
             }
             else
             {
-                Debug.Log("RoomManager is already loaded.");
+                Logger.Log("RoomManager is already loaded.");
                 RoomManager = RoomManager.Instance;
                 SpawnAll();
             }
@@ -81,7 +81,7 @@ namespace Reless.MR
         
         public void SpawnAll()
         {
-            Debug.Log("Spawning all scene objects.");
+            Logger.Log("Spawning all scene objects.");
             SpawnOuterPrefabs();
             SpawnPopupBook();
             SpawnWallHint();
@@ -174,7 +174,7 @@ namespace Reless.MR
             var table = anchors.FirstOrDefault(anchor => anchor.GetLabelsAsEnum() == TABLE);
             if (table == null)
             {
-                Debug.LogError("There is no table.");
+                Logger.LogError("There is no table.");
                 return;
             }
             

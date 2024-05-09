@@ -60,7 +60,7 @@ namespace Reless
                 if (_drawingCheckers.TrueForAll(checker => checker.Checked))
                 {
                     // 플레이어가 그린 선이 모든 DrawingChecker에 닿았습니다 - 그림이 완성되었습니다.
-                    Debug.Log("Drawing is completed!");
+                    Logger.Log($"Drawing {this.gameObject.name} is completed!");
                     _isCompleted = true;
                     DrawingCompleted?.Invoke();
                 }

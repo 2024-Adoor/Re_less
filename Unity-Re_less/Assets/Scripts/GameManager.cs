@@ -186,7 +186,7 @@ namespace Reless
             var asyncLoad = SceneManager.LoadAsync(MainScene);
             asyncLoad.completed += operation =>
             {
-                Debug.Log("MainScene Loaded");
+                Logger.Log("MainScene Loaded");
             };
             return asyncLoad;
         }
@@ -199,7 +199,7 @@ namespace Reless
             var asyncLoad = SceneManager.LoadAsync(VRRoom);
             asyncLoad.completed += operation =>
             {
-                Debug.Log("VR Room Loaded");
+                Logger.Log("VR Room Loaded");
             };
             return asyncLoad;
         }
@@ -209,7 +209,7 @@ namespace Reless
             var asyncLoad = SceneManager.LoadAsync(ExitDream, LoadSceneMode.Additive);
             asyncLoad.completed += operation =>
             {
-                Debug.Log("ExitDreamScene Loaded");
+                Logger.Log("ExitDreamScene Loaded");
             };
             return asyncLoad;
         }

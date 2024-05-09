@@ -48,7 +48,7 @@ namespace Reless
             
             // 시작 시점의 플레이어 위치와 가장 가까운 문 위치 사이의 거리를 저장합니다.
             _initialPlayerToDoorDistance = _roomManager.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out _);
-            Debug.Log($"Initial Player To Door Distance : {_initialPlayerToDoorDistance}");
+            Logger.Log($"Initial Player To Door Distance : {_initialPlayerToDoorDistance}");
 
             // VR Room 씬에서는 패스스루가 기존에 비활성화되어 있을 것으로 기대되므로 패스스루를 활성화합니다.
             FindObjectOfType<OVRManager>().isInsightPassthroughEnabled = true;
@@ -123,7 +123,7 @@ namespace Reless
 
         private IEnumerator ExitingDream()
         {
-            Debug.Log("Exit Dream");
+            Logger.Log("Exit Dream");
             
             var asyncLoad = GameManager.LoadMainScene();
             

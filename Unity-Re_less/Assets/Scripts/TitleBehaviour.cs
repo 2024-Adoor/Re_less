@@ -83,10 +83,11 @@ namespace Reless
         }
         
         /// <summary>
+        /// 방에 들어갔는지 확인합니다.
         /// </summary>
-        /// <param name="onEnter"></param>
-        /// <param name="until"></param>
-        /// <returns></returns>
+        /// <param name="onEnter">방에 들어갔을 때 실행할 동작</param>
+        /// <param name="until">확인을 중단할 조건</param>
+        /// <returns>이 함수는 유니티 코루틴 루틴입니다.</returns>
         private IEnumerator CheckingEnterRoom(Action onEnter, Func<bool> until)
         {
             while (!until())
@@ -101,6 +102,12 @@ namespace Reless
             }
         }
         
+        /// <summary>
+        /// 문에 접근했는지 확인합니다.
+        /// </summary>
+        /// <param name="onApproach">문에 접근했을 때 실행할 동작</param>
+        /// <param name="until">확인을 중단할 조건</param>
+        /// <returns>이 함수는 유니티 코루틴 루틴입니다.</returns>
         private IEnumerator CheckingApproachDoor(Action onApproach, Func<bool> until)
         {
             while (!until())
@@ -108,7 +115,7 @@ namespace Reless
                 var distance = _roomManager.ClosestDoorDistance(GameManager.EyeAnchor.position, out _);
                 if (distance == 0f)
                 {
-                    Debug.LogWarning("Door not found.");
+                    Logger.LogWarning("Door not found.");
                     yield break;
                 }
                 
