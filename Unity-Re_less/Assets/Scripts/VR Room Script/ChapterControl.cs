@@ -208,5 +208,6 @@ public class ChapterControl : MonoBehaviour
     private void OnValidate()
     {
         if (roomLighting.IsUnityNull()) { roomLighting = FindAnyObjectByType<RoomLighting>(); }
+        roomLighting.ApplyAmbientColorByChapter(setChapterTo);
     }
 }
