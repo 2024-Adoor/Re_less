@@ -8,14 +8,11 @@ using UnityEngine;
 
 public class ChapterControl : MonoBehaviour
 {   
-#if UNITY_EDITOR
     /// <summary>
     /// 에디터에서 테스트용으로 챕터를 설정합니다.
     /// </summary>
-    [SerializeField]
+    [SerializeField, OnValueChanged(nameof(OnSetChapterChanged))]
     private Chapter setChapterTo;
-    private Chapter _cachedSetChapterTo;
-#endif
     
     // 챕터별 스폰포인트 
     [Header("Chapter Spawn Points")]
@@ -85,27 +82,6 @@ public class ChapterControl : MonoBehaviour
 #endif
     }
 
-    private void Update()
-    {
-#if UNITY_EDITOR
-        if (_cachedSetChapterTo != setChapterTo)
-        {
-            Debug.Log($"Changing chapter to {setChapterTo}");
-            CurrentChapter = setChapterTo;
-            
-            // 챕터 변경시 플레이어 위치 변경
-            var spawnParams = setChapterTo switch
-            {
-                Chapter.Chapter1 => (point :SpawnPoint01, direction: Ch01SpawnDirection),
-                Chapter.Chapter2 => (point :SpawnPoint02, direction: Ch02SpawnDirection),
-                Chapter.Chapter3 => (point :SpawnPoint03, direction: Ch03SpawnDirection),
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            SpawnPlayer(spawnParams.point, spawnParams.direction);
-        }
-        _cachedSetChapterTo = setChapterTo = CurrentChapter;
-#endif
-    }
     private void SetupChapter01()
     {
         SpawnPlayer(SpawnPoint01, Ch01SpawnDirection);
@@ -208,6 +184,31 @@ public class ChapterControl : MonoBehaviour
     private void OnValidate()
     {
         if (roomLighting.IsUnityNull()) { roomLighting = FindAnyObjectByType<RoomLighting>(); }
+    }
+    
+    /// <summary>
+    /// <see cref="setChapterTo"/>가 인스펙터에서 변경될 때 호출됩니다.
+    /// </summary>
+    private void OnSetChapterChanged()
+    {
+        Debug.Log($"{nameof(ChapterControl)}: Changing chapter to <b>{setChapterTo}</b>");
+        CurrentChapter = setChapterTo;
+        
+        // 챕터 변경시 플레이어 위치 변경
+        // NOTE: 게임 자체는 챕터 변경시 플레이어 위치를 변경하지 않도록 기획이 수정되었으므로 이는 테스트용입니다.
+        var spawnParams = setChapterTo switch
+        {
+            Chapter.Chapter1 => (point :SpawnPoint01, direction: Ch01SpawnDirection),
+            Chapter.Chapter2 => (point :SpawnPoint02, direction: Ch02SpawnDirection),
+            Chapter.Chapter3 => (point :SpawnPoint03, direction: Ch03SpawnDirection),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        SpawnPlayer(spawnParams.point, spawnParams.direction);
+        
+        // 이 다음 코드는 에디터 모드에서만 실행됩니다. (플레이 모드에서는 게임 코드가 이미 처리하고 있음)
+        if (Application.isPlaying) return;
+        
+        // 챕터 변경시 앰비언트 라이팅 변경
         roomLighting.ApplyAmbientColorByChapter(setChapterTo);
     }
 }

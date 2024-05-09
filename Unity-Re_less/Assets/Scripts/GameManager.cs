@@ -178,7 +178,7 @@ namespace Reless
             }
         }
         
-        public AsyncOperation LoadMainScene()
+        public static AsyncOperation LoadMainScene()
         {
             // 메인 씬을 로드할 때는 현실 룸을 다시 활성화합니다.
             if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = true;
@@ -191,7 +191,7 @@ namespace Reless
             return asyncLoad;
         }
         
-        public AsyncOperation LoadVRScene()
+        public static AsyncOperation LoadVRScene()
         {
             // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
             if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = false;
@@ -204,7 +204,7 @@ namespace Reless
             return asyncLoad;
         }
 
-        public AsyncOperation LoadExitDreamScene()
+        public static AsyncOperation LoadExitDreamScene()
         {
             var asyncLoad = SceneManager.LoadAsync(ExitDream, LoadSceneMode.Additive);
             asyncLoad.completed += operation =>

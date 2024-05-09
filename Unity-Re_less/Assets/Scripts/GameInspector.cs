@@ -1,7 +1,3 @@
-#if UNITY_EDITOR
-
-using System;
-using System.Collections;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,35 +15,25 @@ namespace Reless
         /// </summary>
         private static GameInspector dontDestroyInstance;
         
-        /// <summary>
-        /// GameManager 레퍼런스
-        /// </summary>
-        private GameManager _gameManager;
-        
         private bool PlayMode => Application.isPlaying;
         
         /// <summary>
         /// 현재 게임 단계를 설정합니다.
         /// </summary>
-        [SerializeField, EnableIf(nameof(PlayMode))]
+        [SerializeField, OnValueChanged(nameof(OnPhaseChanged)), EnableIf(nameof(PlayMode))]
         private GamePhase setGamePhaseTo;
-        
-        /// <summary>
-        /// 비교를 위해 캐시된 기존 게임 단계
-        /// </summary>
-        private GamePhase _cachedSetGamePhaseTo;
         
         [ShowNativeProperty]
         private bool SpaceWarpEnabled => OVRManager.GetSpaceWarp();
         
         [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void LoadMainScene() => _gameManager?.LoadMainScene();
+        private void LoadMainScene() => GameManager.LoadMainScene();
         
         [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void LoadVRScene() => _gameManager?.LoadVRScene();
+        private void LoadVRScene() => GameManager.LoadVRScene();
         
         [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void LoadExitDreamScene() => _gameManager?.LoadExitDreamScene();
+        private void LoadExitDreamScene() => GameManager.LoadExitDreamScene();
         
         [Button(enabledMode: EButtonEnableMode.Playmode)]
         private void EnableAppSW()
@@ -68,8 +54,6 @@ namespace Reless
         
         private void Awake()
         {
-            _gameManager = GameManager.Instance;
-
             if (dontDestroyInstance.IsUnityNull())
             {
                 dontDestroyInstance = this;
@@ -77,16 +61,13 @@ namespace Reless
             }
         }
 
-        private void Update()
+        /// <summary>
+        /// <see cref="setGamePhaseTo"/>가 인스펙터에서 변경될 때 호출됩니다.
+        /// </summary>
+        private void OnPhaseChanged()
         {
-            if (_cachedSetGamePhaseTo != setGamePhaseTo)
-            {
-                Debug.Log($"Current Phase : {GameManager.CurrentPhase} -> Set Phase : {setGamePhaseTo}");
-                GameManager.CurrentPhase = setGamePhaseTo;
-                _cachedSetGamePhaseTo = setGamePhaseTo;
-            }
-            _cachedSetGamePhaseTo = setGamePhaseTo = GameManager.CurrentPhase;
+            Debug.Log($"{nameof(GameInspector)}: set game phase to <b>{setGamePhaseTo}</b>");
+            GameManager.CurrentPhase = setGamePhaseTo;
         }
     }
 }
-#endif

@@ -125,7 +125,7 @@ namespace Reless
         {
             Debug.Log("Exit Dream");
             
-            var asyncLoad = _gameManager.LoadMainScene();
+            var asyncLoad = GameManager.LoadMainScene();
             
             // 꿈에서 나갈 때 게임 단계를 다음 단계로 바꿉니다.
             GameManager.CurrentPhase++;

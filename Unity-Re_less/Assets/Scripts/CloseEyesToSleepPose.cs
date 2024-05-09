@@ -99,7 +99,7 @@ namespace Reless
 
                 yield return null;
 
-                var asyncLoad = GameManager.Instance.LoadVRScene();
+                var asyncLoad = GameManager.LoadVRScene();
 
                 while (!asyncLoad.isDone)
                 {

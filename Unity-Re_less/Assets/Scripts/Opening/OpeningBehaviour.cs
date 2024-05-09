@@ -83,7 +83,7 @@ namespace Reless.Opening
                 
                 yield return new WaitForSeconds(4f);
                 GameManager.CurrentPhase = GamePhase.Chapter1;
-                GameManager.Instance.LoadMainScene();
+                GameManager.LoadMainScene();
                 
                 // 오프닝에서 했던 일을 되돌립니다.
                 ResetTransformOpeningWall();

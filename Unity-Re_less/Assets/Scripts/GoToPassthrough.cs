@@ -79,7 +79,7 @@ public class GoToPassthrough : MonoBehaviour
 
 		if (loadExitRoomScene && !_loadExitRoomExecuted)
 		{
-			GameManager.Instance.LoadExitDreamScene();
+			GameManager.LoadExitDreamScene();
 			_loadExitRoomExecuted = true;
 		}
 	}
@@ -94,7 +94,7 @@ public class GoToPassthrough : MonoBehaviour
 			{
 				fadeUI.WhiteFadeOut();
 				GameManager.CurrentPhase++;
-				GameManager.Instance.LoadMainScene();
+				GameManager.LoadMainScene();
 			}
 		}
 	}
