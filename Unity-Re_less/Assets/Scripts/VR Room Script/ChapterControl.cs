@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using NaughtyAttributes;
 using Reless;
 using Reless.VR;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Reless.Chapter;
 
 public class ChapterControl : MonoBehaviour
 {   
@@ -56,9 +56,9 @@ public class ChapterControl : MonoBehaviour
             GameManager.CurrentPhase = (GamePhase)value;
             switch (_currentChapter)
             {
-                case Chapter.Chapter1: SetupChapter01(); break;
-                case Chapter.Chapter2: SetupChapter02(); break;
-                case Chapter.Chapter3: SetupChapter03(); break;
+                case Chapter1: SetupChapter01(); break;
+                case Chapter2: SetupChapter02(); break;
+                case Chapter3: SetupChapter03(); break;
                 default: throw new ArgumentOutOfRangeException();
             }
         }
@@ -67,17 +67,12 @@ public class ChapterControl : MonoBehaviour
 
     private void Awake()
     {
-        if (GameManager.CurrentChapter is Chapter chapter)
-        {
-            CurrentChapter = chapter;
-        }
+        CurrentChapter = GameManager.CurrentChapter ?? Chapter1;
+        
 #if UNITY_EDITOR
-        else
+        if (setChapterTo != CurrentChapter)
         {
-            if (setChapterTo != CurrentChapter)
-            {
-                CurrentChapter = setChapterTo;
-            }
+            OnSetChapterChanged();
         }
 #endif
     }
