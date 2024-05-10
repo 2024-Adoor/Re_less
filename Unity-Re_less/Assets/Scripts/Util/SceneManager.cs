@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Reless
+namespace Reless.Util
 {
     /// <summary>
     /// 게임의 씬을 관리하는 래핑 클래스입니다.

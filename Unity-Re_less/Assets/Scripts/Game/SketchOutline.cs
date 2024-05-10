@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 
-namespace Reless
+namespace Reless.Game
 {
     /// <summary>
     /// 그려야 할 오브젝트의 밑그림에 부착되는 컴포넌트

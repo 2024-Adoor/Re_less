@@ -1,7 +1,8 @@
 using System.Linq;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 
-namespace Reless
+namespace Reless.Util
 {
     /// <summary>
     /// Additive Load 시 로드되면 안 되는 오브젝트를 제거합니다.

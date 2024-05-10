@@ -1,6 +1,7 @@
 using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 
 public class SujiEndingTest : MonoBehaviour
 {
@@ -176,7 +177,7 @@ public class SujiEndingTest : MonoBehaviour
     [Button(enabledMode: EButtonEnableMode.Playmode)]
     public void WakeUp()
     {
-        Reless.Logger.Log($"{nameof(SujiEndingTest)}: WakeUp");
+        Logger.Log($"{nameof(SujiEndingTest)}: WakeUp");
         //
         canMove = true;
         
@@ -216,7 +217,7 @@ public class SujiEndingTest : MonoBehaviour
     
     private IEnumerator MovingTo(Transform target)
     {
-        Reless.Logger.Log($"{nameof(SujiEndingTest)}: Move toward {target.name}...");
+        Logger.Log($"{nameof(SujiEndingTest)}: Move toward {target.name}...");
         
         for (var reached = false; !reached; reached = Vector3.Distance(transform.position, target.position) < Mathf.Epsilon)
         {
@@ -224,7 +225,7 @@ public class SujiEndingTest : MonoBehaviour
             yield return null;
         }
         
-        Reless.Logger.Log($"{nameof(SujiEndingTest)}: Reached target {target.name}");
+        Logger.Log($"{nameof(SujiEndingTest)}: Reached target {target.name}");
     }
     
     

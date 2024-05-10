@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 
 namespace Reless.UI
 {

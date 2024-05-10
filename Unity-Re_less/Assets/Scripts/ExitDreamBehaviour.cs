@@ -1,6 +1,8 @@
 using System.Collections;
 using Reless.MR;
+using Reless.Util;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace Reless

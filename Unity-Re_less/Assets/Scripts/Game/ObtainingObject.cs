@@ -3,8 +3,9 @@ using System.Collections;
 using Reless.MR;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Logger = Reless.Debug.Logger;
 
-namespace Reless
+namespace Reless.Game
 {
     /// <summary>
     /// 그려서 얻은 오브젝트

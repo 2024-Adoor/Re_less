@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Reless.Game;
 using UnityEngine;
 using static Reless.Chapter;
 

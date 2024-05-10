@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Reless
+namespace Reless.UI
 {
     /// <summary>
     /// UI가 눈을 따라가도록 합니다.

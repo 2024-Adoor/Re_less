@@ -10,6 +10,8 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using Logger = Reless.Debug.Logger;
+using SceneManager = Reless.Util.SceneManager;
 
 namespace Reless.MR
 {

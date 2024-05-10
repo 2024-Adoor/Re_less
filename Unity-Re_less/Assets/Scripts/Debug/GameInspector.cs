@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Reless
+namespace Reless.Debug
 {
     /// <summary>
     /// 에디터 전용 디버그 오브젝트에 붙어 인스펙터에서 확인하거나 조작할 것을 다루는 클래스입니다.

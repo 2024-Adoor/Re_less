@@ -5,6 +5,8 @@ using Reless.MR;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using Logger = Reless.Debug.Logger;
+using SceneManager = Reless.Util.SceneManager;
 
 namespace Reless.Opening
 {

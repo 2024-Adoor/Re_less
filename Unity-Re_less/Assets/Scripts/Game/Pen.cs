@@ -3,7 +3,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Reless
+namespace Reless.Game
 {
     /// <summary>
     /// 그리기 게임 요소에 사용되는 펜

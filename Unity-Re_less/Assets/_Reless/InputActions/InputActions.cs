@@ -16,14 +16,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine;
 
-namespace Reless
+public partial class @InputActions: IInputActionCollection2, IDisposable
 {
-    public partial class @InputActions: IInputActionCollection2, IDisposable
+    public InputActionAsset asset { get; }
+    public @InputActions()
     {
-        public InputActionAsset asset { get; }
-        public @InputActions()
-        {
-            asset = InputActionAsset.FromJson(@"{
+        asset = InputActionAsset.FromJson(@"{
     ""name"": ""InputActions"",
     ""maps"": [
         {
@@ -156,291 +154,290 @@ namespace Reless
         }
     ]
 }");
-            // VR
-            m_VR = asset.FindActionMap("VR", throwIfNotFound: true);
-            m_VR_Move = m_VR.FindAction("Move", throwIfNotFound: true);
-            m_VR_Jump = m_VR.FindAction("Jump", throwIfNotFound: true);
-            // MR
-            m_MR = asset.FindActionMap("MR", throwIfNotFound: true);
-            m_MR_Newaction = m_MR.FindAction("New action", throwIfNotFound: true);
-            // UI
-            m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-            // Constant
-            m_Constant = asset.FindActionMap("Constant", throwIfNotFound: true);
-            m_Constant_TogglePauseMenu = m_Constant.FindAction("TogglePauseMenu", throwIfNotFound: true);
-        }
-
-        ~@InputActions()
-        {
-            Debug.Assert(!m_VR.enabled, "This will cause a leak and performance issues, InputActions.VR.Disable() has not been called.");
-            Debug.Assert(!m_MR.enabled, "This will cause a leak and performance issues, InputActions.MR.Disable() has not been called.");
-            Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
-            Debug.Assert(!m_Constant.enabled, "This will cause a leak and performance issues, InputActions.Constant.Disable() has not been called.");
-        }
-
-        public void Dispose()
-        {
-            UnityEngine.Object.Destroy(asset);
-        }
-
-        public InputBinding? bindingMask
-        {
-            get => asset.bindingMask;
-            set => asset.bindingMask = value;
-        }
-
-        public ReadOnlyArray<InputDevice>? devices
-        {
-            get => asset.devices;
-            set => asset.devices = value;
-        }
-
-        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-        public bool Contains(InputAction action)
-        {
-            return asset.Contains(action);
-        }
-
-        public IEnumerator<InputAction> GetEnumerator()
-        {
-            return asset.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Enable()
-        {
-            asset.Enable();
-        }
-
-        public void Disable()
-        {
-            asset.Disable();
-        }
-
-        public IEnumerable<InputBinding> bindings => asset.bindings;
-
-        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-        {
-            return asset.FindAction(actionNameOrId, throwIfNotFound);
-        }
-
-        public int FindBinding(InputBinding bindingMask, out InputAction action)
-        {
-            return asset.FindBinding(bindingMask, out action);
-        }
-
         // VR
-        private readonly InputActionMap m_VR;
-        private List<IVRActions> m_VRActionsCallbackInterfaces = new List<IVRActions>();
-        private readonly InputAction m_VR_Move;
-        private readonly InputAction m_VR_Jump;
-        public struct VRActions
-        {
-            private @InputActions m_Wrapper;
-            public VRActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_VR_Move;
-            public InputAction @Jump => m_Wrapper.m_VR_Jump;
-            public InputActionMap Get() { return m_Wrapper.m_VR; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(VRActions set) { return set.Get(); }
-            public void AddCallbacks(IVRActions instance)
-            {
-                if (instance == null || m_Wrapper.m_VRActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_VRActionsCallbackInterfaces.Add(instance);
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
-            }
-
-            private void UnregisterCallbacks(IVRActions instance)
-            {
-                @Move.started -= instance.OnMove;
-                @Move.performed -= instance.OnMove;
-                @Move.canceled -= instance.OnMove;
-                @Jump.started -= instance.OnJump;
-                @Jump.performed -= instance.OnJump;
-                @Jump.canceled -= instance.OnJump;
-            }
-
-            public void RemoveCallbacks(IVRActions instance)
-            {
-                if (m_Wrapper.m_VRActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(IVRActions instance)
-            {
-                foreach (var item in m_Wrapper.m_VRActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_VRActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public VRActions @VR => new VRActions(this);
-
+        m_VR = asset.FindActionMap("VR", throwIfNotFound: true);
+        m_VR_Move = m_VR.FindAction("Move", throwIfNotFound: true);
+        m_VR_Jump = m_VR.FindAction("Jump", throwIfNotFound: true);
         // MR
-        private readonly InputActionMap m_MR;
-        private List<IMRActions> m_MRActionsCallbackInterfaces = new List<IMRActions>();
-        private readonly InputAction m_MR_Newaction;
-        public struct MRActions
-        {
-            private @InputActions m_Wrapper;
-            public MRActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Newaction => m_Wrapper.m_MR_Newaction;
-            public InputActionMap Get() { return m_Wrapper.m_MR; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(MRActions set) { return set.Get(); }
-            public void AddCallbacks(IMRActions instance)
-            {
-                if (instance == null || m_Wrapper.m_MRActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_MRActionsCallbackInterfaces.Add(instance);
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
-            }
-
-            private void UnregisterCallbacks(IMRActions instance)
-            {
-                @Newaction.started -= instance.OnNewaction;
-                @Newaction.performed -= instance.OnNewaction;
-                @Newaction.canceled -= instance.OnNewaction;
-            }
-
-            public void RemoveCallbacks(IMRActions instance)
-            {
-                if (m_Wrapper.m_MRActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(IMRActions instance)
-            {
-                foreach (var item in m_Wrapper.m_MRActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_MRActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public MRActions @MR => new MRActions(this);
-
+        m_MR = asset.FindActionMap("MR", throwIfNotFound: true);
+        m_MR_Newaction = m_MR.FindAction("New action", throwIfNotFound: true);
         // UI
-        private readonly InputActionMap m_UI;
-        private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-        public struct UIActions
-        {
-            private @InputActions m_Wrapper;
-            public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputActionMap Get() { return m_Wrapper.m_UI; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
-            public void AddCallbacks(IUIActions instance)
-            {
-                if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            }
-
-            private void UnregisterCallbacks(IUIActions instance)
-            {
-            }
-
-            public void RemoveCallbacks(IUIActions instance)
-            {
-                if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(IUIActions instance)
-            {
-                foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public UIActions @UI => new UIActions(this);
-
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         // Constant
-        private readonly InputActionMap m_Constant;
-        private List<IConstantActions> m_ConstantActionsCallbackInterfaces = new List<IConstantActions>();
-        private readonly InputAction m_Constant_TogglePauseMenu;
-        public struct ConstantActions
-        {
-            private @InputActions m_Wrapper;
-            public ConstantActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @TogglePauseMenu => m_Wrapper.m_Constant_TogglePauseMenu;
-            public InputActionMap Get() { return m_Wrapper.m_Constant; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(ConstantActions set) { return set.Get(); }
-            public void AddCallbacks(IConstantActions instance)
-            {
-                if (instance == null || m_Wrapper.m_ConstantActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_ConstantActionsCallbackInterfaces.Add(instance);
-                @TogglePauseMenu.started += instance.OnTogglePauseMenu;
-                @TogglePauseMenu.performed += instance.OnTogglePauseMenu;
-                @TogglePauseMenu.canceled += instance.OnTogglePauseMenu;
-            }
+        m_Constant = asset.FindActionMap("Constant", throwIfNotFound: true);
+        m_Constant_TogglePauseMenu = m_Constant.FindAction("TogglePauseMenu", throwIfNotFound: true);
+    }
 
-            private void UnregisterCallbacks(IConstantActions instance)
-            {
-                @TogglePauseMenu.started -= instance.OnTogglePauseMenu;
-                @TogglePauseMenu.performed -= instance.OnTogglePauseMenu;
-                @TogglePauseMenu.canceled -= instance.OnTogglePauseMenu;
-            }
+    ~@InputActions()
+    {
+        Debug.Assert(!m_VR.enabled, "This will cause a leak and performance issues, InputActions.VR.Disable() has not been called.");
+        Debug.Assert(!m_MR.enabled, "This will cause a leak and performance issues, InputActions.MR.Disable() has not been called.");
+        Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
+        Debug.Assert(!m_Constant.enabled, "This will cause a leak and performance issues, InputActions.Constant.Disable() has not been called.");
+    }
 
-            public void RemoveCallbacks(IConstantActions instance)
-            {
-                if (m_Wrapper.m_ConstantActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
+    public void Dispose()
+    {
+        UnityEngine.Object.Destroy(asset);
+    }
 
-            public void SetCallbacks(IConstantActions instance)
-            {
-                foreach (var item in m_Wrapper.m_ConstantActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_ConstantActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public ConstantActions @Constant => new ConstantActions(this);
-        private int m_MetaQuestSchemeIndex = -1;
-        public InputControlScheme MetaQuestScheme
+    public InputBinding? bindingMask
+    {
+        get => asset.bindingMask;
+        set => asset.bindingMask = value;
+    }
+
+    public ReadOnlyArray<InputDevice>? devices
+    {
+        get => asset.devices;
+        set => asset.devices = value;
+    }
+
+    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+    public bool Contains(InputAction action)
+    {
+        return asset.Contains(action);
+    }
+
+    public IEnumerator<InputAction> GetEnumerator()
+    {
+        return asset.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Enable()
+    {
+        asset.Enable();
+    }
+
+    public void Disable()
+    {
+        asset.Disable();
+    }
+
+    public IEnumerable<InputBinding> bindings => asset.bindings;
+
+    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+    {
+        return asset.FindAction(actionNameOrId, throwIfNotFound);
+    }
+
+    public int FindBinding(InputBinding bindingMask, out InputAction action)
+    {
+        return asset.FindBinding(bindingMask, out action);
+    }
+
+    // VR
+    private readonly InputActionMap m_VR;
+    private List<IVRActions> m_VRActionsCallbackInterfaces = new List<IVRActions>();
+    private readonly InputAction m_VR_Move;
+    private readonly InputAction m_VR_Jump;
+    public struct VRActions
+    {
+        private @InputActions m_Wrapper;
+        public VRActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_VR_Move;
+        public InputAction @Jump => m_Wrapper.m_VR_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_VR; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(VRActions set) { return set.Get(); }
+        public void AddCallbacks(IVRActions instance)
         {
-            get
-            {
-                if (m_MetaQuestSchemeIndex == -1) m_MetaQuestSchemeIndex = asset.FindControlSchemeIndex("Meta Quest");
-                return asset.controlSchemes[m_MetaQuestSchemeIndex];
-            }
+            if (instance == null || m_Wrapper.m_VRActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_VRActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
-        public interface IVRActions
+
+        private void UnregisterCallbacks(IVRActions instance)
         {
-            void OnMove(InputAction.CallbackContext context);
-            void OnJump(InputAction.CallbackContext context);
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
-        public interface IMRActions
+
+        public void RemoveCallbacks(IVRActions instance)
         {
-            void OnNewaction(InputAction.CallbackContext context);
+            if (m_Wrapper.m_VRActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
         }
-        public interface IUIActions
+
+        public void SetCallbacks(IVRActions instance)
+        {
+            foreach (var item in m_Wrapper.m_VRActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_VRActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public VRActions @VR => new VRActions(this);
+
+    // MR
+    private readonly InputActionMap m_MR;
+    private List<IMRActions> m_MRActionsCallbackInterfaces = new List<IMRActions>();
+    private readonly InputAction m_MR_Newaction;
+    public struct MRActions
+    {
+        private @InputActions m_Wrapper;
+        public MRActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_MR_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_MR; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MRActions set) { return set.Get(); }
+        public void AddCallbacks(IMRActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MRActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MRActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        private void UnregisterCallbacks(IMRActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        public void RemoveCallbacks(IMRActions instance)
+        {
+            if (m_Wrapper.m_MRActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMRActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MRActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MRActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MRActions @MR => new MRActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    public struct UIActions
+    {
+        private @InputActions m_Wrapper;
+        public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
         {
         }
-        public interface IConstantActions
+
+        public void RemoveCallbacks(IUIActions instance)
         {
-            void OnTogglePauseMenu(InputAction.CallbackContext context);
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
         }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
+
+    // Constant
+    private readonly InputActionMap m_Constant;
+    private List<IConstantActions> m_ConstantActionsCallbackInterfaces = new List<IConstantActions>();
+    private readonly InputAction m_Constant_TogglePauseMenu;
+    public struct ConstantActions
+    {
+        private @InputActions m_Wrapper;
+        public ConstantActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TogglePauseMenu => m_Wrapper.m_Constant_TogglePauseMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Constant; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ConstantActions set) { return set.Get(); }
+        public void AddCallbacks(IConstantActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ConstantActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ConstantActionsCallbackInterfaces.Add(instance);
+            @TogglePauseMenu.started += instance.OnTogglePauseMenu;
+            @TogglePauseMenu.performed += instance.OnTogglePauseMenu;
+            @TogglePauseMenu.canceled += instance.OnTogglePauseMenu;
+        }
+
+        private void UnregisterCallbacks(IConstantActions instance)
+        {
+            @TogglePauseMenu.started -= instance.OnTogglePauseMenu;
+            @TogglePauseMenu.performed -= instance.OnTogglePauseMenu;
+            @TogglePauseMenu.canceled -= instance.OnTogglePauseMenu;
+        }
+
+        public void RemoveCallbacks(IConstantActions instance)
+        {
+            if (m_Wrapper.m_ConstantActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IConstantActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ConstantActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ConstantActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ConstantActions @Constant => new ConstantActions(this);
+    private int m_MetaQuestSchemeIndex = -1;
+    public InputControlScheme MetaQuestScheme
+    {
+        get
+        {
+            if (m_MetaQuestSchemeIndex == -1) m_MetaQuestSchemeIndex = asset.FindControlSchemeIndex("Meta Quest");
+            return asset.controlSchemes[m_MetaQuestSchemeIndex];
+        }
+    }
+    public interface IVRActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+    }
+    public interface IMRActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+    }
+    public interface IConstantActions
+    {
+        void OnTogglePauseMenu(InputAction.CallbackContext context);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Reless.MR;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 
 namespace Reless
 {

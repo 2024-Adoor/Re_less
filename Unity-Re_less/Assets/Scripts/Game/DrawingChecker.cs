@@ -1,7 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace Reless
+namespace Reless.Game
 {
     /// <summary>
     /// 플레이어가 그려야 하는 밑그림 오브젝트 자식의 콜라이더가 있는 오브젝트들에 부착되어 플레이어가 그린 선이 콜라이더에 있는지 확인합니다.

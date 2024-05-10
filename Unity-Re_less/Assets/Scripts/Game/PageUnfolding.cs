@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using Oculus.Interaction;
 using UnityEngine;
 
-namespace Reless
+namespace Reless.Game
 {
     /// <summary>
     /// 페이지의 넘김과 펼쳐짐을 담당하는 클래스입니다.
