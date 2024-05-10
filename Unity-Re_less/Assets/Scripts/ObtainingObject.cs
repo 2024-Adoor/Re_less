@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Reless.MR;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Reless
 {
@@ -13,15 +14,25 @@ namespace Reless
         /// <summary>
         /// 오브젝트가 속하는 챕터
         /// </summary>
-        [SerializeField] [Range(1, 3)]
-        private int chapter;
+        [SerializeField]
+        private Chapter chapter;
 
         private readonly WaitForSeconds _respawnCheckInterval = new(2f);
         
         private Coroutine _respawnCheckCoroutine;
         
+        private MainBehaviour _mainBehaviour;
+        
+        public bool IsSnapped { get; private set; }
+        
         private void Start()
         {
+            _mainBehaviour = FindAnyObjectByType<MainBehaviour>();
+            Assert.IsNotNull(_mainBehaviour, $"{nameof(ObtainingObject)}: There is no MainBehaviour in the scene.");
+            
+            // MainBehaviour의 모음에 등록합니다.
+            _mainBehaviour.ObtainingObjects.Add(this);
+            
             transform.localScale = Vector3.one * 5;
             
             // 리스폰 체크 루틴을 시작합니다.
@@ -34,19 +45,13 @@ namespace Reless
         {
             StopCoroutine(_respawnCheckCoroutine);
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
         
         /// <summary>
         /// 리스폰이 필요한지 체크합니다.
         /// </summary>
         /// <param name="respawnCondition">리스폰 필요 조건을 정의하는 함수</param>
         /// <param name="onNeeded">리스폰 필요 시 실행될 액션</param>
-        /// <returns></returns>
+        /// <returns>이 메서드는 유니티 코루틴입니다.</returns>
         private IEnumerator CheckRespawnNeeded(Func<bool> respawnCondition, Action onNeeded)
         {
             while (true)
@@ -70,23 +75,23 @@ namespace Reless
             transform.position = position;
         }
         
-        public void Snapped()
+        public void OnSnapped()
         {
-            Logger.Log($"Snapped: {this.gameObject.name}");
+            Logger.Log($"{this.gameObject.name}: Snapped");
+            IsSnapped = true;
 
             transform.localScale = Vector3.one;
-            
-            MainBehaviour mainBehaviour = FindObjectOfType<MainBehaviour>();
-            mainBehaviour.AchieveEnterCondition(chapter);
+
+            _mainBehaviour.CheckAchieveEnterCondition();
             
             // 스냅되면 중력을 꺼야 합니다.
             GetComponent<Rigidbody>().useGravity = false;
         }
         
         // 가구현, 프리팹 이벤트에 등록 필요
-        public void Unsnapped()
+        public void OnUnsnapped()
         {
-            Logger.Log($"Unsnapped: {this.gameObject.name}");
+            Logger.Log($"{this.gameObject.name}: Unsnapped");
 
             transform.localScale = Vector3.one * 5;
             
