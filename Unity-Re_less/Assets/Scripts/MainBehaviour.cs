@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
-using Reless.MR;
 using UnityEngine;
 using static Reless.Chapter;
 
@@ -38,6 +38,8 @@ namespace Reless
         
         [SerializeField]
         private ObtainingObjectPrefabs _obtainingObjectPrefabs;
+        
+        public List<ObtainingObject> ObtainingObjects { get; private set; }
 
         [SerializeField]
         private GameObject polaroidsPrefab;
@@ -125,7 +127,8 @@ namespace Reless
         private void ObtainObject(GameObject sketchObject, GameObject obtainingObjectPrefab)
         {
             // 그릴 오브젝트 위치에 얻을 오브젝트를 생성하고 그릴 오브젝트를 제거합니다.
-            Instantiate(obtainingObjectPrefab).transform.position = sketchObject.transform.position;
+            var obtainObjects = Instantiate(obtainingObjectPrefab);
+            obtainObjects.transform.position = sketchObject.transform.position;
             Destroy(sketchObject);
         }
         
@@ -137,6 +140,17 @@ namespace Reless
         private void EnablePen()
         {
             pen.gameObject.SetActive(true);
+        }
+        
+        /// <summary>
+        /// 모든 얻은 오브젝트가 스냅되었는지 확인합니다.
+        /// </summary>
+        public void CheckAchieveEnterCondition()
+        {
+            if (ObtainingObjects.TrueForAll(obtainingObj => obtainingObj.IsSnapped))
+            {
+                AchieveEnterCondition();
+            }
         }
 
         [Button]
