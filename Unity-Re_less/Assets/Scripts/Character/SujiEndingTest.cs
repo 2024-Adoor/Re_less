@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class SujiEndingTest : MonoBehaviour
@@ -44,6 +44,8 @@ public class SujiEndingTest : MonoBehaviour
     // 엔딩 트리거 장소 
     public GameObject EndTrigger;
     Renderer EndTriggerRender;
+    
+    private SujiManage _sujiManage;
 
     void Start()
     {
@@ -53,17 +55,18 @@ public class SujiEndingTest : MonoBehaviour
 
         EndTriggerRender = EndTrigger.GetComponent<Renderer>();
         EndTriggerRender.enabled = false;
+        
+        _sujiManage = GetComponent<SujiManage>();
     }
 
-    // Update 함수는 매 프레임마다 호출됩니다.
-    void Update()
+    // NOTE: Update 함수 _ 붙여서 임시 비활성화 (WakeUp() 으로 대체 중)
+    void _Update()
     {   
         // Chat_Suji _Chat_Suji = SujiChat.GetComponent<Chat_Suji>();
-        SujiManage _SujiManage = GetComponent<SujiManage>();
 
         if(canMove)
         {
-            _SujiManage.isSleepOut = false;
+            _sujiManage.isSleepOut = false;
             Debug.Log("Suji isSleepOut is false - SujiEndingTest");
 
             ChangeAnimation();
@@ -169,6 +172,61 @@ public class SujiEndingTest : MonoBehaviour
         }
 
     }
+    
+    [Button(enabledMode: EButtonEnableMode.Playmode)]
+    public void WakeUp()
+    {
+        Reless.Logger.Log($"{nameof(SujiEndingTest)}: WakeUp");
+        //
+        canMove = true;
+        
+        ChangeAnimation();
+        animationComponent.Play();
+        
+        StartCoroutine(WakeRoutine());
+        
+        IEnumerator WakeRoutine()
+        {
+            // A point까지 이동
+            transform.Rotate(0, -90, 0);
+            yield return MovingTo(A);
+            
+            // B point까지 이동
+            transform.Rotate(0, 90, 0);
+            yield return MovingTo(B);
+            
+            // C point까지 이동
+            transform.Rotate(0, 90, 0);
+            yield return MovingTo(C);
+            
+            // 마지막 Turn
+            transform.Rotate(0, -90, 0);
+            
+            // End Trigger Point Render enable
+            EndTriggerRender.enabled = true;
+            
+            animationComponent.Stop();
+            animationComponent.clip = IdleAni;
+            animationComponent.Play();
+            
+            
+            RotateFin = true;
+        }
+    }
+    
+    private IEnumerator MovingTo(Transform target)
+    {
+        Reless.Logger.Log($"{nameof(SujiEndingTest)}: Move toward {target.name}...");
+        
+        for (var reached = false; !reached; reached = Vector3.Distance(transform.position, target.position) < Mathf.Epsilon)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        
+        Reless.Logger.Log($"{nameof(SujiEndingTest)}: Reached target {target.name}");
+    }
+    
     
     // 타겟위치까지 이동 
     void MoveToTarget(Transform target)

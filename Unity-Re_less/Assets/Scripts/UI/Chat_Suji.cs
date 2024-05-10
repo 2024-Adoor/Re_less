@@ -43,9 +43,9 @@ public class Chat_Suji : MonoBehaviour
         }
 
         Renderer rend = GetComponent<Renderer>();
-        if (rend.material.name.Contains("¼öÁö 5"))
+        if (rend.material.name.Contains("ìˆ˜ì§€ 5"))
         {   
-            Debug.Log("Chat_Suji's material contains ¼öÁö 5 !!");
+            Debug.Log("Chat_Suji's material contains ìˆ˜ì§€ 5 !!");
 
             if (!isDelayedActionStarted)
             {
@@ -53,15 +53,17 @@ public class Chat_Suji : MonoBehaviour
                 if (elapsedTime >= delayTime)
                 {
                     Debug.Log("Suji can Move");
-                    // µô·¹ÀÌ°¡ Á¾·áµÇ¸é ½ÇÇàÇÒ ÄÚµå
-                    _SujiEndingTest.canMove = true;
+                    // ë”œë ˆì´ê°€ ì¢…ë£Œë˜ë©´ ì‹¤í–‰í•  ì½”ë“œ
+                    //_SujiEndingTest.canMove = true;
+                    _SujiEndingTest.WakeUp();
+                    
                     //Debug.Log("Delayed action after " + delayTime + " seconds.");
                     isDelayedActionStarted = true;
                 }
             }
         }
 
-        // ¼öÁö ÀÌµ¿ÇÒ ¶§ enabled false 
+        // ìˆ˜ì§€ ì´ë™í•  ë•Œ enabled false 
         if(_SujiEndingTest.canMove)
         {
             GetComponent<Renderer>().enabled = false;
@@ -70,17 +72,17 @@ public class Chat_Suji : MonoBehaviour
 
     IEnumerator Delay_Change(float delayTime)
     {   
-        yield return new WaitForSeconds(delayTime); // µô·¹ÀÌ
+        yield return new WaitForSeconds(delayTime); // ë”œë ˆì´
         ChangeMaterial(Chat02);
         yield return new WaitForSeconds(delayTime); 
         ChangeMaterial(Chat03);
-        yield return new WaitForSeconds(delayTime); // µô·¹ÀÌ
+        yield return new WaitForSeconds(delayTime); // ë”œë ˆì´
         ChangeMaterial(Chat04);
         yield return new WaitForSeconds(delayTime); 
         ChangeMaterial(Chat05);
     }
 
-    // ¸ÓÅ×¸®¾ó º¯°æ
+    // ë¨¸í…Œë¦¬ì–¼ ë³€ê²½
     public void ChangeMaterial(Material newMaterial)
     {
         Renderer renderer = GetComponent<Renderer>();
