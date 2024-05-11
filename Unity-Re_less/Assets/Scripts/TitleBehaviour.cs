@@ -64,11 +64,15 @@ namespace Reless
         /// </summary>
         private void StartCheck()
         {
+            Logger.Log($"{nameof(TitleBehaviour)}: StartCheck");
+            
             // 방 안에서 시작했는지 확인합니다.
             _startedInRoom = _roomManager.Room.IsPositionInRoom(GameManager.EyeAnchor.position);
             
             if (_startedInRoom)
             {
+                Logger.Log($"{nameof(TitleBehaviour)}: Player is started in the room, checking approach door...");
+                
                 // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingApproachDoor(
                     onApproach: () => { GameManager.CurrentPhase = GamePhase.Opening; },
@@ -76,6 +80,8 @@ namespace Reless
             }
             else
             {
+                Logger.Log($"{nameof(TitleBehaviour)}: Player is not started in the room, checking enter room...");
+                
                 // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingEnterRoom(
                     onEnter: () => { GameManager.CurrentPhase = GamePhase.Opening; },
@@ -95,6 +101,7 @@ namespace Reless
             {
                 if (_roomManager.Room.IsPositionInRoom(GameManager.EyeAnchor.position))
                 {
+                    Logger.Log($"{nameof(TitleBehaviour)}: Player entered the room.");
                     onEnter?.Invoke();
                     yield break;
                 }
@@ -122,6 +129,7 @@ namespace Reless
                 
                 if (distance < 0.5f)
                 {
+                    Logger.Log($"{nameof(TitleBehaviour)}: Player approached the door.");
                     onApproach?.Invoke();
                     yield break;
                 }

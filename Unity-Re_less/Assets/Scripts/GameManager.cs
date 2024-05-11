@@ -47,7 +47,9 @@ namespace Reless
                     > GamePhase.Ending => GamePhase.Ending,
                     _ => value
                 };
+                
 
+                // 이벤트를 발생시킵니다.
                 PhaseChanged?.Invoke(Instance._currentPhase);
 
                 switch (Instance._currentPhase)
@@ -58,6 +60,8 @@ namespace Reless
                 }
 
                 Instance.PopupBookActive = Instance._currentPhase;
+                
+                Logger.Log($"{nameof(GameManager)}: phase changed to: <b>{Instance._currentPhase}</b>");
             }
         }
         private GamePhase _currentPhase;
@@ -67,7 +71,6 @@ namespace Reless
         /// 페이즈가 챕터 중이 아닌 경우 null을 반환합니다.
         /// </summary>
         public static Chapter? CurrentChapter => Enum.IsDefined(typeof(Chapter), (Chapter)CurrentPhase) ? (Chapter)CurrentPhase : null;
-
 
         [NonSerialized]
         public List<GameObject> spawnedWallHints = new List<GameObject>();

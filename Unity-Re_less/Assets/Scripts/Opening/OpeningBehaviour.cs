@@ -52,13 +52,19 @@ namespace Reless.Opening
         /// </summary>
         private void StartOpening()
         {
+            Logger.Log($"{nameof(OpeningBehaviour)}: StartOpening");
+            
+            // 오프닝 벽의 피벗을 설정합니다.
             SetupOpeningWallPivot();
             
             StartCoroutine(StartRoutine());
 
             IEnumerator StartRoutine()
             {
+                // 오프닝 씬 로드
                 yield return LoadingOpeningScene();
+                
+                _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
                 
                 TransformToOpeningScene();
 
@@ -68,6 +74,7 @@ namespace Reless.Opening
                 
                 // 오프닝 씬 언로드
                 SceneManager.UnloadAsync(BuildScene.Opening);
+                Logger.Log($"{nameof(OpeningBehaviour)}: Opening scene unloaded");
                 
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
@@ -100,6 +107,8 @@ namespace Reless.Opening
         /// </summary>
         private IEnumerator LoadingOpeningScene()
         {
+            Logger.Log($"{nameof(OpeningBehaviour)}: loading Opening scene...");
+            
             var asyncLoad = SceneManager.LoadAsync(BuildScene.Opening, LoadSceneMode.Additive);
             asyncLoad.allowSceneActivation = false;
             
@@ -108,10 +117,9 @@ namespace Reless.Opening
             yield return DarkenPassthrough();
             
             asyncLoad.allowSceneActivation = true;
+            Logger.Log($"{nameof(OpeningBehaviour)}: Opening scene loaded");
 
             yield return null;
-            
-            _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
         }
         
         /// <summary>
@@ -165,6 +173,7 @@ namespace Reless.Opening
                     localPosition = new Vector3((RoomManager.Instance.KeyWall.PlaneRect?.width ?? 0) / 2, 0, 0)
                 }
             };
+            Logger.Log($"{nameof(OpeningBehaviour)}: set up opening wall pivot: <b>{_pivot.transform.position}</b>");
         }
 
         private IEnumerator DarkenPassthrough()
