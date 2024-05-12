@@ -70,6 +70,8 @@ namespace Reless.UI
                 Logger.Log(value ? "Enable" : "Disable" + " the SpaceWarp");
             }
         }
+        
+        public static void RecenterPose() => FindAnyObjectByType<PlayerControl>()?.Recenter();
 
         public static void LoadMainScene() => GameManager.LoadMainScene();
 

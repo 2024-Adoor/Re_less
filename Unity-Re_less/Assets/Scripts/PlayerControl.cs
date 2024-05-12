@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -50,6 +51,8 @@ namespace Reless
                 if (!hasJumped) _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 hasJumped = true;
             };
+            
+            Recenter();
         }
         
         private void FixedUpdate()
@@ -60,6 +63,15 @@ namespace Reless
             //Jump();
             X_Friend();
             Y_Fruit();
+        }
+        
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        public void Recenter()
+        {
+            var eye = GameManager.EyeAnchor;
+            var trackingSpace = GameManager.CameraRig.trackingSpace;
+            
+            trackingSpace.position -= new Vector3(eye.position.x - transform.position.x, 0, eye.position.z - transform.position.z);
         }
 
         // 정확히 뭐 하는거고 왜 필요한지 아직 모르겠음..
@@ -75,8 +87,6 @@ namespace Reless
 
             root.position = prevPos;
             root.rotation = prevRot;
-
-            centerEye.position = transform.position;
         }
 
         
