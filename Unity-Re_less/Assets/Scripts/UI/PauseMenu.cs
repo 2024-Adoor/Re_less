@@ -38,14 +38,18 @@ namespace Reless.UI
         {
             gamePhaseDropdown.ClearOptions();
             gamePhaseDropdown.AddOptions(Enum.GetNames(typeof(GamePhase)).ToList());
-            gamePhaseDropdown.onValueChanged.AddListener(index => GameManager.CurrentPhase = (GamePhase)index);
+            gamePhaseDropdown.onValueChanged.AddListener(OnGamePhaseChanged);
         }
         
         private void UpdateGamePhaseDropdown(GamePhase phase)
         {
+            gamePhaseDropdown.onValueChanged.RemoveListener(OnGamePhaseChanged);
             gamePhaseDropdown.value = (int)phase;
+            gamePhaseDropdown.onValueChanged.AddListener(OnGamePhaseChanged);
         }
         
+        private void OnGamePhaseChanged(int index) => GameManager.CurrentPhase = (GamePhase)index;
+
         public void Enable()
         {
             gameObject.SetActive(true);
