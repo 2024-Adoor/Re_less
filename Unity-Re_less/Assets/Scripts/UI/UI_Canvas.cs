@@ -131,10 +131,10 @@ public class UI_Canvas : MonoBehaviour
             Chapter02_StartUI();
         }
         // 챕터 3 시작시 UI 창 
-        if(_ChapterControl.CurrentChapter is Chapter.Chapter3)
-        {
-            Chapter03_StartUI();
-        }
+        // if(_ChapterControl.CurrentChapter is Chapter.Chapter3)
+        // {
+        //     Chapter03_StartUI();
+        // }
     }
 
     void Update()
