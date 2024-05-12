@@ -98,7 +98,7 @@ public class PlayerState : MonoBehaviour
 
             audioSource.PlayOneShot(fruit_get);
         }
-        else if(other.CompareTag("EndTrigger") && _SujiEndingTest.RotateFin)
+        else if(other.CompareTag("EndTrigger") && _SujiEndingTest.IsReachedEndPoint)
         {
             Renderer otherRend = other.GetComponent<Renderer>();
 

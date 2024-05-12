@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using Reless.Game;
+using Reless.MR;
 using UnityEngine;
 using static Reless.Chapter;
 
@@ -93,10 +94,24 @@ namespace Reless
         {
             if (phase is not GamePhase.Ending) return;
 
-            Transform popupBook = GameManager.Instance.PopupBook.transform;
+            if (RoomManager.Instance is not null)
+            {
+                // 엔딩에서 폴라로이드를 생성합니다.
+                CreatePolaroids();
+            }
+            else
+            {
+                // RoomManager가 없다면 방이 로드된 뒤에 생성되도록 이벤트에 등록합니다.
+                RoomManager.OnMRUKSceneLoaded += CreatePolaroids;
+            }
             
-            // 팝업북 위치에 폴라로이드 생성
-            _polaroids = Instantiate(polaroidsPrefab, popupBook.position, popupBook.rotation, popupBook.parent);
+            void CreatePolaroids()
+            {
+                Transform popupBook = GameManager.Instance.PopupBook.transform;
+
+                // 팝업북 위치에 생성
+                _polaroids = Instantiate(polaroidsPrefab, popupBook.position, popupBook.rotation, popupBook.parent);
+            }
         }
 
         /// <summary>

@@ -62,12 +62,6 @@ public class Chat_Suji : MonoBehaviour
                 }
             }
         }
-
-        // 수지 이동할 때 enabled false 
-        if(_SujiEndingTest.canMove)
-        {
-            GetComponent<Renderer>().enabled = false;
-        }
     }
 
     IEnumerator Delay_Change(float delayTime)

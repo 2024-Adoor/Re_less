@@ -43,10 +43,10 @@ namespace Reless.MR
         private static bool yetLoadScene = true;
 
         /// <summary>
-        /// MRUK 씬이 로드되었을 때 호출될 액션
+        /// MRUK 씬이 로드되었을 때 호출될 액션.
         /// RoomManager의 인스턴스가 null인 경우 작업을 연기하는 데 사용됩니다.
         /// </summary>
-        public static Action OnMRUKSceneLoaded { get; set; }
+        public static event Action OnMRUKSceneLoaded;
         
         /// <summary>
         /// 현재 방의 MRUKRoom 레퍼런스

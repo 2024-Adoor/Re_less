@@ -281,7 +281,7 @@ public class UI_Canvas : MonoBehaviour
         }
 
         // 챕터 3 - 수지가 움직일 때, 수지 UI
-        if(_SujiEndingTest.canMove)
+        /*if(_SujiEndingTest.canMove)
         {
             UnableRawImage(Ch03_SleepOut);
             EnableRawImage(Ch03_Suji);
@@ -289,7 +289,7 @@ public class UI_Canvas : MonoBehaviour
         else
         {
             UnableRawImage(Ch03_Suji);
-        }
+        }*/
 
         // 챕터 3 - 리스폰 됐을 때, 엔딩 UI 
         if(_PlayerState.isTeleport && !EndUIFin)
