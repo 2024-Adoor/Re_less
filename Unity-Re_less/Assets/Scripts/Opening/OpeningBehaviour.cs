@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Reless.MR;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -95,6 +96,7 @@ namespace Reless.Opening
                 GameManager.LoadMainScene();
                 
                 // 오프닝에서 했던 일을 되돌립니다.
+                RevertTransform();
                 ResetTransformOpeningWall();
                 RoomManager.Instance.HidePassthroughEffectMesh = false;
                 RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
@@ -155,6 +157,20 @@ namespace Reless.Opening
             // 트래킹 스페이스를 변환된 룸에 대해서 변환
             GameManager.CameraRig.trackingSpace.position = room.TransformPoint(initialTrackingSpacePosition);
             GameManager.CameraRig.trackingSpace.rotation = room.rotation * initialTrackingSpaceRotation;
+        }
+
+        /// <summary>
+        /// 공간을 원래대로 되돌립니다.
+        /// </summary>
+        private void RevertTransform()
+        {
+            Assert.IsNotNull(RoomManager.Instance);
+            
+            RoomManager.Instance.Room.transform.position = Vector3.zero;
+            RoomManager.Instance.Room.transform.rotation = Quaternion.identity;
+            
+            GameManager.CameraRig.trackingSpace.position = Vector3.zero;
+            GameManager.CameraRig.trackingSpace.rotation = Quaternion.identity;
         }
         
         /// <summary>
