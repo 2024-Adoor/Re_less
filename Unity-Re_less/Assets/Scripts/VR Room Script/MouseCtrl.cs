@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseCtrl : MonoBehaviour
 {
     public Transform ScreenObject; 
+    public GameObject OnPopup;
 
     public float maxY = 42.2f; // B 오브젝트의 최대 Y 위치
     public float minY = 31.1f; // B 오브젝트의 최소 Y 위치
@@ -55,6 +56,9 @@ public class MouseCtrl : MonoBehaviour
         {
             // 플레이어와 충돌할 때만 isKinematic을 활성화
             GetComponent<Rigidbody>().isKinematic = false;
+
+            // 팝업 비활성화
+            OnPopup.SetActive(false);
         }
     }
     

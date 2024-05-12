@@ -6,20 +6,24 @@ namespace Reless
 {
     public class ToChapter03 : MonoBehaviour
     {
-         public bool Ch03Trigger = false;
+        public bool Ch03Trigger = false;
 
-         public GameObject OnScreen; 
-         public GameObject OffScreen;
+        public GameObject OnScreen; 
+        public GameObject OffScreen;
 
-         public GameObject MonitorButton;
-         Renderer ButtonRenderer;
-         public Material newMaterial; 
+        public GameObject MonitorButton;
+        Renderer ButtonRenderer;
+        public Material newMaterial; 
+        
+        public Canvas  UI;
+        UI_Canvas _UI_Canvas;
 
         // Start is called before the first frame update
         void Start()
         {
             ButtonRenderer = MonitorButton.GetComponent<Renderer>(); 
             OnScreen.SetActive(false);
+            _UI_Canvas = UI.GetComponent<UI_Canvas>();
         }
 
         // Update is called once per frame
@@ -40,6 +44,8 @@ namespace Reless
                 OffScreen.SetActive(false);
                 OnScreen.SetActive(true);
                 ButtonRenderer.material = newMaterial;
+
+                _UI_Canvas.Chapter03_StartUI();
             }
         }
     }

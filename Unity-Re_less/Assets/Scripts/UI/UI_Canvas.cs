@@ -60,7 +60,6 @@ public class UI_Canvas : MonoBehaviour
     bool DoorUIFin = false;
     bool Ch02Tuto2Fin = false;
     bool EndUIFin = false;
-    bool MonitorFin = false;
     
     // Chapter 01 Clock
     public GameObject Clock;
@@ -262,13 +261,6 @@ public class UI_Canvas : MonoBehaviour
             EnableRawImage(Ch02_SleepOut_2);
         }
 
-        // é�� 3 - ����� ��ư ������ ��, ����� ����� UI
-        if(_OnOffMonitor.isScreenOn && !MonitorFin)
-        {
-            EnableRawImage(Ch03_Tutorial_2);
-            Invoke("UnableCh03Tutorial2", 3f);
-        }
-
         // 챕터 3 - 수지랑 열매 닿았을 때
         if(SleepingSuji != null)
         {
@@ -331,17 +323,14 @@ public class UI_Canvas : MonoBehaviour
         Invoke("UnableCh02Tutorial1", 5f);    // 튜토리얼 UI 비활성화 & 열매 UI 활성화
     }
 
+    // 챕터 3 시작 = 모니터 켜졌을 때 
     public void Chapter03_StartUI()
     {
         UnableRawImage(Ch02_SleepOut_2);
-        // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
-        Invoke("EnableCh03Tutorial1", 2f);
-        Invoke("UnableCh03Tutorial1", 5f);
+        // Ch03_Tutorial_2 활성화 후 지우기 
+        Invoke("EnableCh03Tutorial2", 0.01f);
+        Invoke("UnableCh03Tutorial2", 2.5f);
     }
-
-
-
-
 
     /**************************************************************************************************/
 
@@ -411,23 +400,17 @@ public class UI_Canvas : MonoBehaviour
     }
 
     // 챕터 3 튜토리얼 UI Invoke 용
-    void EnableCh03Tutorial1()
+    void EnableCh03Tutorial2()
     {
-        EnableRawImage(Ch03_Tutorial_1);
-    }
-
-    void UnableCh03Tutorial1()
-    {
-        UnableRawImage(Ch03_Tutorial_1);
-
-        // Sleeping UI 활성화
-        EnableRawImage(Ch03_Sleeping);
+        EnableRawImage(Ch03_Tutorial_2);
     }
 
     void UnableCh03Tutorial2()
     {
         UnableRawImage(Ch03_Tutorial_2);
-        MonitorFin = true;
+
+        // Sleeping UI 활성화
+        EnableRawImage(Ch03_Sleeping);
     }
 
     /**************************************************************************************************/
