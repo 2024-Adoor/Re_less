@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flower1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: d9b2cda8a1e050e478497f2213c37e99, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d9b2cda8a1e050e478497f2213c37e99, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
