@@ -52,14 +52,20 @@ namespace Reless
                 // 이벤트를 발생시킵니다.
                 PhaseChanged?.Invoke(Instance._currentPhase);
 
-                switch (Instance._currentPhase)
+                ////NOTE: 이동 필요
+                if (SceneManager.ActiveScene is MainScene)
                 {
-                    case GamePhase.Chapter1 or GamePhase.Chapter2 or GamePhase.Chapter3:
-                        Instance.spawnedWallHints.ForEach(wallHint => wallHint.SetActive(true)); break;
+                    switch (Instance._currentPhase)
+                    {
+                        case GamePhase.Chapter1 or GamePhase.Chapter2 or GamePhase.Chapter3:
+                            Instance.spawnedWallHints.ForEach(wallHint => wallHint.SetActive(true)); break;
                         default: Instance.spawnedWallHints.ForEach(wallHint => wallHint.SetActive(false)); break;
+                    }
+
+                    Instance.PopupBookActive = Instance._currentPhase;
                 }
 
-                Instance.PopupBookActive = Instance._currentPhase;
+                
                 
                 Logger.Log($"{nameof(GameManager)}: phase changed to: <b>{Instance._currentPhase}</b>");
             }
