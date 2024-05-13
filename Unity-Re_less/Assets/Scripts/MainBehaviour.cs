@@ -46,7 +46,9 @@ namespace Reless
         [SerializeField]
         private GameObject polaroidsPrefab;
         
-        private GameObject _polaroids;
+        [SerializeField]
+        private GameObject villainPrefab;
+        
         
         private void Awake()
         {
@@ -97,20 +99,27 @@ namespace Reless
             if (RoomManager.Instance is not null)
             {
                 // 엔딩에서 폴라로이드를 생성합니다.
-                CreatePolaroids();
+                CreateEndObjects();
             }
             else
             {
                 // RoomManager가 없다면 방이 로드된 뒤에 생성되도록 이벤트에 등록합니다.
-                RoomManager.OnMRUKSceneLoaded += CreatePolaroids;
+                RoomManager.OnMRUKSceneLoaded += CreateEndObjects;
             }
             
-            void CreatePolaroids()
+            void CreateEndObjects()
             {
                 Transform popupBook = GameManager.Instance.PopupBook.transform;
 
-                // 팝업북 위치에 생성
-                _polaroids = Instantiate(polaroidsPrefab, popupBook.position, popupBook.rotation, popupBook.parent);
+                // 팝업북 위치에 폴라로이드 생성
+                Instantiate(polaroidsPrefab, popupBook.position, popupBook.rotation, popupBook.parent);
+                
+                // 팝업북 위치에 빌런이 생성
+                var villain = Instantiate(villainPrefab , popupBook.position, popupBook.rotation, popupBook.parent);
+                
+                // 빌런이가 문을 바라보도록 회전
+                RoomManager.Instance.ClosestDoorDistance(villain.transform.position, out var doorPosition);
+                villain.transform.LookAt(new Vector3(doorPosition.x, villain.transform.position.y, doorPosition.z));
             }
         }
 

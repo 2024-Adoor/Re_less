@@ -69,6 +69,8 @@ namespace Reless.VR
             if (_isInEnding) return;
             _isInEnding = true;
             
+            GameManager.CurrentPhase = GamePhase.Ending;
+            
             // 엔딩 앰비언트 라이팅 적용
             FindAnyObjectByType<RoomLighting>().ApplyEndingAmbientColor();
             
