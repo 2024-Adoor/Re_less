@@ -11,10 +11,16 @@ namespace Reless.Game
     public class Pen : MonoBehaviour
     {
         /// <summary>
-        /// 그리는 선의 프리팹
+        /// 그리는 선의 Line Renderer
         /// </summary>
         [SerializeField] 
-        private GameObject lineSegmentPrefab;
+        private LineRenderer lineSegment;
+        
+        /// <summary>
+        /// 그려진 선들을 담을 컨테이너 오브젝트
+        /// </summary>
+        [SerializeField]
+        private Transform drawnLineContiner;
         
         /// <summary>
         /// 현재 그리고 있는 선
@@ -111,13 +117,12 @@ namespace Reless.Game
         /// <param name="position">선의 시작 위치</param>
         private void StartDraw(Vector3 position)
         {
-            GameObject newLine = Instantiate(lineSegmentPrefab, position, Quaternion.identity);
-            _currentLine = newLine.GetComponent<LineRenderer>();
+            _currentLine = Instantiate(original: lineSegment, position, Quaternion.identity, parent: drawnLineContiner);
             _currentLine.positionCount = 1;
             _currentLine.SetPosition(0, position);
             _pointPositions.Clear();
             _pointPositions.Add(position);
-            newLine.transform.parent = this.transform;
+            _currentLine.transform.parent = this.transform;
         }
 
         private void UpdateLine(Vector3 position)
