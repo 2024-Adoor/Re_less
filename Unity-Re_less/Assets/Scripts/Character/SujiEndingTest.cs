@@ -27,6 +27,8 @@ public class SujiEndingTest : MonoBehaviour
     /// 수지 이동이 끝났는지 여부
     /// </summary>
     public bool IsReachedEndPoint { get; private set; }           
+    // "수지를 따라가자!" UI 띄우기 위한 bool값
+    public bool canMove;
 
     // 애니메이션
     [Header("Animation")]
@@ -93,6 +95,7 @@ public class SujiEndingTest : MonoBehaviour
             
             
             IsReachedEndPoint = true;
+            canMove = false;
             
             // SujiChat.SetActive(true);
         }
