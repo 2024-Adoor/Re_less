@@ -27,9 +27,9 @@ Transform:
   m_GameObject: {fileID: 202194630956615093}
   serializedVersion: 2
   m_LocalRotation: {x: 0.87171936, y: -0.0302842, z: -0.054314744, w: 0.48604345}
-  m_LocalPosition: {x: -28.87, y: 60, z: -46.3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 122.425, y: 13.386002, z: 11.358002}
@@ -287,8 +287,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
-      minScalar: 1
+      scalar: 0.5
+      minScalar: 0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.Game;
 using Reless.MR;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static Reless.Chapter;
 
 namespace Reless
@@ -43,11 +45,15 @@ namespace Reless
         
         public List<ObtainingObject> ObtainingObjects { get; private set; }
 
+        [Header("Ending")]
         [SerializeField]
         private GameObject polaroidsPrefab;
         
         [SerializeField]
         private GameObject villainPrefab;
+        
+        [SerializeField]
+        private ParticleSystem petalParticle;
         
         
         private void Awake()
@@ -96,9 +102,9 @@ namespace Reless
         {
             if (phase is not GamePhase.Ending) return;
 
-            if (RoomManager.Instance is not null)
+            if (RoomManager.Instance is RoomManager roomManager)
             {
-                // 엔딩에서 폴라로이드를 생성합니다.
+                // 엔딩에 필요한 오브젝트 생성
                 CreateEndObjects();
             }
             else
@@ -109,6 +115,8 @@ namespace Reless
             
             void CreateEndObjects()
             {
+                Assert.IsNotNull(RoomManager.Instance);
+                
                 Transform popupBook = GameManager.Instance.PopupBook.transform;
 
                 // 팝업북 위치에 폴라로이드 생성
@@ -117,9 +125,19 @@ namespace Reless
                 // 팝업북 위치에 빌런이 생성
                 var villain = Instantiate(villainPrefab , popupBook.position, popupBook.rotation, popupBook.parent);
                 
-                // 빌런이가 문을 바라보도록 회전
-                RoomManager.Instance.ClosestDoorDistance(villain.transform.position, out var doorPosition);
-                villain.transform.LookAt(new Vector3(doorPosition.x, villain.transform.position.y, doorPosition.z));
+                if (RoomManager.Instance.UniqueDoor is MRUKAnchor door)
+                {
+                    // 빌런이가 문을 바라보도록 회전
+                    villain.transform.LookAt(new Vector3(door.transform.position.x, villain.transform.position.y, door.transform.position.z));
+
+                    // 꽃잎 파티클 생성
+                    // NOTE : 나무가 생긴 뒤 문을 나무로 바꾸어야 함
+                    Instantiate(petalParticle, door.transform.position - door.transform.forward * 5, petalParticle.transform.rotation);
+                }
+                else
+                {
+                    throw new NotImplementedException($"{nameof(MainBehaviour)}.{nameof(CreateEndObjects)} only supports a room with a single door");
+                }
             }
         }
 

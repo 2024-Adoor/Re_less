@@ -89,12 +89,15 @@ namespace Reless.MR
         /// </summary>
         public MRUKAnchor KeyWall => _keyWall;
         private MRUKAnchor _keyWall;
-
+        
+        private Vector3? _uniqueDoorPosition;
+        
         /// <summary>
-        /// 방에 문이 하나라면 해당 문을 캐시합니다.
+        /// 방에 문이 하나라면 해당 문을 반환합니다.
         /// 문이 하나가 아니면 null입니다.
         /// </summary>
-        private Vector3? _uniqueDoorPosition;
+        [CanBeNull] 
+        public MRUKAnchor UniqueDoor => _doors?.SingleOrDefault();
 
         /// <summary>
         /// 방의 문 앵커들
@@ -162,6 +165,11 @@ namespace Reless.MR
             
             // 키 월을 찾습니다.
             _keyWall = Room.GetKeyWall(out _);
+            
+            // 방의 문 앵커들을 찾습니다.
+            _doors ??= Room.Anchors
+                .Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME)
+                .AsReadOnlyCollection();
             
             // 이펙트 메시들을 생성합니다.
             edgeEffect.CreateMesh();
@@ -289,10 +297,6 @@ namespace Reless.MR
                 doorPosition = _uniqueDoorPosition.Value;
                 return Vector3.Distance(position, _uniqueDoorPosition.Value);
             };
-            
-            _doors ??= Room.Anchors
-                .Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME)
-                .AsReadOnlyCollection();
             
             // 문이 하나라면 해당 문을 캐시합니다.
             if (_doors.Count == 1)
