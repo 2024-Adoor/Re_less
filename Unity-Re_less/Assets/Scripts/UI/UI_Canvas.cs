@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System;
 using Reless;
 
@@ -16,23 +17,25 @@ public class UI_Canvas : MonoBehaviour
     PlayerState _PlayerState;
     ChapterControl _ChapterControl;
 
+    // TextMeshPro Text 
+    public TMP_Text messageText;
+    bool isTextChange = false;
+
+    // BackGround RawImage
+    public RawImage BackGround;
+
     // Chapter 01 UI RawImage
     public RawImage Ch01_Tutorial_1;
     public RawImage Ch01_Tutorial_2;
     public RawImage Ch01_Tutorial_Jump;     // Trigger로 작동
-    public RawImage Ch01_Tutorial_Friend;   // Trigger로 작동
 
     // Chapter 02 UI RawImage
     public RawImage Ch02_Tutorial_1;
     public RawImage Ch02_Tutorial_2;
-    public RawImage Ch02_Watch;             // Trigger로 작동
-    public RawImage Ch02_Door;              // Trigger로 작동 
 
     // Chatper 03 Ui RawImage
     public RawImage Ch03_Tutorial_1;
     public RawImage Ch03_Tutorial_2;
-    public RawImage Ch03_Suji;              // Trigger로 작동
-    public RawImage Ch03_End;               // Trigger로 작동 
 
     // Can't Awake RawImage
     public RawImage CantAwake;
@@ -87,21 +90,20 @@ public class UI_Canvas : MonoBehaviour
         _PlayerControl = Player.GetComponent<PlayerControl>();
         _ChapterControl = Player.GetComponent<ChapterControl>();
         
+        // BackGround RawImage 비활성화
+        BackGround.gameObject.SetActive(false);
+        //UnableRawImage(BackGround);
+
         // 전체 RawImage 비활성화
         UnableRawImage(Ch01_Tutorial_1);
         UnableRawImage(Ch01_Tutorial_2);
         UnableRawImage(Ch01_Tutorial_Jump);
-        UnableRawImage(Ch01_Tutorial_Friend);
 
         UnableRawImage(Ch02_Tutorial_1);
         UnableRawImage(Ch02_Tutorial_2);
-        UnableRawImage(Ch02_Watch);
-        UnableRawImage(Ch02_Door);
 
         UnableRawImage(Ch03_Tutorial_1);
         UnableRawImage(Ch03_Tutorial_2);
-        UnableRawImage(Ch03_Suji);
-        UnableRawImage(Ch03_End);
 
         UnableRawImage(CantAwake);
 
@@ -165,6 +167,7 @@ public class UI_Canvas : MonoBehaviour
         if(_PlayerState.isJumpUI && !JumpUIFin)
         {
             EnableRawImage(Ch01_Tutorial_Jump);
+
             _PlayerControl.speed = 0f;
             // 3초 뒤에 UnableRawImage(Ch01_Tutorial_Jump) && _PlayerControl.speed = 4.0f
             Invoke("Ch01Jump_Speed", 3f);
@@ -173,10 +176,16 @@ public class UI_Canvas : MonoBehaviour
         // 챕터 1 - 열매 전달 튜토리얼 UI 
         if(_PlayerState.isFriendUI && !FriendUIFin)
         {
-            EnableRawImage(Ch01_Tutorial_Friend);
+            if(!isTextChange)
+            {
+                BackGround.gameObject.SetActive(true);
+                ChangeMessage("친구에게 가까이 가서\n획득한 열매를 전해주자!");
+                isTextChange = true;
+            }
+
             _PlayerControl.speed = 0f;
-            // 2초 뒤에 UnableRawImage(Ch01_Tutorial_Friend) && _PlayerControl.speed = 4.0f
-            Invoke("Ch01Jump_Friend", 2f);
+            // 2초 뒤에 UnableRawImage(BackGround) && _PlayerControl.speed = 4.0f
+            Invoke("UnableBack_Ch01Friend", 2f);
         }
 
         // 챕터 1 - 열매 먹었을 때 UI 변경
@@ -199,12 +208,13 @@ public class UI_Canvas : MonoBehaviour
         // 챕터 2 - 리스폰 했을 때, 시계  UI 
         if(_ChapterControl.CH02_RespawnCount > 0 && !WatchUIFin)
         {
-            EnableRawImage(Ch02_Watch);
+            //Enable_BackText();
+            ChangeMessage("시계를 부숴볼까?");
 
             // 시계가 부숴졌을 때 UI 삭제 
             if(Watch == null)
             {
-                UnableRawImage(Ch02_Watch);
+                //Unable_BackText();
                 WatchUIFin = true;
             }
         }
@@ -212,10 +222,13 @@ public class UI_Canvas : MonoBehaviour
         // 챕터 2 - 문 앞에 왔을 때, 문 UI
         if(_PlayerState.isDoorUI && !DoorUIFin)
         {
-            EnableRawImage(Ch02_Door);
+            // BackGround 띄우고 텍스트 변경
+            //Enable_BackText();
+            ChangeMessage("세번째 손가락으로 버튼을 눌러\n문을 당겨보자!");
             _PlayerControl.speed = 0f;
-            // 2초 뒤에 UnableRawImage(Ch02_Door) && _PlayerControl.speed = 4.0f
-            Invoke("Ch02_Door_Speed", 2f);
+
+            // 2초 뒤에 UnableRawImage(BackGround) && _PlayerControl.speed = 4.0f
+            //Invoke("UnableBack_Speed", 2f);
         }
         
         // 챕터 2 - 열매 먹었을 때 UI 변경
@@ -273,21 +286,15 @@ public class UI_Canvas : MonoBehaviour
         }
 
         // 챕터 3 - 수지가 움직일 때, 수지 UI
-        /*if(_SujiEndingTest.canMove)
+        if(_SujiEndingTest.canMove)
         {
             UnableRawImage(Ch03_SleepOut);
-            EnableRawImage(Ch03_Suji);
+            //Enable_BackText();
+            ChangeMessage("수지를 따라가자!");
         }
         else
         {
-            UnableRawImage(Ch03_Suji);
-        }*/
-
-        // 챕터 3 - 리스폰 됐을 때, 엔딩 UI 
-        if(_PlayerState.isTeleport && !EndUIFin)
-        {
-            EnableRawImage(Ch03_End);
-            Invoke("UnableCh03_End", 2f);
+            //Unable_BackText();
         }
 
         // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
@@ -306,7 +313,6 @@ public class UI_Canvas : MonoBehaviour
     public void Chapter01_StartUI()
     {
         _PlayerControl.speed = 0f;
-
         // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
         Invoke("EnableCh01Tutorial1", 0.2f);
         Invoke("UnableCh01Tutorial1", 3.2f);
@@ -365,6 +371,13 @@ public class UI_Canvas : MonoBehaviour
         _PlayerControl.speed = 4f;
     }
 
+    void UnableBack_Ch01Friend()
+    {
+        BackGround.gameObject.SetActive(false);
+        _PlayerControl.speed = 4f;
+        FriendUIFin = true;
+    }
+
     void UnableCh01Tutorial2()
     {
         UnableRawImage(Ch01_Tutorial_2);
@@ -415,14 +428,6 @@ public class UI_Canvas : MonoBehaviour
 
     /**************************************************************************************************/
 
-    void UnableCh03_End()
-    {
-        UnableRawImage(Ch03_End);
-        EndUIFin = true;
-    }
-
-    /**************************************************************************************************/
-
     // 챕터1 점프 튜토리얼 UI 비활성화 & 플레이어 스피드 초기화 
     void Ch01Jump_Speed()
     {
@@ -431,22 +436,19 @@ public class UI_Canvas : MonoBehaviour
         JumpUIFin = true;
     }
 
-    // 챕터1 열매 전달 튜토리얼 UI 비활성화 & 플레이어 스피드 초기화 
-    void Ch01Jump_Friend()
+    // BackGround 비활성화 & 플레이어 스피드 초기화
+    // void UnableBack_Speed()
+    // {
+    //     Unable_BackText();
+    //     _PlayerControl.speed = 4.0f;
+    //     DoorUIFin = true;
+    // }
+
+    /**************************************************************************************************/
+
+    // TextMeshPro 텍스트 바꾸는 함수 
+    public void ChangeMessage(string newMessage)
     {
-        UnableRawImage(Ch01_Tutorial_Friend);
-        _PlayerControl.speed = 4.0f;
-        FriendUIFin = true;
+        messageText.text = newMessage;
     }
-
-    // 챕터2 문 UI 비활성화 & 플레이어 스피드 초기화 
-    void Ch02_Door_Speed()
-    {
-        UnableRawImage(Ch02_Door);
-        _PlayerControl.speed = 4.0f;
-        DoorUIFin = true;
-    }
-
-
-    
 }
