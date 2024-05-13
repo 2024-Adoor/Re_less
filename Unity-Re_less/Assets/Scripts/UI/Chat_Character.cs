@@ -114,10 +114,6 @@ public class Chat_Character : MonoBehaviour
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
 
-                // é�� 3 ����
-                //_ChapterControl.SetupChapter03();
-                _UI_Canvas.Chapter03_StartUI();
-
                 // 챕터 3 시작
                 _ChapterControl.CurrentChapter = Chapter.Chapter3;
 

@@ -50,7 +50,7 @@ public class SujiEndingTest : MonoBehaviour
 
     void Start()
     {
-        // EndTrigger.GetComponent<Renderer>().enabled = false;
+        
     }
     
     [Button(enabledMode: EButtonEnableMode.Playmode)]
@@ -94,7 +94,7 @@ public class SujiEndingTest : MonoBehaviour
             
             IsReachedEndPoint = true;
             
-            SujiChat.SetActive(true);
+            // SujiChat.SetActive(true);
         }
     }
     

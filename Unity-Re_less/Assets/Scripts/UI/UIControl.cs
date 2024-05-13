@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,11 +20,17 @@ namespace Reless.UI
         {
             _inputActions = GameManager.InputActions;
             _openPauseMenuAction = _inputActions.Constant.TogglePauseMenu;
-            _openPauseMenuAction.performed += _ => TogglePauseMenu();
+            _openPauseMenuAction.performed += TogglePauseMenu;
             _inputActions.Enable();
         }
 
-        private void TogglePauseMenu()
+        private void OnDestroy()
+        {
+            _openPauseMenuAction.performed -= TogglePauseMenu;
+            _inputActions.Disable();
+        }
+
+        private void TogglePauseMenu(InputAction.CallbackContext context)
         {
             bool opened = pauseMenu.isActiveAndEnabled;
             

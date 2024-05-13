@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using Logger = Reless.Debug.Logger;
@@ -19,22 +20,36 @@ namespace Reless.UI
         [SerializeField]
         private TMP_Text qualitySettingLabel;
         
-        public bool ShowFramerate
-        {
-            set
-            {
-                _showFramerate = value;
-                framerate.gameObject.SetActive(value);
-            }
-        }
+        [SerializeField]
+        private TMP_Dropdown gamePhaseDropdown;
 
         private void Start()
         {
             Disable();
             framerate.gameObject.SetActive(_showFramerate);
             qualitySettingLabel.text = "Quality Setting Level: " + QualitySettings.names[QualitySettings.GetQualityLevel()];
+            
+            AddGamePhaseDropdownOptions();
+            UpdateGamePhaseDropdown(GameManager.CurrentPhase);
+            GameManager.PhaseChanged += UpdateGamePhaseDropdown;
         }
         
+        private void AddGamePhaseDropdownOptions()
+        {
+            gamePhaseDropdown.ClearOptions();
+            gamePhaseDropdown.AddOptions(Enum.GetNames(typeof(GamePhase)).ToList());
+            gamePhaseDropdown.onValueChanged.AddListener(OnGamePhaseChanged);
+        }
+        
+        private void UpdateGamePhaseDropdown(GamePhase phase)
+        {
+            gamePhaseDropdown.onValueChanged.RemoveListener(OnGamePhaseChanged);
+            gamePhaseDropdown.value = (int)phase;
+            gamePhaseDropdown.onValueChanged.AddListener(OnGamePhaseChanged);
+        }
+        
+        private void OnGamePhaseChanged(int index) => GameManager.CurrentPhase = (GamePhase)index;
+
         public void Enable()
         {
             gameObject.SetActive(true);
@@ -45,6 +60,8 @@ namespace Reless.UI
             gameObject.SetActive(false);
         }
 
+#region Binding Actions
+
         public static bool SpaceWarp
         {
             set
@@ -53,5 +70,21 @@ namespace Reless.UI
                 Logger.Log(value ? "Enable" : "Disable" + " the SpaceWarp");
             }
         }
+        
+        public static void RecenterPose() => FindAnyObjectByType<PlayerControl>()?.Recenter();
+
+        public static void LoadMainScene() => GameManager.LoadMainScene();
+
+        public static void LoadVRScene() => GameManager.LoadVRScene();
+
+        public bool ShowFramerate
+        {
+            set
+            {
+                _showFramerate = value;
+                framerate.gameObject.SetActive(value);
+            }
+        }
+#endregion
     }
 }

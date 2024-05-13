@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using NaughtyAttributes;
 using Reless.MR;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -30,6 +30,12 @@ namespace Reless.Opening
         /// OpeningAnimator 레퍼런스
         /// </summary>
         private OpeningAnimator _openingAnimator;
+        
+        /// <summary>
+        /// 오프닝 중인지 여부
+        /// </summary>
+        [ShowNativeProperty]
+        private bool IsInOpening { get; set; }
 
         private void Awake()
         {
@@ -53,6 +59,12 @@ namespace Reless.Opening
         /// </summary>
         private void StartOpening()
         {
+            if (IsInOpening)
+            {
+                Logger.LogWarning($"{nameof(OpeningBehaviour)}: already in opening");
+                return;
+            }
+            IsInOpening = true;
             Logger.Log($"{nameof(OpeningBehaviour)}: StartOpening");
             
             // 오프닝 벽의 피벗을 설정합니다.
@@ -101,6 +113,8 @@ namespace Reless.Opening
                 RoomManager.Instance.HidePassthroughEffectMesh = false;
                 RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
                 RoomManager.Instance.roomEnlarger.RestoreRoomScale();
+                
+                IsInOpening = false;
             }
         }
         

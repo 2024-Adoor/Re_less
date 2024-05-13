@@ -14,7 +14,6 @@ public class SujiManage : MonoBehaviour
     // 점프 + 이동
     public Transform target;                // 이동 목적지
     public float rotationSpeed = 5f;        // 회전 속도
-    public float moveSpeed = 5f;            // 이동 속도
     Quaternion targetRotation;
     Quaternion targetRotation2;
 
@@ -121,7 +120,7 @@ public class SujiManage : MonoBehaviour
                     }
                     else
                     {
-                        MoveNPC(target.position, 3f);
+                        MoveNPC(target.position, 1.5f);
 
                         if (Vector3.Distance(transform.position, target.position) < 0.1f)
                         {
