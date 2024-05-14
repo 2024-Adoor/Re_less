@@ -19,6 +19,7 @@ namespace Reless
 
         public bool isXdown;
         public bool isYdown;
+        public bool isBdown;
 
         private InputAction _moveAction;
         private InputAction _jumpAction;
@@ -62,6 +63,7 @@ namespace Reless
             //SnapTurn();
             //Jump();
             X_Down();
+            B_Down();
             Y_Fruit();
         }
         
@@ -146,6 +148,7 @@ namespace Reless
 
         private void Jump()
         {
+            // A 버튼 점프
             if (OVRInput.GetDown(OVRInput.Button.One) && !hasJumped)
             {
                 _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -171,6 +174,19 @@ namespace Reless
             else
             {
                 isXdown = false;
+            }
+        }
+
+        // B 누르고 있을때 true / 뗄 때 false
+        private void B_Down()
+        {
+            if(OVRInput.GetDown(OVRInput.Button.Two))
+            {
+                isBdown = true;
+            }
+            else
+            {
+                isBdown = false;
             }
         }
 

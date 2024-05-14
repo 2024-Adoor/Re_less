@@ -24,9 +24,7 @@ public class Chat_Character : MonoBehaviour
 
     // 챕터 클리어용 
 
-    bool isClear = false;
-    public Canvas  UI;
-    UI_Canvas _UI_Canvas;
+    public bool isClear = false;
 
     private void Awake()
     {
@@ -37,7 +35,12 @@ public class Chat_Character : MonoBehaviour
     void Start()
     {
         _ChapterControl = Player.GetComponent<ChapterControl>();
-        _UI_Canvas = UI.GetComponent<UI_Canvas>();
+
+
+
+
+
+
         
         if(Character.name == "Character_Cat")
         {
@@ -79,7 +82,6 @@ public class Chat_Character : MonoBehaviour
 
                 isChatFin = true;
             }
-
             if(Chat == chatMaterials.Length)
             {
                 _AniManage.animationComponent.Stop();
@@ -88,7 +90,6 @@ public class Chat_Character : MonoBehaviour
 
                 Chat++;
             }
-            
         }
 
         if(Character.name == "Character_Clock")
@@ -97,9 +98,6 @@ public class Chat_Character : MonoBehaviour
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
-                // é�� 2 ����
-                //_ChapterControl.SetupChapter02();
-                _UI_Canvas.Chapter02_StartUI();
 
                 // 챕터 2 시작
                 _ChapterControl.CurrentChapter = Chapter.Chapter2;
@@ -120,8 +118,6 @@ public class Chat_Character : MonoBehaviour
                 isClear =  true;
             }
         }
-
-
     }
 
     IEnumerator Delay_Change(float delayTime)

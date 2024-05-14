@@ -35,6 +35,7 @@ public class PlayerState : MonoBehaviour
     public bool isDoorUI = false;
     public bool isCh02JumpUI = false;
     public bool isDisawakeUI_Trigger = false;
+    public bool isCh02UI = false;
 
     // Fade 트리거 관리
     public bool isFadeOut = false; 
@@ -115,7 +116,11 @@ public class PlayerState : MonoBehaviour
         {
             isFriendUI = true;
         }
-        else if(other.gameObject.name == "UI_Ch02Door_Trigger (1)" || other.gameObject.name == "UI_Ch02Door_Trigger (2)")
+        else if(other.gameObject.name == "UI_Chapter01Fin_Trigger")
+        {
+            isCh02UI = true;
+        }
+        else if(other.gameObject.name == "UI_Ch02Door_Trigger")
         {
             isDoorUI = true;
         }
