@@ -105,15 +105,8 @@ namespace Reless.Opening
                 
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
-                // 패스스루 이펙트 메쉬 숨기기
-                Assert.IsNotNull(RoomManager.Instance);
-                RoomManager.Instance.HidePassthroughEffectMesh = true;
-                RoomManager.Instance.CreateVirtualRoomEffectMeshes();
-                
-                yield return new WaitForSeconds(2f);
-                
                 // 방에서 작아지기
-                RoomManager.Instance.roomEnlarger.EnlargeRoom();
+                // RoomManager.Instance.roomEnlarger.EnlargeRoom();
                 
                 // 튜토리얼 생략
                 
@@ -124,9 +117,6 @@ namespace Reless.Opening
                 // 오프닝에서 했던 일을 되돌립니다.
                 RoomManager.Instance.RevertRoomTransform();
                 ResetTransformOpeningWall();
-                RoomManager.Instance.HidePassthroughEffectMesh = false;
-                RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
-                RoomManager.Instance.roomEnlarger.RestoreRoomScale();
                 
                 IsInOpening = false;
             }

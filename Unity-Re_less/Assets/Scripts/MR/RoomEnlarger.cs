@@ -45,24 +45,21 @@ namespace Reless.MR
         /// 방의 크기를 키웁니다.
         /// </summary>
         [Button(enabledMode: EButtonEnableMode.Playmode)]
-        public void EnlargeRoom()
+        public IEnumerator EnlargingRoom()
         {
-            StartCoroutine(EnlargingRoom());
-            
-            IEnumerator EnlargingRoom()
+            // 방의 크기를 키우는 애니메이션
+            for (float elapsedTime = 0f; elapsedTime < enlargingDuration; elapsedTime += Time.deltaTime)
             {
-                // 방의 크기를 키우는 애니메이션
-                for (float elapsedTime = 0f; elapsedTime < enlargingDuration; elapsedTime += Time.deltaTime)
-                {
-                    float scale = Mathf.Lerp(1f, enlargedScale, Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)));
-                    RoomManager.Room.transform.localScale = Vector3.one * scale;
-                    yield return null;
-                }
-                
-                // 최종 값으로 방의 크기 변경
-                RoomManager.Room.transform.localScale = Vector3.one * enlargedScale;
+                float scale = Mathf.Lerp(1f, enlargedScale,
+                    Mathf.Lerp(0f, 1f, animationCurve.Evaluate(elapsedTime / enlargingDuration)));
+                RoomManager.Room.transform.localScale = Vector3.one * scale;
+                yield return null;
             }
+
+            // 최종 값으로 방의 크기 변경
+            RoomManager.Room.transform.localScale = Vector3.one * enlargedScale;
         }
+        
         
         public void RestoreRoomScale()
         {

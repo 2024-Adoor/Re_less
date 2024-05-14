@@ -160,16 +160,39 @@ namespace Reless
         /// </summary>
         private void EnterDream()
         {
-            StopCoroutine(EnteringDream());
+            RoomManager.TryInvokeAction(EnterDream);
+        }
+        
+        /// <summary>
+        /// 꿈 속으로 들어가는 과정을 진행 시작합니다.
+        /// </summary>
+        /// <param name="roomManager">roomManager 레퍼런스</param>
+        private void EnterDream(RoomManager roomManager)
+        {
+            StartCoroutine(Routine());
 
-            IEnumerator EnteringDream()
+            IEnumerator Routine()
             {
-                // TODO: 
-                // 방 커지기
-                yield return null;
-            
-                // VR Room 로드
-                GameManager.LoadVRScene();
+                roomManager.HidePassthroughEffectMesh = true;
+                roomManager.CreateVirtualRoomEffectMeshes();
+                
+                yield return new WaitForSeconds(2f);
+                
+                // 방에서 작아지기
+                yield return roomManager.roomEnlarger.EnlargingRoom();
+                
+                // VR 씬 로드
+                var asyncLoad = GameManager.LoadVRScene();
+                asyncLoad.allowSceneActivation = false;
+                
+                // 2초 대기 후 VR 씬 활성화
+                yield return new WaitForSeconds(2f);
+                asyncLoad.allowSceneActivation = true;
+                
+                // 작아지는 중에 했던 일을 되돌립니다.
+                roomManager.HidePassthroughEffectMesh = false;
+                roomManager.DestroyVirtualRoomEffectMeshes();
+                roomManager.roomEnlarger.RestoreRoomScale();
             }
         }
     }
