@@ -86,7 +86,6 @@ public class UI_Canvas : MonoBehaviour
 
     void Start()
     {
-        _PlayerControl = Player.GetComponent<PlayerControl>();
         _ChapterControl = Player.GetComponent<ChapterControl>();
         
         // BackGround RawImage 비활성화
@@ -142,6 +141,7 @@ public class UI_Canvas : MonoBehaviour
         if(Player != null)
         {
             _PlayerState = Player.GetComponent<PlayerState>();
+            _PlayerControl = Player.GetComponent<PlayerControl>();
         }
 
         if(Suji != null)
@@ -170,8 +170,14 @@ public class UI_Canvas : MonoBehaviour
             _PlayerControl.speed = 0f;
 
             // 확인 누르면 실행으로 변경 
+            if(_PlayerControl.isXdown)
+            {
+                UnableRawImage(Ch01_Tutorial_Jump);
+                _PlayerControl.speed = 4.0f;
+                JumpUIFin = true;
+            }
             // 3초 뒤에 UnableRawImage(Ch01_Tutorial_Jump) && _PlayerControl.speed = 4.0f
-            Invoke("Ch01Jump_Speed", 3f);
+            //Invoke("Ch01Jump_Speed", 3f);
         }
 
         // 챕터 1 - 열매 전달 튜토리얼 UI (텍스트 변환으로 처리)
@@ -453,8 +459,7 @@ public class UI_Canvas : MonoBehaviour
     void Ch01Jump_Speed()
     {
         UnableRawImage(Ch01_Tutorial_Jump);
-        _PlayerControl.speed = 4.0f;
-        JumpUIFin = true;
+        
     }
 
     /**************************************************************************************************/

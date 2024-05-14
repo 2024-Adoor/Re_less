@@ -61,7 +61,7 @@ namespace Reless
             if (_moveAction.inProgress) StickMovement();
             //SnapTurn();
             //Jump();
-            X_Friend();
+            X_Down();
             Y_Fruit();
         }
         
@@ -161,10 +161,10 @@ namespace Reless
             }
         }
 
-        // X 클릭
-        private void X_Friend()
+        // X 누르고 있을때 true / 뗄 때 false
+        private void X_Down()
         {
-            if(OVRInput.GetDown(OVRInput.RawButton.X))
+            if(OVRInput.Get(OVRInput.RawButton.X))
             {
                 isXdown = true;
             }
