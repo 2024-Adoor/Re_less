@@ -1,7 +1,9 @@
 ﻿using System;
+using NaughtyAttributes;
 using Reless.MR;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using SceneManager = Reless.Util.SceneManager;
 
 namespace Reless.Ending
@@ -31,7 +33,6 @@ namespace Reless.Ending
                 if (_isInEnding) ExitEnding();
                 return;
             }
-            _isInEnding = true;
             
             BootstrapEnding();
         }
@@ -48,8 +49,12 @@ namespace Reless.Ending
         /// <summary>
         /// 엔딩을 시작합니다.
         /// </summary>
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
         private void BootstrapEnding()
         {
+            if (_isInEnding) return;
+            _isInEnding = true;
+            
             var roomManager = RoomManager.Instance;
             Assert.IsNotNull(roomManager);
 
@@ -65,7 +70,7 @@ namespace Reless.Ending
                 throw new NotImplementedException($"{nameof(EndingBootstrapper)} only supports a room with a single door");
             }
 
-            SceneManager.LoadAsync(BuildScene.Ending);
+            SceneManager.LoadAsync(BuildScene.Ending, LoadSceneMode.Additive);
         }
         
     }
