@@ -20,7 +20,7 @@ namespace Reless.Debug
         /// <summary>
         /// 현재 게임 단계를 설정합니다.
         /// </summary>
-        [SerializeField, OnValueChanged(nameof(OnPhaseChanged)), EnableIf(nameof(PlayMode))]
+        [SerializeField, OnValueChanged(nameof(OnSetGamePhaseToChanged)), EnableIf(nameof(PlayMode))]
         private GamePhase setGamePhaseTo;
         
         [ShowNativeProperty]
@@ -68,12 +68,15 @@ namespace Reless.Debug
                 transform.SetParent(null); // DontDestroyOnLoad로 만들기 위해 부모를 해제합니다.
                 DontDestroyOnLoad(this);
             }
+            
+            // 게임 단계가 바뀔 때 setGamePhaseTo를 업데이트합니다.
+            GameManager.PhaseChanged += phase => setGamePhaseTo = phase;
         }
 
         /// <summary>
         /// <see cref="setGamePhaseTo"/>가 인스펙터에서 변경될 때 호출됩니다.
         /// </summary>
-        private void OnPhaseChanged()
+        private void OnSetGamePhaseToChanged()
         {
             Logger.Log($"{nameof(GameInspector)}: set game phase to <b>{setGamePhaseTo}</b>");
             GameManager.CurrentPhase = setGamePhaseTo;
