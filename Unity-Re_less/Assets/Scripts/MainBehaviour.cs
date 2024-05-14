@@ -130,10 +130,6 @@ namespace Reless
                 {
                     // 빌런이가 문을 바라보도록 회전
                     villain.transform.LookAt(new Vector3(door.transform.position.x, villain.transform.position.y, door.transform.position.z));
-
-                    // 꽃잎 파티클 생성
-                    // NOTE : 나무가 생긴 뒤 문을 나무로 바꾸어야 함
-                    Instantiate(petalParticle, door.transform.position - door.transform.forward * 5, petalParticle.transform.rotation);
                 }
                 else
                 {
