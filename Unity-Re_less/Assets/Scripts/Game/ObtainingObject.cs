@@ -16,7 +16,7 @@ namespace Reless.Game
         /// 오브젝트가 속하는 챕터
         /// </summary>
         [SerializeField]
-        private Chapter chapter;
+        public Chapter chapter;
 
         private readonly WaitForSeconds _respawnCheckInterval = new(2f);
         
@@ -30,9 +30,6 @@ namespace Reless.Game
         {
             _mainBehaviour = FindAnyObjectByType<MainBehaviour>();
             Assert.IsNotNull(_mainBehaviour, $"{nameof(ObtainingObject)}: There is no MainBehaviour in the scene.");
-            
-            // MainBehaviour의 모음에 등록합니다.
-            _mainBehaviour.ObtainingObjects.Add(this);
             
             transform.localScale = Vector3.one * 5;
             

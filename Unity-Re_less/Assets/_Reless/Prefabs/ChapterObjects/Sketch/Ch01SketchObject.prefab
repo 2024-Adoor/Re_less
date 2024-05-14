@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894898b058af42c4397878f0a046f32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chapter: 3
 --- !u!54 &8888533546862740199
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.Game;
 using Reless.MR;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using static Reless.Chapter;
@@ -16,106 +19,128 @@ namespace Reless
     /// </summary>
     public class MainBehaviour : MonoBehaviour
     {
+        /// <summary>
+        /// CloseEyesToSleepPose 레퍼런스
+        /// </summary>
+        [Header("References")]
         [SerializeField]
         private CloseEyesToSleepPose closeEyesToSleepPose;
         
+        /// <summary>
+        /// 펜 레퍼런스
+        /// </summary>
         [SerializeField]
         private Pen pen;
 
-        [Serializable]
-        private struct SketchObjectPrefabs
+        /// <summary>
+        /// 그릴 오브젝트 프리팹들
+        /// </summary>
+        [Header("Prefabs")]
+        [SerializeField]
+        private SketchOutline[] sketchOutlinePrefabs;
+        
+        /// <summary>
+        /// 현재 존재하는 그릴 오브젝트
+        /// </summary>
+        [CanBeNull] 
+        private SketchOutline _currentSketchOutline;
+        
+        
+        /// <summary>
+        /// 얻을 오브젝트 프리팹들
+        /// </summary>
+        [SerializeField]
+        private ObtainingObject[] obtainingObjectPrefabs;
+        
+        /// <summary>
+        /// 현재 챕터에 해당하는 얻을 오브젝트 프리팹
+        /// </summary>
+        private ObtainingObject _currentChapterObtainingObjectPrefab;
+        
+        /// <summary>
+        /// 현재 존재하는 얻은 오브젝트
+        /// </summary>
+        [CanBeNull] 
+        private ObtainingObject _currentObtainedObject;
+        
+        private void Awake()
         {
-            public GameObject chapter01;
-            public GameObject chapter02;
-            public GameObject chapter03;
+            OnPhaseChanged(GameManager.CurrentPhase);
+            GameManager.PhaseChanged += OnPhaseChanged;
         }
         
-        [SerializeField]
-        private SketchObjectPrefabs _sketchObjectPrefabs;
-        
-        [Serializable]
-        private struct ObtainingObjectPrefabs
+        private void OnDestroy()
         {
-            public GameObject chapter01;
-            public GameObject chapter02;
-            public GameObject chapter03;
+            GameManager.PhaseChanged -= OnPhaseChanged;
         }
-        
-        [SerializeField]
-        private ObtainingObjectPrefabs _obtainingObjectPrefabs;
-        
-        public List<ObtainingObject> ObtainingObjects { get; private set; }
 
-        private void Start()
+        private void OnPhaseChanged(GamePhase phase)
         {
             // 튜토리얼 이후/엔딩 전 (= 챕터 중)에 MainScene으로 진입했다면
             if (GameManager.CurrentChapter is not null)
             {
                 // 펜 활성화
-                EnablePen();
+                pen.gameObject.SetActive(true);
                 
-                // 그릴 오브젝트 생성
-                SetupSketchObject(_sketchObjectPrefabs.chapter01, _obtainingObjectPrefabs.chapter01).transform.Translate(-1, 0, 0);
-                SetupSketchObject(_sketchObjectPrefabs.chapter02, _obtainingObjectPrefabs.chapter02);
-                SetupSketchObject(_sketchObjectPrefabs.chapter03, _obtainingObjectPrefabs.chapter03).transform.Translate(1, 0, 0);
+                var chapterSketchOutlinePrefab = sketchOutlinePrefabs.Single(sketch => sketch.chapter == (Chapter)phase);
+                _currentChapterObtainingObjectPrefab = obtainingObjectPrefabs.Single(obtaining => obtaining.chapter == (Chapter)phase);
                 
-                /* SUSPENDED: 전시용으로 모든 챕터의 그림을 한번에 그리는 것으로 기획이 변경됨
-                 
-                // 챕터별로 그릴 오브젝트 생성
-                (GameObject sktech, GameObject obtaining) drawingPrefabPair = _gameManager.CurrentChapter switch
+                SetupSketchObject(chapterSketchOutlinePrefab);
+            }
+            // 챕터 중이 아닌 경우
+            else
+            {
+                // 펜 비활성화
+                pen.gameObject.SetActive(false);
+                
+                // 그릴 오브젝트가 있다면 제거합니다.
+                if (_currentSketchOutline.IsUnityNull() is false)
                 {
-                    Chapter1 => (_sketchObjectPrefabs.chapter01, _obtainingObjectPrefabs.chapter01),
-                    Chapter2 => (_sketchObjectPrefabs.chapter02, _obtainingObjectPrefabs.chapter02),
-                    Chapter3 => (_sketchObjectPrefabs.chapter03, _obtainingObjectPrefabs.chapter03),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-                SetupSketchObject(drawingPrefabPair.sktech, drawingPrefabPair.obtaining);
-                */
+                    Destroy(_currentSketchOutline);
+                    _currentSketchOutline = null;
+                }
+                
+                // 얻을 오브젝트가 있고 팝업북에 배치되지 않았다면 제거합니다.
+                if (_currentObtainedObject.IsUnityNull() is false && 
+                    _currentObtainedObject!.IsSnapped is false)
+                {
+                    Destroy(_currentObtainedObject);
+                    _currentObtainedObject = null;
+                }
             }
         }
 
         /// <summary>
         /// 그릴 오브젝트와 얻을 오브젝트를 설정합니다.
         /// </summary>
-        /// <param name="sketchPrefab">그릴 오브젝트의 프리팹</param>
-        /// <param name="obtainingObjectPrefab">얻을 오브젝트의 프리팹</param>
+        /// <param name="sketchOutlinePrefab">그릴 오브젝트의 프리팹</param>
         /// <returns>그릴 오브젝트</returns>
-        private GameObject SetupSketchObject(GameObject sketchPrefab, GameObject obtainingObjectPrefab)
+        private void SetupSketchObject(SketchOutline sketchOutlinePrefab)
         {
             // 그릴 오브젝트를 생성합니다.
-            var sketchObject = Instantiate(sketchPrefab);
+            _currentSketchOutline = Instantiate(sketchOutlinePrefab);
             
             // 그릴 오브젝트를 플레이어의 시야에 배치합니다.
-            sketchObject.transform.position = GameManager.EyeAnchor.position + GameManager.EyeAnchor.forward * 0.5f;
+            _currentSketchOutline!.transform.position = GameManager.EyeAnchor.position + GameManager.EyeAnchor.forward * 0.5f;
             
             // 그릴 오브젝트가 그려졌을 때 얻을 오브젝트를 획득하게 합니다.
-            sketchObject.GetComponent<SketchOutline>().DrawingCompleted +=
-                () => ObtainObject(sketchObject, obtainingObjectPrefab);
-            
-            return sketchObject;
+            _currentSketchOutline.DrawingCompleted += ObtainObject;
         }
         
         /// <summary>
         /// 얻을 오브젝트를 획득합니다.
         /// </summary>
-        /// <param name="sketchObject">그릴 오브젝트</param>
-        /// <param name="obtainingObjectPrefab">얻을 오브젝트의 프리팹</param>
-        private void ObtainObject(GameObject sketchObject, GameObject obtainingObjectPrefab)
+        /// <param name="sketchObject">스케치 오브젝트</param>
+        private void ObtainObject(SketchOutline sketchObject)
         {
             // 그릴 오브젝트 위치에 얻을 오브젝트를 생성하고 그릴 오브젝트를 제거합니다.
-            var obtainObjects = Instantiate(obtainingObjectPrefab);
-            obtainObjects.transform.position = sketchObject.transform.position;
+            _currentObtainedObject = Instantiate(_currentChapterObtainingObjectPrefab, sketchObject.transform.position, Quaternion.identity);
             Destroy(sketchObject);
         }
         
         private void EnableCloseEyesToSleepPose()
         {
             closeEyesToSleepPose.transform.gameObject.SetActive(true);
-        }
-        
-        private void EnablePen()
-        {
-            pen.gameObject.SetActive(true);
         }
 
         /// <summary>

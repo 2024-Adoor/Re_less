@@ -58,6 +58,7 @@ namespace Reless.Opening
         /// <summary>
         /// 오프닝을 시작합니다.
         /// </summary>
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
         private void BootstrapOpening()
         {
             if (IsInOpening)

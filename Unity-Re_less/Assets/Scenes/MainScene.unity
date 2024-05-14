@@ -433,14 +433,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closeEyesToSleepPose: {fileID: 1145423887}
   pen: {fileID: 1122392751}
-  _sketchObjectPrefabs:
-    chapter01: {fileID: 3975110518548778318, guid: ac16fa27198da3f42a50687492bceaa3, type: 3}
-    chapter02: {fileID: 5877573932731339716, guid: 2cf7377f1691d7e4ebfefd5dbc2ae281, type: 3}
-    chapter03: {fileID: 5877573932731339716, guid: 883d92b02700e8c4bb3adaf1d73fe9c5, type: 3}
-  _obtainingObjectPrefabs:
-    chapter01: {fileID: 5628168206714019189, guid: c149e1965036d184ea8d507727e7ada5, type: 3}
-    chapter02: {fileID: 5628168206714019189, guid: 3714028a7366b234daebeea8831d22c6, type: 3}
-    chapter03: {fileID: 5628168206714019189, guid: 2dcbfef74eb06eb498dddd78c0c3b0ee, type: 3}
+  sketchOutlinePrefabs:
+  - {fileID: 4603261170356993711, guid: ac16fa27198da3f42a50687492bceaa3, type: 3}
+  - {fileID: 4787025502470188945, guid: 2cf7377f1691d7e4ebfefd5dbc2ae281, type: 3}
+  - {fileID: 4787025502470188945, guid: 883d92b02700e8c4bb3adaf1d73fe9c5, type: 3}
+  obtainingObjectPrefabs:
+  - {fileID: 4870683554583011112, guid: c149e1965036d184ea8d507727e7ada5, type: 3}
+  - {fileID: 4870683554583011112, guid: 3714028a7366b234daebeea8831d22c6, type: 3}
+  - {fileID: 4870683554583011112, guid: 2dcbfef74eb06eb498dddd78c0c3b0ee, type: 3}
 --- !u!4 &77264187
 Transform:
   m_ObjectHideFlags: 0

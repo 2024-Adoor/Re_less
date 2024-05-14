@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using NaughtyAttributes;
 using Reless.MR;
 using UnityEngine;
 using Logger = Reless.Debug.Logger;
@@ -14,6 +15,7 @@ namespace Reless
         /// <summary>
         /// 방 안에서 시작했는지 여부
         /// </summary>
+        [ShowNonSerializedField]
         private bool _startedInRoom;
         
         /// <summary>

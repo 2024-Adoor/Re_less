@@ -13,6 +13,12 @@ namespace Reless.Game
     public class SketchOutline : MonoBehaviour
     {
         /// <summary>
+        /// 밑그림이 속한 챕터
+        /// </summary>
+        [SerializeField] 
+        public Chapter chapter;
+        
+        /// <summary>
         ///  edge를 따라 생성될 콜라이더의 두께
         /// </summary>
         private const float ColliderThickness = 0.01f;
@@ -23,7 +29,7 @@ namespace Reless.Game
         private float _maxEdgeLength = 0.5f;
         private float _edgeInset = 0.01f;
         
-        public Action DrawingCompleted;
+        public event Action<SketchOutline> DrawingCompleted;
         
         [ShowNativeProperty]
         public bool IsCompleted => _isCompleted;
@@ -55,7 +61,7 @@ namespace Reless.Game
                 if (_fillRatio > 0.8)
                 {
                     _isCompleted = true;
-                    DrawingCompleted?.Invoke();
+                    OnDrawingComplete();
                 }
                 
                 if (_drawingCheckers.TrueForAll(checker => checker.Checked))
@@ -63,16 +69,15 @@ namespace Reless.Game
                     // 플레이어가 그린 선이 모든 DrawingChecker에 닿았습니다 - 그림이 완성되었습니다.
                     Logger.Log($"Drawing {this.gameObject.name} is completed!");
                     _isCompleted = true;
-                    DrawingCompleted?.Invoke();
+                    OnDrawingComplete();
                 }
             }
         }
 
-        // 테스트용
-        [Button]
-        private void RunDrawingCompleted()
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
+        private void OnDrawingComplete()
         {
-            DrawingCompleted?.Invoke();
+            DrawingCompleted?.Invoke(this);
         }
 
         private void GenerateEdgeColliders()
