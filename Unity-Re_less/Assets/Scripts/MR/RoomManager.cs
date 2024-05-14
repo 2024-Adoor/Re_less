@@ -47,6 +47,8 @@ namespace Reless.MR
         /// RoomManager의 인스턴스가 null인 경우 작업을 연기하는 데 사용됩니다.
         /// </summary>
         public static event Action OnMRUKSceneLoaded;
+
+        public static event Action<RoomManager> MRUKSceneLoaded;
         
         /// <summary>
         /// 현재 방의 MRUKRoom 레퍼런스
@@ -202,6 +204,30 @@ namespace Reless.MR
             OffsetPassthroughEffectMeshes();
             
             OnMRUKSceneLoaded?.Invoke();
+            OnMRUKSceneLoaded_();
+        }
+        
+        /// <summary>
+        /// RoomManager 인스턴스가 있으면 (룸이 로드되었으면) 주어진 액션을 실행하고,
+        /// 그렇지 않으면 MRUK 씬 로드 이벤트에 등록해 로드 후에 실행되도록 합니다.
+        /// </summary>
+        /// <param name="action">실행할 액션</param>
+        /// <returns>바로 실행되면 true, 나중에 실행될 것이면 false</returns>
+        public static bool TryInvokeAction(Action<RoomManager> action)
+        {
+            if (Instance is not null)
+            {
+                action(Instance);
+                return true;
+            }
+            
+            MRUKSceneLoaded += action;
+            return false;
+        }
+
+        private void OnMRUKSceneLoaded_()
+        {
+            MRUKSceneLoaded?.Invoke(this);
         }
 
         [Button]
