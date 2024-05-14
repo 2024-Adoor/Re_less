@@ -36,6 +36,7 @@ public class PlayerState : MonoBehaviour
     public bool isCh02JumpUI = false;
     public bool isDisawakeUI_Trigger = false;
     public bool isCh02UI = false;
+    public bool isCh02MonitorUI = false;
 
     // Fade 트리거 관리
     public bool isFadeOut = false; 
@@ -127,6 +128,10 @@ public class PlayerState : MonoBehaviour
         else if(other.gameObject.name == "UI_Ch02Jump_Trigger")
         {
             isCh02JumpUI = true;
+        }
+        else if(other.gameObject.name == "UI_MonitorTrigger")
+        {
+            isCh02MonitorUI = true;
         }
     }
 

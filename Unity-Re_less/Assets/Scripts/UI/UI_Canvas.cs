@@ -44,36 +44,46 @@ public class UI_Canvas : MonoBehaviour
     bool SleepOutClock = false;
     bool WatchUIFin = false;
     bool CrossUIFin = false;
-
         // chatper 02
     bool DoorUIFin = false;
     bool Ch02Tuto2Fin = false;
-    
+    bool SleepOutCat = false;
+    bool SleepOutCactus = false;
+    bool ChFruit01 = false;
+    bool ChFruit02 = false;
+    public bool MonitorOn = false;
+    bool MonitorUIFin = false;
+    bool MonitorCheckFin = false;
+        // chapter 03
+    bool canSleepOutSuji = false;
+    bool isEnterUIFin = false;
+    bool isSujiUIFin = false;
 
     // 여러번 확인을 눌러야 할 때 bool 값 
     bool canWatchUiChange = false;
     int WatchBcount = 0;
     int StartBcount1 = 0;
+    int MonitorBcount = 0;
     
     // 챕터 초반 UI 제어 bool 값
     bool Ch01Fin = false;
+    bool Ch02Fin = false;
+    bool Ch03Fin = false;
 
-    // Chapter 01 Clock
+    // Chapter 01 
     public GameObject Clock;
     public GameObject Clock_Chat;
     Chat_Character _Clock_Chat;
     AniManage Clock_AniManage;
 
-    // Chapter 02 Watch 
+    // Chapter 02  
     public GameObject Watch;
     public GameObject Cat;
     public GameObject Cactus;
+    public GameObject Cactus_Chat;
+    Chat_Character _Cactus_Chat;
     Cat_AniManage Cat_AniManage;
     AniManage Cactus_AniManage;
-
-    // Chapter 03 Monitor Button
-    public GameObject MonitorButton;
-    OnOffMonitor _OnOffMonitor;
 
     // Chapter 03 Suji
     public GameObject SleepingSuji;
@@ -97,21 +107,11 @@ public class UI_Canvas : MonoBehaviour
         UnableRawImage(Ch03_Sleeping);
         UnableRawImage(Ch03_SleepOut);
 
-        // 챕터 1 시작시 UI 창 
-        if(_ChapterControl.CurrentChapter is Chapter.Chapter1)
-        {
-            Chapter01_StartUI();
-        }
         // 챕터 2 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
             Chapter02_StartUI();
         }
-        // 챕터 3 시작시 UI 창 
-        // if(_ChapterControl.CurrentChapter is Chapter.Chapter3)
-        // {
-        //     Chapter03_StartUI();
-        // }
     }
 
     void Update()
@@ -126,17 +126,17 @@ public class UI_Canvas : MonoBehaviour
         {
             _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
         }
-        
-        if(MonitorButton != null)
-        {
-            _OnOffMonitor = MonitorButton.GetComponent<OnOffMonitor>();
-        }
 
         if(Clock_Chat != null)
         {
             _Clock_Chat = Clock_Chat.GetComponent<Chat_Character>();
         }
         
+        if(Cactus_Chat != null)
+        {
+            _Cactus_Chat = Cactus_Chat.GetComponent<Chat_Character>();
+        }
+
         // 카메라의 전방 벡터와 거리를 곱하여 원하는 위치를 계산합니다.
         Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
 
@@ -148,6 +148,14 @@ public class UI_Canvas : MonoBehaviour
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && !Ch01Fin)
         {
             Chapter01_StartUI();
+        }
+        else if(_ChapterControl.CurrentChapter is Chapter.Chapter2 && !Ch02Fin)
+        {
+            Chapter02_StartUI();
+        }
+        else if(_ChapterControl.CurrentChapter is Chapter.Chapter3 && !Ch03Fin)
+        {
+            Chapter03_StartUI();
         }
 
         // 챕터 1 - 점프 튜토리얼 UI (이미지로 처리)
@@ -253,8 +261,6 @@ public class UI_Canvas : MonoBehaviour
             }
         }
 
-
-
         // 챕터 1 - 패스스루로 돌아가지 않고 또 충돌했을 때 
         // if(_ChapterControl.CH02_RespawnCount > 1)
         // {
@@ -275,58 +281,123 @@ public class UI_Canvas : MonoBehaviour
             _PlayerControl.speed = 0f;
 
             // 확인 누르면 실행으로 변경 
-            // 2초 뒤에 UnableRawImage(BackGround) && _PlayerControl.speed = 4.0f
-            Invoke("UnableBack_Ch02Door", 2f);
+            if(_PlayerControl.isBdown)
+            {
+                BackGround.gameObject.SetActive(false);
+                _PlayerControl.speed = 4f;
+                DoorUIFin = true;
+            }
         }
         
         // 챕터 2 - 열매 먹었을 때 UI 변경
         if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
         {
-            if(_PlayerState.FruitCount == 1)
+            if(_PlayerState.FruitCount == 1 && !ChFruit01)
             {
-                // UnableRawImage(fruit_0_2);
-                // EnableRawImage(fruit_1_2);
+                ChangeMessage(fruitText, "1/2");
+                ChFruit01 = true;
             }
-            if(_PlayerState.FruitCount == 2)
+            if(_PlayerState.FruitCount == 2 && !ChFruit02)
             {
-                // UnableRawImage(fruit_1_2);
-                // EnableRawImage(fruit_2_2);
+                ChangeMessage(fruitText, "2/2");
 
-                // 친구에게 가져다주자 UI Invoke 
+                // 친구에게 가져다주자 UI
                 if(!Ch02Tuto2Fin)
                 {
                     // 텍스트 변환
                     BackGround.gameObject.SetActive(true);
                     ChangeMessage(messageText, "열매를 다 모았어!\n친구에게 가져다주자");
 
-                    // 확인 누르면 실행으로 변환
-                    Invoke("UnableBack_Ch02Friend", 3f);
+                    if(_PlayerControl.isBdown)
+                    {
+                        BackGround.gameObject.SetActive(false);
+                        Ch02Tuto2Fin = true;
+                        ChFruit02 = true;
+                    }
                 }
             }
         }
 
-        // 챕터 2 - 열매 전달해줬을 때 UI 변경 (이미지처로 처리)
+        // 챕터 2 - 열매 전달해줬을 때 UI 변경 
         // Cat Cat_AniManage.cs isSleepOut == true
         // Cactus AniManage.cs isSleepOut == true
         Cat_AniManage = Cat.GetComponent<Cat_AniManage>();
         Cactus_AniManage = Cactus.GetComponent<AniManage>();
-        if(Cat_AniManage.isSleepOut)
+        if(Cat_AniManage.isSleepOut && !SleepOutCat)
         {
-            // UnableRawImage(fruit_2_2);
-            // EnableRawImage(fruit_1_2);
+            ChangeMessage(fruitText, "1/1");
 
             UnableRawImage(Ch02_Sleeping);
             EnableRawImage(Ch02_SleepOut_1);
+
+            SleepOutCat = true;
         }
-        if(Cactus_AniManage.isSleepOut)
+        if(Cactus_AniManage.isSleepOut && !SleepOutCactus)
         {
-            // UnableRawImage(fruit_1_2);
+            BackGround_Fruit.gameObject.SetActive(false);
 
             UnableRawImage(Ch02_SleepOut_1);
             EnableRawImage(Ch02_SleepOut_2);
+
+            // 챕터 2 - 선인장 대사 끝났을 때 SleepOut UI 비활성화
+            if(_Cactus_Chat.isClear)
+            {
+                UnableRawImage(Ch02_SleepOut_2);
+                SleepOutCactus = true;
+            }
         }
 
-        // 챕터 3 - 수지랑 열매 닿았을 때 (이미지로 처리)
+        // 챕터 2 - 모니터 켜지는 trigger
+        if(MonitorOn && !MonitorUIFin)
+        {
+            BackGround.gameObject.SetActive(true);
+            _PlayerControl.speed = 0f;
+            ChangeMessage(messageText, "모니터 안을 확인해보자!");
+
+            if(_PlayerControl.isBdown)
+            {
+                BackGround.gameObject.SetActive(false);
+                _PlayerControl.speed = 4f;
+                MonitorUIFin = true;
+            }
+        }
+
+        // 챕터 2 - 모니터 확인 & 마우스가 없다! trigger
+        if(_PlayerState.isCh02MonitorUI && !MonitorCheckFin)
+        {
+            if(_PlayerControl.isBdown)
+            {
+                MonitorBcount ++;
+                _PlayerControl.isBdown = false;
+            }
+
+            if(MonitorBcount == 0)
+            {
+                BackGround.gameObject.SetActive(true);
+                ChangeMessage(messageText, "마우스로 밀어 열매를 드래그해보자!");
+                _PlayerControl.speed = 0f;
+            }
+            else if(MonitorBcount == 1)
+            {
+                ChangeMessage(messageText, "어라? 마우스가 없어!\n여기서 나가서 마우스를 그려오자!");
+                _PlayerControl.speed = 0f;
+            }
+            else if(MonitorBcount == 2)
+            {
+                ChangeMessage(messageText, "양쪽 조이스틱을 눌러 볼을 꼬집자!\n꿈에서 깰 수 있을지 몰라");
+                _PlayerControl.speed = 0f;
+            }
+            else if(MonitorBcount == 3)
+            {
+                BackGround.gameObject.SetActive(false);
+                _PlayerControl.speed = 4f;
+                MonitorCheckFin = true;
+
+                EnableRawImage(Ch03_Sleeping);
+            }
+        }
+
+        // 챕터 3 - 수지랑 열매 닿았을 때
         if(SleepingSuji != null)
         {
             _SleepingSuji = SleepingSuji.GetComponent<SleepingSuji>();
@@ -335,21 +406,35 @@ public class UI_Canvas : MonoBehaviour
         {
             UnableRawImage(Ch03_Sleeping);
             EnableRawImage(Ch03_SleepOut);
+
+            // 2초 딜레이 후 canSleepOutSuji true
+            StartCoroutine(SetCanSleepOutSujiAfterDelay(2.0f));
+        }
+        if(canSleepOutSuji && !isEnterUIFin)
+        {
+            BackGround.gameObject.SetActive(true);
+            ChangeMessage(messageText, "수지에게 열매를 주려면\nenter키를 밟아보자!");
+            
+            if(_PlayerControl.isBdown)
+            {
+                BackGround.gameObject.SetActive(false);
+                isEnterUIFin = true;
+            }
         }
 
-        // 챕터 3 - 수지가 움직일 때, 수지 UI
-        // if(_SujiEndingTest.canMove)
-        // {
-        //     UnableRawImage(Ch03_SleepOut);
-        // 
-        //     // 텍스트 변환
-        //     BackGround.gameObject.SetActive(true);
-        //     ChangeMessage("수지를 따라가자!");
-        // }
-        // else
-        // {
-        //     // BackGround.gameObject.SetActive(false);
-        // }
+        // 챕터 3 - 수지가 움직일 때, 수지를 따라가자 활성화 & 깨운 캐릭터 UI 비활성화
+        if(_SujiEndingTest.canMove)
+        {
+            BackGround.gameObject.SetActive(true);
+            UnableRawImage(Ch03_SleepOut);
+
+            ChangeMessage(messageText, "수지를 따라가자!");
+        }
+        if(_SujiEndingTest.IsReachedEndPoint)
+        {
+            BackGround.gameObject.SetActive(false);
+            UnableRawImage(Ch03_SleepOut);
+        }
 
         // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
         // if(_PlayerState.FruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
@@ -389,6 +474,7 @@ public class UI_Canvas : MonoBehaviour
         {
             BackGround.gameObject.SetActive(false);
             _PlayerControl.speed = 4f;
+
             BackGround_Fruit.gameObject.SetActive(true);
             ChangeMessage(fruitText, "0/1");
             EnableRawImage(Ch01_Sleeping);
@@ -398,16 +484,38 @@ public class UI_Canvas : MonoBehaviour
 
     public void Chapter02_StartUI()
     {
-        // UnableRawImage(Ch01_SleepOut);
+        BackGround.gameObject.SetActive(true);
+        _PlayerControl.speed = 0f;
+        ChangeMessage(messageText, "길을 건너 열매를 찾자!\n(시간을 멈추면 건너기 쉬워질지도?)");
 
-        // 시작하고 1초 뒤에 Chapter_Start render 활성화 -> 3초 뒤 render 비활성화 
+        // 확인 눌렀을 때 비활성화 
+        if(_PlayerControl.isBdown)
+        {
+            BackGround.gameObject.SetActive(false);
+            _PlayerControl.speed = 4f;
+
+            BackGround_Fruit.gameObject.SetActive(true);
+            ChangeMessage(fruitText, "0/2");
+            EnableRawImage(Ch02_Sleeping);
+            Ch02Fin = true;
+        }
     }
 
-    // 챕터 3 시작 = 모니터 켜졌을 때 
     public void Chapter03_StartUI()
     {
-        // UnableRawImage(Ch02_SleepOut_2);
-        // Ch03_Tutorial_2 활성화 후 지우기 
+        BackGround.gameObject.SetActive(true);
+        _PlayerControl.speed = 0f;
+        ChangeMessage(messageText, "마우스로 밀어 열매를 드래그해보자!");
+
+        // 확인 눌렀을 때 비활성화 
+        if(_PlayerControl.isBdown)
+        {
+            BackGround.gameObject.SetActive(false);
+            _PlayerControl.speed = 4f;
+
+            EnableRawImage(Ch03_Sleeping);
+            Ch03Fin = true;
+        }
     }
 
     /**************************************************************************************************/
@@ -430,5 +538,11 @@ public class UI_Canvas : MonoBehaviour
     public void ChangeMessage(TMP_Text TMP_Text, string newMessage)
     {
         TMP_Text.text = newMessage;
+    }
+
+    private IEnumerator SetCanSleepOutSujiAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canSleepOutSuji = true;
     }
 }

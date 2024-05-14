@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Reless;
 
 public class MouseCtrl : MonoBehaviour
 {
     public Transform ScreenObject; 
     public GameObject OnPopup;
+    public GameObject Player;
+    ChapterControl _ChapterControl;
 
     public float maxY = 42.2f; // B 오브젝트의 최대 Y 위치
     public float minY = 31.1f; // B 오브젝트의 최소 Y 위치
@@ -54,11 +57,18 @@ public class MouseCtrl : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            // 플레이어와 충돌할 때만 isKinematic을 활성화
+            // 플레이어와 충돌할 때만 isKinematic을  비활성화
             GetComponent<Rigidbody>().isKinematic = false;
+            if(Player != null)
+            {
+                _ChapterControl = Player.GetComponent<ChapterControl>();
+            }
 
-            // 팝업 비활성화
-            OnPopup.SetActive(false);
+            // 챕터 3일때만 팝업 비활성화
+            if(_ChapterControl.CurrentChapter is Chapter.Chapter3)
+            {
+                OnPopup.SetActive(false);
+            }
         }
     }
     
@@ -66,7 +76,7 @@ public class MouseCtrl : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            // 플레이어와 충돌이 끝났을 때 isKinematic을 비활성화
+            // 플레이어와 충돌이 끝났을 때 isKinematic을 활성화
             GetComponent<Rigidbody>().isKinematic = true;
         }
 }

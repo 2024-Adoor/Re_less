@@ -24,6 +24,7 @@ public class ChapterControl : MonoBehaviour
     [Header("Chapter02 Spawn Objects")]
     public GameObject CH02_OBJ_SpawnOBJ1;
     public GameObject CH02_OBJ_SpawnOBJ2;
+    public GameObject Ch02_Cars;
 
     [Header("?")]
     // UI 트리거용 
@@ -38,7 +39,7 @@ public class ChapterControl : MonoBehaviour
     
     private const float Ch01SpawnDirection = -40;
     private const float Ch02SpawnDirection = 120;
-    private const float Ch03SpawnDirection = 150;
+    private const float Ch03SpawnDirection = 90;
     
     [Header("References")]
     [SerializeField]
@@ -93,7 +94,7 @@ public class ChapterControl : MonoBehaviour
     
     private void SetupChapter02()
     {
-        //SpawnPlayer(SpawnPoint02, 120);
+        SpawnPlayer(SpawnPoint02, Ch02SpawnDirection);
 
         // 앰비언트 라이팅 조정
         roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter2);
@@ -118,10 +119,17 @@ public class ChapterControl : MonoBehaviour
     
     private void SetupChapter03()
     {
-        //SpawnPlayer(SpawnPoint03, 150);
-        
+        SpawnPlayer(SpawnPoint03, Ch03SpawnDirection);
+
         // 앰비언트 라이팅 조정
         roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter3);
+
+        // OBJspawn's SpawnCH02obj.cs -> isSpawn False 
+        SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
+        SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
+        spawnCH02Obj1.isSpawn = false;
+        spawnCH02Obj2.isSpawn = false;
+        Ch02_Cars.SetActive(true);
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch01_Objects);
