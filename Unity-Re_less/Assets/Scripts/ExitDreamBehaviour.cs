@@ -57,7 +57,7 @@ namespace Reless
             
             _roomManager.HidePassthroughEffectMesh = true;
             
-            UnityEngine.SceneManagement.SceneManager.SetActiveScene(SceneManager.GetScene(BuildScene.ExitDream));
+            // UnityEngine.SceneManagement.SceneManager.SetActiveScene(SceneManager.GetScene(BuildScene.ExitDream));
             
             var sppPassthroughParent = new GameObject("SppPassthroughMeshes");
             

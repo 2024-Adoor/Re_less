@@ -33,9 +33,6 @@ namespace Reless.Debug
         private void LoadVRScene() => GameManager.LoadVRScene();
         
         [Button(enabledMode: EButtonEnableMode.Playmode)]
-        private void LoadExitDreamScene() => GameManager.LoadExitDreamScene();
-        
-        [Button(enabledMode: EButtonEnableMode.Playmode)]
         private void EnableAppSW()
         {
             OVRManager.SetSpaceWarp(true);

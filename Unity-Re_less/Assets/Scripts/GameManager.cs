@@ -215,16 +215,6 @@ namespace Reless
             };
             return asyncLoad;
         }
-
-        public static AsyncOperation LoadExitDreamScene()
-        {
-            var asyncLoad = SceneManager.LoadAsync(ExitDream, LoadSceneMode.Additive);
-            asyncLoad.completed += operation =>
-            {
-                Logger.Log("ExitDreamScene Loaded");
-            };
-            return asyncLoad;
-        }
     }
 }
 

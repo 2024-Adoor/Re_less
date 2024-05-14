@@ -9,6 +9,6 @@
         RoomSetup = 1,
         Opening = 2,
         VRRoom = 3,
-        ExitDream = 4,
+        Ending = 4,
     }
 }

@@ -79,7 +79,7 @@ public class GoToPassthrough : MonoBehaviour
 
 		if (loadExitRoomScene && !_loadExitRoomExecuted)
 		{
-			GameManager.LoadExitDreamScene();
+			//GameManager.LoadExitDreamScene();
 			_loadExitRoomExecuted = true;
 		}
 	}
