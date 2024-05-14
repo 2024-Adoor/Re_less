@@ -441,9 +441,6 @@ MonoBehaviour:
     chapter01: {fileID: 5628168206714019189, guid: c149e1965036d184ea8d507727e7ada5, type: 3}
     chapter02: {fileID: 5628168206714019189, guid: 3714028a7366b234daebeea8831d22c6, type: 3}
     chapter03: {fileID: 5628168206714019189, guid: 2dcbfef74eb06eb498dddd78c0c3b0ee, type: 3}
-  polaroidsPrefab: {fileID: 919132149155446097, guid: f044c82d58068614ba13f24bc38cf6ae, type: 3}
-  villainPrefab: {fileID: 9062594991586960050, guid: fda144da5cb2c164ea4f5eb6dd14ecc0, type: 3}
-  petalParticle: {fileID: 5233876907027552093, guid: 1c9399c7724768e4188f0031faec1cf2, type: 3}
 --- !u!4 &77264187
 Transform:
   m_ObjectHideFlags: 0
@@ -11702,8 +11699,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2088237245}
   - component: {fileID: 2088237246}
+  - component: {fileID: 2088237247}
   m_Layer: 0
-  m_Name: EndingBootstrapper
+  m_Name: Ending
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11736,6 +11734,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755b5f17ea7a42029268e7f314b67009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2088237247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088237244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2015954e36488e9487235ba21bd67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  polaroidsPrefab: {fileID: 919132149155446097, guid: f044c82d58068614ba13f24bc38cf6ae, type: 3}
+  villainPrefab: {fileID: 919132149155446097, guid: 6c6e99d67d56dbf479ffd3516847b090, type: 3}
 --- !u!1 &2089973075
 GameObject:
   m_ObjectHideFlags: 0
