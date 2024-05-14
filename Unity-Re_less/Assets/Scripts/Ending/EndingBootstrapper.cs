@@ -17,7 +17,7 @@ namespace Reless.Ending
         
         private void Awake()
         {
-            if (GameManager.CurrentPhase is GamePhase.Ending) BootstrapEnding();
+            OnEnding(GameManager.CurrentPhase);
             GameManager.PhaseChanged += OnEnding;
         }
         
