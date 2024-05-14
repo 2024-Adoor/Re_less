@@ -83,7 +83,7 @@ namespace Reless.Game
 
             transform.localScale = Vector3.one;
 
-            _mainBehaviour.CheckAchieveEnterCondition();
+            _mainBehaviour.AchieveEnterCondition();
             
             // 스냅되면 중력을 꺼야 합니다.
             GetComponent<Rigidbody>().useGravity = false;

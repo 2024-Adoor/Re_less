@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
@@ -184,33 +185,35 @@ namespace Reless
         {
             pen.gameObject.SetActive(true);
         }
-        
-        /// <summary>
-        /// 모든 얻은 오브젝트가 스냅되었는지 확인합니다.
-        /// </summary>
-        public void CheckAchieveEnterCondition()
-        {
-            if (ObtainingObjects.TrueForAll(obtainingObj => obtainingObj.IsSnapped))
-            {
-                AchieveEnterCondition();
-            }
-        }
 
+        /// <summary>
+        /// 꿈으로 들어가는 조건을 달성합니다.
+        /// </summary>
         [Button]
         public void AchieveEnterCondition()
         {
-            AchieveEnterCondition(GameManager.CurrentChapter switch
-            { 
-                Chapter1 => 1, 
-                Chapter2 => 2,
-                Chapter3 => 3,
-                _ => 0
-            });
-        }
-        
-        public void AchieveEnterCondition(int chapter)
-        {
             EnableCloseEyesToSleepPose();
+
+            // 현재 기획: 바로 자동으로 꿈으로 들어가기
+            EnterDream();
+        }
+
+        /// <summary>
+        /// 꿈 속으로 들어갑니다.
+        /// </summary>
+        private void EnterDream()
+        {
+            StopCoroutine(EnteringDream());
+
+            IEnumerator EnteringDream()
+            {
+                // TODO: 
+                // 방 커지기
+                yield return null;
+            
+                // VR Room 로드
+                GameManager.LoadVRScene();
+            }
         }
     }
 }
