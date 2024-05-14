@@ -15,10 +15,26 @@ namespace Reless.Debug
         // ReSharper disable Unity.PerformanceAnalysis
         [Conditional("DEBUG")]
         public static void Log(string message) => UnityEngine.Debug.Log(message);
+        
+        // ReSharper disable Unity.PerformanceAnalysis
+        [Conditional("DEBUG")]
+        public static void Log(object message) => UnityEngine.Debug.Log(message);
+        
+        // ReSharper disable Unity.PerformanceAnalysis
+        [Conditional("DEBUG")]
+        public static void Log(string message, Object context) => UnityEngine.Debug.Log(message, context);
 
         // ReSharper disable Unity.PerformanceAnalysis
         [Conditional("DEBUG")]
         public static void LogWarning(string message) => UnityEngine.Debug.LogWarning(message);
+        
+        // ReSharper disable Unity.PerformanceAnalysis
+        [Conditional("DEBUG")]
+        public static void LogWarning(object message) => UnityEngine.Debug.LogWarning(message);
+        
+        // ReSharper disable Unity.PerformanceAnalysis
+        [Conditional("DEBUG")]
+        public static void LogWarning(string message, Object context) => UnityEngine.Debug.LogWarning(message, context);
 
         // ReSharper disable Unity.PerformanceAnalysis
         [Conditional("DEBUG")]
@@ -26,15 +42,11 @@ namespace Reless.Debug
 
         // ReSharper disable Unity.PerformanceAnalysis
         [Conditional("DEBUG")]
-        public static void Log(object message) => UnityEngine.Debug.Log(message);
-
-        // ReSharper disable Unity.PerformanceAnalysis
-        [Conditional("DEBUG")]
-        public static void LogWarning(object message) => UnityEngine.Debug.LogWarning(message);
-
-        // ReSharper disable Unity.PerformanceAnalysis
-        [Conditional("DEBUG")]
         public static void LogError(object message) => UnityEngine.Debug.LogError(message);
+        
+        // ReSharper disable Unity.PerformanceAnalysis
+        [Conditional("DEBUG")]
+        public static void LogError(string message, Object context) => UnityEngine.Debug.LogError(message, context);
 
         // ReSharper disable Unity.PerformanceAnalysis
         [Conditional("DEBUG")]
