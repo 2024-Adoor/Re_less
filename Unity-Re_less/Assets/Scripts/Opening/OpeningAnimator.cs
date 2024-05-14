@@ -30,7 +30,7 @@ namespace Reless.Opening
         /// OpeningBehaviour 레퍼런스
         /// </summary>
         [CanBeNull] 
-        private OpeningBehaviour _openingBehaviour;
+        private OpeningBootstrapper _openingBootstrapper;
         
         /// <summary>
         /// 벽이 열릴 때의 애니메이션의 커브
@@ -59,11 +59,11 @@ namespace Reless.Opening
 
         private void Start()
         {
-            _openingBehaviour = FindAnyObjectByType<OpeningBehaviour>();
+            _openingBootstrapper = FindAnyObjectByType<OpeningBootstrapper>();
 
             if (SceneManager.ActiveScene is not BuildScene.Opening)
             {
-                Assert.IsNotNull(_openingBehaviour, message: "Opening 씬에서 직접 실행한 것이 아닌 한 OpeningBehaviour는 null이 아니어야 합니다.");
+                Assert.IsNotNull(_openingBootstrapper, message: "Opening 씬에서 직접 실행한 것이 아닌 한 OpeningBehaviour는 null이 아니어야 합니다.");
                 
                 // 씬 시작 시 오프닝 씬 비활성화 보장
                 DeactivateAllScenes();
@@ -80,7 +80,7 @@ namespace Reless.Opening
             DeactivateAllScenes();
 
             // 최초 벽 열림
-            yield return _openingBehaviour?.RotatingOpeningWall(wallOpeningFirst);
+            yield return _openingBootstrapper?.RotatingOpeningWall(wallOpeningFirst);
             
             // 오프닝 씬 반복
             foreach (var scene in scenes)
@@ -92,7 +92,7 @@ namespace Reless.Opening
                 subtitle.text = scene.subtitle;
                 
                 // 벽을 넘깁니다.
-                yield return _openingBehaviour switch { not null => _openingBehaviour.RotatingOpeningWall(wallOpening),
+                yield return _openingBootstrapper switch { not null => _openingBootstrapper.RotatingOpeningWall(wallOpening),
                     
                     // OpeningBehaviour가 null이라면 테스트용으로 Opening 씬에서 직접 실행한 것입니다. 벽 넘기기 시간을 시뮬레이션합니다.
                     null => new WaitForSeconds(wallOpening.keys.Last().time)
@@ -102,7 +102,7 @@ namespace Reless.Opening
             }
             
             // 벽 닫힘
-            yield return _openingBehaviour?.RotatingOpeningWall(wallClosing);
+            yield return _openingBootstrapper?.RotatingOpeningWall(wallClosing);
             DeactivateAllScenes();
         }
 

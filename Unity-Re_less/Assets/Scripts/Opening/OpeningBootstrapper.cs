@@ -12,9 +12,9 @@ using SceneManager = Reless.Util.SceneManager;
 namespace Reless.Opening
 {
     /// <summary>
-    /// 게임 오프닝을 담당합니다.
+    /// 게임 오프닝을 불러옵니다.
     /// </summary>
-    public class OpeningBehaviour : MonoBehaviour
+    public class OpeningBootstrapper : MonoBehaviour
     {
         /// <summary>
         /// 오프닝이 진행되는 벽
@@ -39,6 +39,7 @@ namespace Reless.Opening
 
         private void Awake()
         {
+            OnOpening(GameManager.CurrentPhase);
             GameManager.PhaseChanged += OnOpening;
         }
 
@@ -51,21 +52,21 @@ namespace Reless.Opening
         {
             if (phase is not GamePhase.Opening) return;
             
-            StartOpening();
+            BootstrapOpening();
         }
 
         /// <summary>
         /// 오프닝을 시작합니다.
         /// </summary>
-        private void StartOpening()
+        private void BootstrapOpening()
         {
             if (IsInOpening)
             {
-                Logger.LogWarning($"{nameof(OpeningBehaviour)}: already in opening");
+                Logger.LogWarning($"{nameof(OpeningBootstrapper)}: already in opening");
                 return;
             }
             IsInOpening = true;
-            Logger.Log($"{nameof(OpeningBehaviour)}: StartOpening");
+            Logger.Log($"{nameof(OpeningBootstrapper)}: BootstrapOpening");
             
             // 오프닝 벽의 피벗을 설정합니다.
             SetupOpeningWallPivot();
@@ -74,20 +75,32 @@ namespace Reless.Opening
 
             IEnumerator StartRoutine()
             {
-                // 오프닝 씬 로드
-                yield return LoadingOpeningScene();
+                // 오프닝 씬을 비동기로 로드하고 바로 활성화하지 않습니다.
+                Logger.Log($"{nameof(OpeningBootstrapper)}: loading Opening scene...");
+                var asyncLoad = SceneManager.LoadAsync(BuildScene.Opening, LoadSceneMode.Additive);
+                asyncLoad.allowSceneActivation = false;
+            
+                // 1초 기다리고 패스스루를 어둡게 합니다.
+                yield return new WaitForSeconds(1f);
+                yield return DarkenPassthrough();
+            
+                // 오프닝 씬을 활성화합니다.
+                asyncLoad.allowSceneActivation = true;
+                Logger.Log($"{nameof(OpeningBootstrapper)}: Opening scene loaded");
+                yield return null;
                 
-                _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
-                
+                // 룸을 오프닝 씬이 보여지도록 변환합니다.
                 TransformToOpeningScene();
-
-                yield return new WaitForSeconds(3);
-                yield return _openingAnimator.Play();
-                yield return new WaitForSeconds(3);
                 
-                // 오프닝 씬 언로드
+                // 2초 기다리고 오프닝 애니메이션을 재생합니다.
+                yield return new WaitForSeconds(2);
+                _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
+                yield return _openingAnimator.Play();
+                
+                // 애니메이션이 끝나고 3초 기다리고 오프닝 씬을 언로드합니다.
+                yield return new WaitForSeconds(3);
                 SceneManager.UnloadAsync(BuildScene.Opening);
-                Logger.Log($"{nameof(OpeningBehaviour)}: Opening scene unloaded");
+                Logger.Log($"{nameof(OpeningBootstrapper)}: Opening scene unloaded");
                 
                 // 책을 만지면 ~~ 책을 펼치면 등등 (생략)
                 
@@ -108,7 +121,7 @@ namespace Reless.Opening
                 GameManager.LoadMainScene();
                 
                 // 오프닝에서 했던 일을 되돌립니다.
-                RevertTransform();
+                RoomManager.Instance.RevertRoomTransform();
                 ResetTransformOpeningWall();
                 RoomManager.Instance.HidePassthroughEffectMesh = false;
                 RoomManager.Instance.DestroyVirtualRoomEffectMeshes();
@@ -116,26 +129,6 @@ namespace Reless.Opening
                 
                 IsInOpening = false;
             }
-        }
-        
-        /// <summary>
-        /// 오프닝 씬을 로드합니다.
-        /// </summary>
-        private IEnumerator LoadingOpeningScene()
-        {
-            Logger.Log($"{nameof(OpeningBehaviour)}: loading Opening scene...");
-            
-            var asyncLoad = SceneManager.LoadAsync(BuildScene.Opening, LoadSceneMode.Additive);
-            asyncLoad.allowSceneActivation = false;
-            
-            yield return new WaitForSeconds(1f);
-            
-            yield return DarkenPassthrough();
-            
-            asyncLoad.allowSceneActivation = true;
-            Logger.Log($"{nameof(OpeningBehaviour)}: Opening scene loaded");
-
-            yield return null;
         }
         
         /// <summary>
@@ -164,20 +157,6 @@ namespace Reless.Opening
         }
 
         /// <summary>
-        /// 공간을 원래대로 되돌립니다.
-        /// </summary>
-        private void RevertTransform()
-        {
-            Assert.IsNotNull(RoomManager.Instance);
-            
-            RoomManager.Instance.Room.transform.position = Vector3.zero;
-            RoomManager.Instance.Room.transform.rotation = Quaternion.identity;
-            
-            GameManager.CameraRig.trackingSpace.position = Vector3.zero;
-            GameManager.CameraRig.trackingSpace.rotation = Quaternion.identity;
-        }
-        
-        /// <summary>
         /// 오프닝 벽의 피벗을 설정합니다.
         /// </summary>
         private void SetupOpeningWallPivot()
@@ -193,9 +172,12 @@ namespace Reless.Opening
                     localPosition = new Vector3((RoomManager.Instance.KeyWall.PlaneRect?.width ?? 0) / 2, 0, 0)
                 }
             };
-            Logger.Log($"{nameof(OpeningBehaviour)}: set up opening wall pivot: <b>{_pivot.transform.position}</b>");
+            Logger.Log($"{nameof(OpeningBootstrapper)}: set up opening wall pivot: <b>{_pivot.transform.position}</b>");
         }
 
+        /// <summary>
+        /// 패스스루를 점점 어둡게 합니다.
+        /// </summary>
         private IEnumerator DarkenPassthrough()
         {
             const float duration = 4f;
