@@ -19,7 +19,6 @@ public class UI_Canvas : MonoBehaviour
 
     // TextMeshPro Text 
     public TMP_Text messageText;
-    bool isTextChange = false;
 
     // BackGround RawImage
     public RawImage BackGround;
@@ -163,39 +162,39 @@ public class UI_Canvas : MonoBehaviour
         transform.rotation = cameraTransform.rotation;
 
 
-        // 챕터 1 - 점프 튜토리얼 UI 
+        // 챕터 1 - 점프 튜토리얼 UI (이미지로 처리)
         if(_PlayerState.isJumpUI && !JumpUIFin)
         {
             EnableRawImage(Ch01_Tutorial_Jump);
 
             _PlayerControl.speed = 0f;
+
+            // 확인 누르면 실행으로 변경 
             // 3초 뒤에 UnableRawImage(Ch01_Tutorial_Jump) && _PlayerControl.speed = 4.0f
             Invoke("Ch01Jump_Speed", 3f);
         }
 
-        // 챕터 1 - 열매 전달 튜토리얼 UI 
+        // 챕터 1 - 열매 전달 튜토리얼 UI (텍스트 변환으로 처리)
         if(_PlayerState.isFriendUI && !FriendUIFin)
         {
-            if(!isTextChange)
-            {
-                BackGround.gameObject.SetActive(true);
-                ChangeMessage("친구에게 가까이 가서\n획득한 열매를 전해주자!");
-                isTextChange = true;
-            }
-
+            BackGround.gameObject.SetActive(true);
+            ChangeMessage("친구에게 가까이 가서\n획득한 열매를 전해주자!");
+            
             _PlayerControl.speed = 0f;
+
+            // 확인 누르면 실행으로 변경 
             // 2초 뒤에 UnableRawImage(BackGround) && _PlayerControl.speed = 4.0f
             Invoke("UnableBack_Ch01Friend", 2f);
         }
 
-        // 챕터 1 - 열매 먹었을 때 UI 변경
+        // 챕터 1 - 열매 먹었을 때 UI 변경 (이미지로 처리)
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && _PlayerState.FruitCount == 1)
         {
             UnableRawImage(fruit_0_1);
             EnableRawImage(fruit_1_1);
         }
 
-        // 챕터 1 - 열매 전달해줬을 때 UI 변경 
+        // 챕터 1 - 열매 전달해줬을 때 UI 변경 (이미지로 처리)
         // Clock AniManage.cs isSleepOut == true
         Clock_AniManage = Clock.GetComponent<AniManage>();
         if(Clock_AniManage.isSleepOut)
@@ -205,30 +204,31 @@ public class UI_Canvas : MonoBehaviour
             EnableRawImage(Ch01_SleepOut);
         }
 
-        // 챕터 2 - 리스폰 했을 때, 시계  UI 
+        // 챕터 2 - 리스폰 했을 때, 시계  UI (텍스트 변환으로 처리)
         if(_ChapterControl.CH02_RespawnCount > 0 && !WatchUIFin)
         {
-            //Enable_BackText();
+            BackGround.gameObject.SetActive(true);
             ChangeMessage("시계를 부숴볼까?");
 
             // 시계가 부숴졌을 때 UI 삭제 
             if(Watch == null)
             {
+                BackGround.gameObject.SetActive(false);
                 //Unable_BackText();
                 WatchUIFin = true;
             }
         }
 
-        // 챕터 2 - 문 앞에 왔을 때, 문 UI
+        // 챕터 2 - 문 앞에 왔을 때, 문 UI (텍스트 변환으로 처리)
         if(_PlayerState.isDoorUI && !DoorUIFin)
         {
-            // BackGround 띄우고 텍스트 변경
-            //Enable_BackText();
+            BackGround.gameObject.SetActive(true);
             ChangeMessage("세번째 손가락으로 버튼을 눌러\n문을 당겨보자!");
             _PlayerControl.speed = 0f;
 
+            // 확인 누르면 실행으로 변경 
             // 2초 뒤에 UnableRawImage(BackGround) && _PlayerControl.speed = 4.0f
-            //Invoke("UnableBack_Speed", 2f);
+            Invoke("UnableBack_Ch02Door", 2f);
         }
         
         // 챕터 2 - 열매 먹었을 때 UI 변경
@@ -247,13 +247,17 @@ public class UI_Canvas : MonoBehaviour
                 // 친구에게 가져다주자 UI Invoke 
                 if(!Ch02Tuto2Fin)
                 {
-                    EnableRawImage(Ch02_Tutorial_2);
-                    Invoke("UnableCh02Tutorial2", 3f);
+                    // 텍스트 변환
+                    BackGround.gameObject.SetActive(true);
+                    ChangeMessage("열매를 다 모았어!\n친구에게 가져다주자");
+
+                    // 확인 누르면 실행으로 변환
+                    Invoke("UnableBack_Ch02Friend", 3f);
                 }
             }
         }
 
-        // 챕터 2 - 열매 전달해줬을 때 UI 변경
+        // 챕터 2 - 열매 전달해줬을 때 UI 변경 (이미지처로 처리)
         // Cat Cat_AniManage.cs isSleepOut == true
         // Cactus AniManage.cs isSleepOut == true
         Cat_AniManage = Cat.GetComponent<Cat_AniManage>();
@@ -274,7 +278,7 @@ public class UI_Canvas : MonoBehaviour
             EnableRawImage(Ch02_SleepOut_2);
         }
 
-        // 챕터 3 - 수지랑 열매 닿았을 때
+        // 챕터 3 - 수지랑 열매 닿았을 때 (이미지로 처리)
         if(SleepingSuji != null)
         {
             _SleepingSuji = SleepingSuji.GetComponent<SleepingSuji>();
@@ -289,22 +293,26 @@ public class UI_Canvas : MonoBehaviour
         if(_SujiEndingTest.canMove)
         {
             UnableRawImage(Ch03_SleepOut);
-            //Enable_BackText();
+
+            // 텍스트 변환
+            BackGround.gameObject.SetActive(true);
             ChangeMessage("수지를 따라가자!");
         }
         else
         {
-            //Unable_BackText();
+            BackGround.gameObject.SetActive(false);
         }
 
         // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
         if(_PlayerState.FruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
         {
-            EnableRawImage(CantAwake);
+            // 텍스트 변환
+            BackGround.gameObject.SetActive(true);
+            ChangeMessage("열매 없이는\n친구를 깨울 수 없어~");
         }
         else
         {
-            UnableRawImage(CantAwake);
+            BackGround.gameObject.SetActive(false);
         }
     }
 
@@ -378,6 +386,19 @@ public class UI_Canvas : MonoBehaviour
         FriendUIFin = true;
     }
 
+    void UnableBack_Ch02Door()
+    {
+        BackGround.gameObject.SetActive(false);
+        _PlayerControl.speed = 4f;
+        DoorUIFin = true;
+    }
+
+    void UnableBack_Ch02Friend()
+    {
+        BackGround.gameObject.SetActive(false);
+        Ch02Tuto2Fin = true;
+    }
+
     void UnableCh01Tutorial2()
     {
         UnableRawImage(Ch01_Tutorial_2);
@@ -435,14 +456,6 @@ public class UI_Canvas : MonoBehaviour
         _PlayerControl.speed = 4.0f;
         JumpUIFin = true;
     }
-
-    // BackGround 비활성화 & 플레이어 스피드 초기화
-    // void UnableBack_Speed()
-    // {
-    //     Unable_BackText();
-    //     _PlayerControl.speed = 4.0f;
-    //     DoorUIFin = true;
-    // }
 
     /**************************************************************************************************/
 
