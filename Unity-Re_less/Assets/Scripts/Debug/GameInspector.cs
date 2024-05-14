@@ -61,10 +61,12 @@ namespace Reless.Debug
                 Instantiate(this, parent: this.transform.parent)
                     // GameInspector는 Debug 오브젝트 하위의 가장 앞에 위치한다고 가정합니다.
                     .transform.SetAsFirstSibling();
+
                 
                 // dontDestroyInstance를 씬이 바뀌어도 파괴되지 않도록 설정합니다.
                 // 이렇게 하면 플레이 전 에디터 계층구조에서 선택했던 GameInspector 오브젝트가 씬이 바뀌어도 선택 해제되지 않으므로 다시 선택할 필요가 없습니다.
-                DontDestroyOnLoad(dontDestroyInstance);
+                transform.SetParent(null); // DontDestroyOnLoad로 만들기 위해 부모를 해제합니다.
+                DontDestroyOnLoad(this);
             }
         }
 
