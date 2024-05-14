@@ -146,31 +146,21 @@ namespace Reless.Opening
             var roomManager = RoomManager.Instance;
             Assert.IsNotNull(roomManager);
             
-            var room = roomManager.Room.transform;
-            
-            // 변환 전 룸에 상대적인 트래킹 스페이스 저장
-            var initialTrackingSpacePosition = room.InverseTransformPoint(GameManager.CameraRig.trackingSpace.position);
-            var initialTrackingSpaceRotation = Quaternion.Inverse(room.rotation) * GameManager.CameraRig.trackingSpace.rotation;
-            
-            // 방을 기준이 되는 오프닝 벽의 -forward가 월드 forward를 바라보도록 회전
-            var targetRotation = Quaternion.LookRotation(-roomManager.KeyWall.transform.forward, Vector3.up);
-            room.rotation *= Quaternion.Inverse(targetRotation);
-
-            // 기준이 되는 오프닝 벽의 하단이 월드의 중앙에 오도록 룸을 이동
-            Vector3 targetPosition; 
+            // 오프닝 벽의 중앙에서 하단까지의 길이
+            float centerToBottom = default;
+            try
             {
-                // 오프닝 벽의 중앙에서 하단까지의 길이
-                float centerToBottom = default;
-                try { centerToBottom = (roomManager.KeyWall.PlaneRect?.height ?? throw new Exception()) / 2; } catch (Exception e) { Logger.LogException(e); }
-                
-                // 하단으로 오프셋
-                targetPosition = roomManager.KeyWall.transform.position - new Vector3(0, centerToBottom, 0);
+                centerToBottom = (roomManager.KeyWall.PlaneRect?.height ?? throw new Exception()) / 2;
             }
-            room.position -= targetPosition;
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
+                
+            var openingWallBottom = roomManager.KeyWall.transform.position - new Vector3(0, centerToBottom, 0);
+            var openingWallBackward = -roomManager.KeyWall.transform.forward;
             
-            // 트래킹 스페이스를 변환된 룸에 대해서 변환
-            GameManager.CameraRig.trackingSpace.position = room.TransformPoint(initialTrackingSpacePosition);
-            GameManager.CameraRig.trackingSpace.rotation = room.rotation * initialTrackingSpaceRotation;
+            roomManager.SetRoomTransform(newOrigin: openingWallBottom, newForward: openingWallBackward);
         }
 
         /// <summary>

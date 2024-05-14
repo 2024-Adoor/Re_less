@@ -162,6 +162,7 @@ namespace Reless.MR
             // 생성된 방을 자식으로 설정합니다.
             Room = MRUK.Instance.GetCurrentRoom();
             Room.transform.parent = this.transform;
+            Room.transform.hasChanged = false;
             
             // 키 월을 찾습니다.
             _keyWall = Room.GetKeyWall(out _);
@@ -312,6 +313,61 @@ namespace Reless.MR
              
             return Vector3.Distance(position, doorPosition);
         }
+        
+        /// <summary>
+        /// 룸의 트랜스폼을 대상 위치와 방향이 월드 원점과 월드 forward가 되도록 변환합니다.
+        /// </summary>
+        /// <param name="newOrigin">원점이 될 위치</param>
+        /// <param name="newForward">앞쪽이 될 방향</param>
+        /// <remarks>카메라는 룸의 하위 계층이 아니므로 트래킹 스페이스를 같이 변환하여 룸이 변하는 것처럼 보이지 않도록 합니다.</remarks>
+        public void SetRoomTransform(Vector3 newOrigin, Vector3 newForward)
+        {
+            // newOrigin 및 newforward는 룸의 트랜스폼에 아무 변환이 없는 상태에서의 상대적인 위치여야 하므로,
+            // 트랜스폼이 변경된 상태로 이 함수가 호출되었다면 먼저 원래대로 되돌립니다.
+            if (Room.transform.hasChanged)
+            {
+                Logger.Log($"{nameof(RoomManager)}.{nameof(SetRoomTransform)}: " +
+                           $"Room transform has changed. Reverting to original transform before setting new transform.");
+                
+                newOrigin = Room.transform.InverseTransformPoint(newOrigin);
+                newForward = Room.transform.InverseTransformDirection(newForward);
+                RevertRoomTransform();
+                newOrigin = Room.transform.TransformPoint(newOrigin);
+                newForward = Room.transform.TransformDirection(newForward);
+            }
+            
+            Logger.Log($"{nameof(RoomManager)}: Set room transform to <b>{newOrigin}</b> becoming origin and <b>{newForward}</b> becoming forward.");
+            
+            // 변환 전 룸에 상대적인 트래킹 스페이스 저장
+            var initialTrackingSpacePosition = Room.transform.InverseTransformPoint(GameManager.CameraRig.trackingSpace.position);
+            var initialTrackingSpaceRotation = Quaternion.Inverse(Room.transform.rotation) * GameManager.CameraRig.trackingSpace.rotation;
+            
+            // 룸을 newForward로 회전
+            var targetRotation = Quaternion.LookRotation(newForward);
+            Room.transform.rotation *= Quaternion.Inverse(targetRotation);
+            
+            // 룸을 newOrigin이 원점이 되도록 이동
+            Room.transform.position -= Room.transform.TransformPoint(newOrigin);
+            
+            // 트래킹 스페이스를 변환된 룸에 대해서 변환
+            GameManager.CameraRig.trackingSpace.position = Room.transform.TransformPoint(initialTrackingSpacePosition);
+            GameManager.CameraRig.trackingSpace.rotation = Room.transform.rotation * initialTrackingSpaceRotation;
+        }
+        
+        /// <summary>
+        /// 룸의 트랜스폼을 원래대로 되돌립니다.
+        /// </summary>
+        public void RevertRoomTransform()
+        {
+            Room.transform.position = Vector3.zero;
+            Room.transform.rotation = Quaternion.identity;
+            
+            GameManager.CameraRig.trackingSpace.position = Vector3.zero;
+            GameManager.CameraRig.trackingSpace.rotation = Quaternion.identity;
+            
+            Room.transform.hasChanged = false;
+        }
+            
 
         private void OnValidate()
         {
