@@ -171,6 +171,23 @@ public class ChapterControl : MonoBehaviour
         transform.rotation = newRotation;
     }
 
+    /// <summary>
+    /// 꿈에서 나갑니다.
+    /// </summary>
+    public void ExitDream()
+    {
+        // 단계 변경
+        GameManager.CurrentPhase = CurrentChapter switch
+        {
+            Chapter1 => GamePhase.Chapter2,
+            Chapter2 => GamePhase.Chapter3,
+            Chapter3 => GamePhase.Ending, //참고: 3챕터는 정상 진행 시 이 함수가 호출되기 전에 Ending으로 이미 변경됩니다.
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        GameManager.LoadMainScene();
+    }
+
     // CH02_OBJ와 충돌시 리스폰
     void OnCollisionEnter(Collision collision)
     {

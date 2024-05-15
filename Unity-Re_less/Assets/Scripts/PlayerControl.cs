@@ -23,6 +23,7 @@ namespace Reless
 
         private InputAction _moveAction;
         private InputAction _jumpAction;
+        private InputAction _exitAction;
 
         /// <summary>
         /// 이동 속도
@@ -36,6 +37,11 @@ namespace Reless
         
         private bool _readyToSnapTurn;
         
+        /// <summary>
+        /// 꿈에서 나가기 액션을 활성화합니다.
+        /// </summary>
+        public void EnableExitAction() => _exitAction.Enable();
+        
         private void Awake()
         {
             _cameraRig = GameManager.CameraRig; //GetComponentInChildren<OVRCameraRig>();
@@ -47,12 +53,19 @@ namespace Reless
         {
             _moveAction = GameManager.InputActions.VR.Move;
             _jumpAction = GameManager.InputActions.VR.Jump;
+            _exitAction = GameManager.InputActions.VR.Exit;
+            
             _jumpAction.performed += _ =>
             {
                 if (!hasJumped) _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 hasJumped = true;
             };
+            _exitAction.performed += _ => FindAnyObjectByType<ChapterControl>().ExitDream();
             
+            // 꿈에서 나가는 액션은 추후 조건 달성 시 활성화될 것입니다.
+            _exitAction.Disable();
+            
+            // 시작 시 중심을 재조정합니다.
             Recenter();
         }
         
@@ -117,45 +130,6 @@ namespace Reless
             _rigidbody.MovePosition(_rigidbody.position + moveDirection * (speed * Time.fixedDeltaTime));
         }
         
-        /// <summary>
-        /// 스틱으로 바로 회전하기
-        /// </summary>
-        private void SnapTurn()
-        {
-            if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
-            {
-                if (!_readyToSnapTurn) return;
-                
-                _readyToSnapTurn = false;
-                
-                // rotationAngle만큼 왼쪽으로 회전합니다.
-                transform.RotateAround(transform.position, Vector3.up, -snapTurnAngle);
-            }
-            else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
-            {
-                if (!_readyToSnapTurn) return;
-                
-                _readyToSnapTurn = false;
-                
-                // rotationAngle만큼 오른쪽으로 회전합니다.
-                transform.RotateAround(transform.position, Vector3.up, snapTurnAngle);
-            }
-            else
-            {
-                _readyToSnapTurn = true;
-            }
-        }
-
-        private void Jump()
-        {
-            // A 버튼 점프
-            if (OVRInput.GetDown(OVRInput.Button.One) && !hasJumped)
-            {
-                _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                hasJumped = true;
-            }
-        }
-
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.CompareTag("Untagged"))
