@@ -80,6 +80,8 @@ namespace Reless.MR
         [SerializeField]
         private EffectMesh edgeEffect;
         
+        public GameObject PopupBookTable { get; set; }
+        
         public ReadOnlyCollection<GameObject> PassthroughEffectMeshes => _passthroughEffectMeshes.AsReadOnly();
         private readonly List<GameObject> _passthroughEffectMeshes = new();
 

@@ -59,6 +59,9 @@ namespace Reless.MR
 
         [SerializeField]
         private List<GameObject> wallHintPrefabs;
+
+        [SerializeField] 
+        private GameObject popupBookTable;
         
         /// <summary>
         /// RoomManager 레퍼런스
@@ -180,8 +183,16 @@ namespace Reless.MR
                 return;
             }
             
-            var book = Spawn(popupBookPrefab, table);
+            RoomManager.PopupBookTable = Instantiate(popupBookTable, parent: table.transform);
+            Destroy(popupBookTable);
             
+            RoomManager.PopupBookTable.transform.localRotation = Quaternion.Euler(0, -90, -90);
+            var mesh = RoomManager.PopupBookTable.transform.GetChild(0);
+            float bottomBound = mesh.GetComponent<Renderer>().bounds.min.y;
+            mesh.transform.position -= new Vector3(0, bottomBound, 0);
+            RoomManager.PopupBookTable.SetActive(false);
+            
+            var book = Spawn(popupBookPrefab, table);
             GameManager.Instance.PopupBook = book.GetComponent<PopupBook>();
             
             // 위치: 위
