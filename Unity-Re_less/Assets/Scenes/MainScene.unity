@@ -11698,7 +11698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2088237245}
-  - component: {fileID: 2088237246}
+  - component: {fileID: 2088237248}
   - component: {fileID: 2088237247}
   m_Layer: 0
   m_Name: Ending
@@ -11722,18 +11722,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2088237246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088237244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 755b5f17ea7a42029268e7f314b67009, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2088237247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11748,6 +11736,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   polaroidsPrefab: {fileID: 919132149155446097, guid: f044c82d58068614ba13f24bc38cf6ae, type: 3}
   villainPrefab: {fileID: 919132149155446097, guid: 6c6e99d67d56dbf479ffd3516847b090, type: 3}
+--- !u!114 &2088237248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088237244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6ecc2fc8fc4a61a48f89abc1c13505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2089973075
 GameObject:
   m_ObjectHideFlags: 0
