@@ -51,33 +51,30 @@ namespace Reless.Ending
 
             IEnumerator UpdatePassthrough()
             {
-                // 플레이어와 가장 가까운 문 사이의 거리를 계산합니다.
-                var distance = roomManager.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out var doorPosition);
-            
-                if (distance != 0)
+                // 플레이어가 방 안에 있는 동안
+                while (roomManager.Room.IsPositionInRoom(GameManager.EyeAnchor.position))
                 {
-                    // 플레이어가 문과 가까운 정도를 계산합니다.
-                    float nearness = 1f - Mathf.Clamp01(distance / _initialPlayerToDoorDistance);
-                
-                    const float initialBrightness = -0.5f;
-                    
-                    // 플레이어가 문에 가까워질수록 패스스루가 밝아집니다.
-                    roomPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(initialBrightness, 0, nearness));
-                    
+                    // 플레이어와 가장 가까운 문 사이의 거리를 계산합니다.
+                    var distance = roomManager.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out var doorPosition);
+
+                    if (distance != 0)
+                    {
+                        // 플레이어가 문과 가까운 정도를 계산합니다.
+                        float nearness = 1f - Mathf.Clamp01(distance / _initialPlayerToDoorDistance);
+
+                        const float initialBrightness = -0.5f;
+
+                        // 플레이어가 문에 가까워질수록 패스스루가 밝아집니다.
+                        roomPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(initialBrightness, 0, nearness));
+                    }
+
+                    yield return null;
                 }
 
-                // 플레이어가 방 밖으로 나갔나요?
-                if (roomManager.Room.IsPositionInRoom(GameManager.EyeAnchor.position) is false)
-                {
-                    // 룸 패스스루 밝기는 기본값으로 설정합니다.
-                    roomPassthrough.SetBrightnessContrastSaturation(brightness: 0);
-                    
-                    _isPlayerExited = true;
-                    yield break;
-                }
-                
-                
-                yield return null;
+                // 룸 패스스루 밝기는 기본값으로 설정합니다.
+                roomPassthrough.SetBrightnessContrastSaturation(brightness: 0);
+
+                _isPlayerExited = true;
             }
         }
     }
