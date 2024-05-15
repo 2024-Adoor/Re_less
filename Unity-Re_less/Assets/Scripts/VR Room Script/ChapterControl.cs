@@ -101,10 +101,10 @@ public class ChapterControl : MonoBehaviour
 
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
-        SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
-        SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
-        spawnCH02Obj1.isSpawn = true;
-        spawnCH02Obj2.isSpawn = true;
+        Ch02ObjectSpawner spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<Ch02ObjectSpawner>();
+        Ch02ObjectSpawner spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<Ch02ObjectSpawner>();
+        spawnCH02Obj1.gameObject.SetActive(true);
+        spawnCH02Obj2.gameObject.SetActive(true);
         
         // 열매 카운트 초기화
         PlayerState _PlayerState = GetComponent<PlayerState>();
@@ -125,10 +125,10 @@ public class ChapterControl : MonoBehaviour
         roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter3);
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn False 
-        SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
-        SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
-        spawnCH02Obj1.isSpawn = false;
-        spawnCH02Obj2.isSpawn = false;
+        Ch02ObjectSpawner spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<Ch02ObjectSpawner>();
+        Ch02ObjectSpawner spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<Ch02ObjectSpawner>();
+        spawnCH02Obj1.gameObject.SetActive(false);
+        spawnCH02Obj2.gameObject.SetActive(false);
         Ch02_Cars.SetActive(true);
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,18 @@ public class CH02obj : MonoBehaviour
     public float Speed = 1.0f; 
     public float Direction = 1.0f;
     public bool isMoving = true;
+    public Collider endTrigger;
+    
+    public event Action<CH02obj> EndTriggerEntered;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+        isMoving = true;
+    }
+    
+    private void OnDisable()
+    {
+        isMoving = false;
     }
 
     // Update is called once per frame
@@ -19,10 +27,17 @@ public class CH02obj : MonoBehaviour
     {   
         if(isMoving)
         {
-            // z√‡ πÊ«‚¿∏∑Œ ¿Ãµø
+            // zÏ∂ï Î∞©Ìñ•ÏúºÎ°ú Ïù¥Îèô
             Vector3 movement = new Vector3(0, 0, Speed * Direction * Time.deltaTime);
             transform.position += movement;
         }
-        
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other == endTrigger)
+        {
+            EndTriggerEntered?.Invoke(this);
+        }
     }
 }
