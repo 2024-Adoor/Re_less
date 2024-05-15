@@ -99,9 +99,6 @@ public class Chat_Character : MonoBehaviour
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
 
-                // 챕터 2 시작
-                _ChapterControl.CurrentChapter = Chapter.Chapter2;
-
                 isClear =  true;
             }
         }
@@ -111,9 +108,6 @@ public class Chat_Character : MonoBehaviour
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
-
-                // 챕터 3 시작
-                _ChapterControl.CurrentChapter = Chapter.Chapter3;
 
                 isClear =  true;
             }
