@@ -9,6 +9,9 @@ public class Ch02Object : MonoBehaviour
     [NonSerialized]
     public float Direction = 1.0f;
     
+    [SerializeField]
+    private bool _movable = true;
+    
     /// <summary>
     /// 이 오브젝트에 대한 엔드 트리거
     /// </summary>
@@ -23,6 +26,11 @@ public class Ch02Object : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!_movable)
+        {
+            return;
+        }
+        
         // z축 방향으로 이동
         Vector3 movement = new Vector3(0, 0, Speed * Direction * Time.deltaTime);
         transform.position += movement;

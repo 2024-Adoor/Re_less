@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8008813288197880774}
   - component: {fileID: 7998928520766391514}
   - component: {fileID: 6970943179135814759}
-  - component: {fileID: 7779686006116170288}
   - component: {fileID: -7043856575771289997}
+  - component: {fileID: 6030510405018539236}
   m_Layer: 0
   m_Name: Stapler_red Variant
   m_TagString: CH02_OBJ
@@ -108,21 +108,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 2c2a53f9e92bf4669b5594d6a962585f, type: 3}
---- !u!114 &7779686006116170288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8021425454378525040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ac6a4226535ed34e9a55bc721b6b3be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 1
-  Direction: 1
-  isMoving: 1
 --- !u!54 &-7043856575771289997
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -150,3 +135,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
+--- !u!114 &6030510405018539236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8021425454378525040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb44a0eb109243499b068a311c93fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
