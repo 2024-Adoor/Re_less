@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8324546335921954903}
   - component: {fileID: 6080507660916528285}
   - component: {fileID: 7802220195515678225}
-  - component: {fileID: 4915028505843478287}
   - component: {fileID: 8994340744692383962}
+  - component: {fileID: 2487197982029494858}
   m_Layer: 0
   m_Name: Screwdriver Variant
   m_TagString: CH02_OBJ
@@ -108,21 +108,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1282210680534842956, guid: cd8e0bf8987a83f47819a69a3ea664fe, type: 3}
---- !u!114 &4915028505843478287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720330122546328904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ac6a4226535ed34e9a55bc721b6b3be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 1
-  Direction: 1
-  isMoving: 1
 --- !u!54 &8994340744692383962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -150,3 +135,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
+--- !u!114 &2487197982029494858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720330122546328904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb44a0eb109243499b068a311c93fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

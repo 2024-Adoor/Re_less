@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8846446647564766080}
-  - component: {fileID: 8205981129075346028}
   - component: {fileID: 5018016072879327031}
   - component: {fileID: 6931822327598660334}
+  - component: {fileID: 3306622071968698623}
   m_Layer: 0
   m_Name: Tape dispenser Variant
   m_TagString: CH02_OBJ
@@ -36,21 +36,6 @@ Transform:
   - {fileID: 873753598122209670}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &8205981129075346028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2188178623607243976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ac6a4226535ed34e9a55bc721b6b3be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 1
-  Direction: 1
-  isMoving: 1
 --- !u!54 &5018016072879327031
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -99,6 +84,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25155917, y: 0.1480404, z: 0.0866926}
   m_Center: {x: -0.019368483, y: 0.07091933, z: -0.0058170888}
+--- !u!114 &3306622071968698623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188178623607243976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb44a0eb109243499b068a311c93fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5059977025517700122
 GameObject:
   m_ObjectHideFlags: 0
