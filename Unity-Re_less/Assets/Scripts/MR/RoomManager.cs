@@ -221,6 +221,7 @@ namespace Reless.MR
                 return true;
             }
             
+            Logger.Log($"{nameof(RoomManager)}: Room is not loaded yet. register action to the load event.");
             MRUKSceneLoaded += action;
             return false;
         }

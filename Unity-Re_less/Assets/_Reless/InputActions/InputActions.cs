@@ -45,6 +45,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d173f80-8e83-4d9f-9f60-cad497937e1e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -67,6 +76,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Meta Quest"",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8cd4c3b7-cbf2-4950-8b6d-e07894aaf00e"",
+                    ""path"": ""<OculusTouchController>{LeftHand}/thumbstickClicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Meta Quest"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8727bdea-cc29-4590-8a4a-ae3ad344691b"",
+                    ""path"": ""<OculusTouchController>{RightHand}/thumbstickClicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Meta Quest"",
+                    ""action"": ""Exit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -158,6 +189,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_VR = asset.FindActionMap("VR", throwIfNotFound: true);
         m_VR_Move = m_VR.FindAction("Move", throwIfNotFound: true);
         m_VR_Jump = m_VR.FindAction("Jump", throwIfNotFound: true);
+        m_VR_Exit = m_VR.FindAction("Exit", throwIfNotFound: true);
         // MR
         m_MR = asset.FindActionMap("MR", throwIfNotFound: true);
         m_MR_Newaction = m_MR.FindAction("New action", throwIfNotFound: true);
@@ -237,12 +269,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IVRActions> m_VRActionsCallbackInterfaces = new List<IVRActions>();
     private readonly InputAction m_VR_Move;
     private readonly InputAction m_VR_Jump;
+    private readonly InputAction m_VR_Exit;
     public struct VRActions
     {
         private @InputActions m_Wrapper;
         public VRActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_VR_Move;
         public InputAction @Jump => m_Wrapper.m_VR_Jump;
+        public InputAction @Exit => m_Wrapper.m_VR_Exit;
         public InputActionMap Get() { return m_Wrapper.m_VR; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +292,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
         }
 
         private void UnregisterCallbacks(IVRActions instance)
@@ -268,6 +305,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
         }
 
         public void RemoveCallbacks(IVRActions instance)
@@ -428,6 +468,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
     public interface IMRActions
     {

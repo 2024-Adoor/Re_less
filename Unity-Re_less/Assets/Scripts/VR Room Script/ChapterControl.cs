@@ -19,12 +19,10 @@ public class ChapterControl : MonoBehaviour
     public Transform SpawnPoint01;
     public Transform SpawnPoint02;
     public Transform SpawnPoint03;
-    public Vector3 offset; 
+    public Vector3 offset;
 
-    [Header("Chapter02 Spawn Objects")]
-    public GameObject CH02_OBJ_SpawnOBJ1;
-    public GameObject CH02_OBJ_SpawnOBJ2;
-    public GameObject Ch02_Cars;
+    [Header("Chapter02 Spawn Objects")] 
+    public Ch02ObjectSpawner[] ch02ObjectSpawners;
 
     [Header("?")]
     // UI 트리거용 
@@ -99,12 +97,8 @@ public class ChapterControl : MonoBehaviour
         // 앰비언트 라이팅 조정
         roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter2);
 
-
         // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
-        SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
-        SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
-        spawnCH02Obj1.isSpawn = true;
-        spawnCH02Obj2.isSpawn = true;
+        foreach (var spawner in ch02ObjectSpawners) { spawner.StartSpawn(); }
         
         // 열매 카운트 초기화
         PlayerState _PlayerState = GetComponent<PlayerState>();
@@ -125,11 +119,7 @@ public class ChapterControl : MonoBehaviour
         roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter3);
 
         // OBJspawn's SpawnCH02obj.cs -> isSpawn False 
-        SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
-        SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
-        spawnCH02Obj1.isSpawn = false;
-        spawnCH02Obj2.isSpawn = false;
-        Ch02_Cars.SetActive(true);
+        foreach (var spawner in ch02ObjectSpawners) { spawner.StopSpawn(); }
 
         // 챕터 3 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch01_Objects);
@@ -169,6 +159,23 @@ public class ChapterControl : MonoBehaviour
         
         // 새로운 회전값을 적용합니다.
         transform.rotation = newRotation;
+    }
+
+    /// <summary>
+    /// 꿈에서 나갑니다.
+    /// </summary>
+    public void ExitDream()
+    {
+        // 단계 변경
+        GameManager.CurrentPhase = CurrentChapter switch
+        {
+            Chapter1 => GamePhase.Chapter2,
+            Chapter2 => GamePhase.Chapter3,
+            Chapter3 => GamePhase.Ending, //참고: 3챕터는 정상 진행 시 이 함수가 호출되기 전에 Ending으로 이미 변경됩니다.
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        GameManager.LoadMainScene();
     }
 
     // CH02_OBJ와 충돌시 리스폰

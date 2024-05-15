@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Broken_Watch : MonoBehaviour
 {
-    private int collisionCount = 0;     // Ãæµ¹ È½¼ö¸¦ ÀúÀåÇÒ º¯¼ö
-    public GameObject newPrefab1;  // º¯°æÇÒ ÇÁ¸®ÆÕ1
-    public GameObject newPrefab2;  // º¯°æÇÒ ÇÁ¸®ÆÕ2
-    public Vector3 RotationOffset;              // º¯°æÇÒ ÇÁ¸®ÆÕ À§Ä¡ 
+    private int collisionCount = 0;     // ì¶©ëŒ íšŸìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
+    public GameObject newPrefab1;  // ë³€ê²½í•  í”„ë¦¬íŒ¹1
+    public GameObject newPrefab2;  // ë³€ê²½í•  í”„ë¦¬íŒ¹2
+    public Vector3 RotationOffset;              // ë³€ê²½í•  í”„ë¦¬íŒ¹ ìœ„ì¹˜ 
     public bool isBroken = false;
 
-    public GameObject CH02_OBJ_SpawnOBJ1;
-    public GameObject CH02_OBJ_SpawnOBJ2;
+    public Ch02ObjectSpawner[] ch02ObjectSpawners;
 
     GameObject newObject_1;
 
@@ -24,16 +23,16 @@ public class Broken_Watch : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collisionCount++; // Ãæµ¹ È½¼ö Áõ°¡
-            Debug.Log("Ãæµ¹ È½¼ö: " + collisionCount);
+            collisionCount++; // ì¶©ëŒ íšŸìˆ˜ ì¦ê°€
+            Debug.Log("ì¶©ëŒ íšŸìˆ˜: " + collisionCount);
 
-            // Ãæµ¹ È½¼ö 1ÀÌ¸é ÇÁ¸®ÆÕ º¯°æ 1
+            // ì¶©ëŒ íšŸìˆ˜ 1ì´ë©´ í”„ë¦¬íŒ¹ ë³€ê²½ 1
             if (collisionCount == 1)
             {
                 //gameObject.SetActive(false);
                 newObject_1 = Instantiate(newPrefab1, newPrefab1.transform.position, newPrefab1.transform.rotation);
             }
-            // Ãæµ¹ È½¼ö 2ÀÌ¸é ÇÁ¸®ÆÕ º¯°æ 2
+            // ì¶©ëŒ íšŸìˆ˜ 2ì´ë©´ í”„ë¦¬íŒ¹ ë³€ê²½ 2
             if (collisionCount == 2)
             {
                 Destroy(gameObject);
@@ -42,11 +41,7 @@ public class Broken_Watch : MonoBehaviour
 
                 isBroken = true;
 
-                SpawnCH02obj spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<SpawnCH02obj>();
-                SpawnCH02obj spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<SpawnCH02obj>();
-
-                spawnCH02Obj1.StopSpawn();
-                spawnCH02Obj2.StopSpawn();
+                foreach (var spawner in ch02ObjectSpawners) { spawner.StopSpawn(); }
             }
         }
     }

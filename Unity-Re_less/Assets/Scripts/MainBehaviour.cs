@@ -135,7 +135,7 @@ namespace Reless
         {
             // 그릴 오브젝트 위치에 얻을 오브젝트를 생성하고 그릴 오브젝트를 제거합니다.
             _currentObtainedObject = Instantiate(_currentChapterObtainingObjectPrefab, sketchObject.transform.position, Quaternion.identity);
-            Destroy(sketchObject);
+            Destroy(sketchObject.gameObject);
         }
         
         private void EnableCloseEyesToSleepPose()
