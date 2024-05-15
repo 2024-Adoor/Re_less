@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -13,9 +12,7 @@ namespace Reless.UI
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField]
-        private Framerate framerate;
-        
-        private bool _showFramerate;
+        private GameObject planarUICanvas;
         
         [SerializeField]
         private TMP_Text qualitySettingLabel;
@@ -26,7 +23,6 @@ namespace Reless.UI
         private void Start()
         {
             Disable();
-            framerate.gameObject.SetActive(_showFramerate);
             qualitySettingLabel.text = "Quality Setting Level: " + QualitySettings.names[QualitySettings.GetQualityLevel()];
             
             AddGamePhaseDropdownOptions();
@@ -34,6 +30,11 @@ namespace Reless.UI
             GameManager.PhaseChanged += UpdateGamePhaseDropdown;
         }
         
+        private void OnDestroy()
+        {
+            GameManager.PhaseChanged -= UpdateGamePhaseDropdown;
+        }
+
         private void AddGamePhaseDropdownOptions()
         {
             gamePhaseDropdown.ClearOptions();
@@ -52,11 +53,13 @@ namespace Reless.UI
 
         public void Enable()
         {
+            planarUICanvas.SetActive(false);
             gameObject.SetActive(true);
         }
         
         public void Disable()
         {
+            planarUICanvas.SetActive(true);
             gameObject.SetActive(false);
         }
 
@@ -76,15 +79,6 @@ namespace Reless.UI
         public static void LoadMainScene() => GameManager.LoadMainScene();
 
         public static void LoadVRScene() => GameManager.LoadVRScene();
-
-        public bool ShowFramerate
-        {
-            set
-            {
-                _showFramerate = value;
-                framerate.gameObject.SetActive(value);
-            }
-        }
 #endregion
     }
 }
