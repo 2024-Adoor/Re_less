@@ -31,6 +31,8 @@ public class Chat_Character : MonoBehaviour
     [SerializeField]
     private RoomLighting roomLighting;
 
+    [Header("Chapter02 Spawn Objects")] 
+    public Ch02ObjectSpawner[] ch02ObjectSpawners;
 
     private void Awake()
     {
@@ -94,13 +96,17 @@ public class Chat_Character : MonoBehaviour
 
         if(Character.name == "Character_Clock")
         {
-            if(isChatFin && Chat >  chatMaterials.Length && !isClear)
+            if(isChatFin && Chat > chatMaterials.Length && !isClear)
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
 
                 // 앰비언트 라이팅 조정
                 roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter2);
+
+                // 오브젝트 지나다니는거 활성화
+                // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
+                foreach (var spawner in ch02ObjectSpawners) { spawner.StartSpawn(); }
 
                 isClear =  true;
             }

@@ -24,6 +24,7 @@ public class UI_Canvas : MonoBehaviour
     // BackGround RawImage
     public RawImage BackGround;         // 기본 BackGround
     public RawImage BackGround_Fruit;   // 열매 BackGround
+    public RawImage BackGround_Confirm; // 확인 BackGround
 
     // Chapter 01 UI RawImage
     public RawImage Ch01_Tutorial_Jump;     
@@ -246,22 +247,40 @@ public class UI_Canvas : MonoBehaviour
 
             Debug.Log(WatchBcount);
 
-            if(WatchBcount == 0)
+            if(_ChapterControl.CurrentChapter is Chapter.Chapter1)
             {
-                ChangeMessage(messageText, "시간을 멈추면 건널 수 있지 않을까?\n여기서 나가자 시계를 그려오자!");
+                // 챕터 1일 때만 실행
+                if(WatchBcount == 0)
+                {
+                    ChangeMessage(messageText, "시간을 멈추면 건널 수 있지 않을까?\n여기서 나가자 시계를 그려오자!");
+                }
+                else if(WatchBcount == 1)
+                {
+                    ChangeMessage(messageText, "양쪽 조이스틱을 눌러 볼을 꼬집자!\n꿈에서 깰 수 있을지 몰라");
+                }
+                else if(WatchBcount > 2)
+                {
+                    BackGround.gameObject.SetActive(false);
+                    WatchUIFin = true;
+                    
+                    // 패스스루로 나갈 수 있게 활성화
+                    _PlayerControl.EnableExitAction();
+                }
             }
-            else if(WatchBcount == 1)
+            else
             {
-                ChangeMessage(messageText, "양쪽 조이스틱을 눌러 볼을 꼬집자!\n꿈에서 깰 수 있을지 몰라");
+                // 챕터 2로 넘어와서 충돌했을 경우
+                if(WatchBcount == 0)
+                {
+                    ChangeMessage(messageText, "시계를 부숴보자!");
+                }
+                else if(WatchBcount == 1)
+                {
+                    BackGround.gameObject.SetActive(false);
+                    WatchUIFin = true;
+                }
             }
-            else if(WatchBcount > 2)
-            {
-                BackGround.gameObject.SetActive(false);
-                WatchUIFin = true;
-                
-                // 패스스루로 나갈 수 있게 활성화
-                _PlayerControl.EnableExitAction();
-            }
+            
         }
 
         // 챕터 1 - 패스스루로 돌아가지 않고 또 충돌했을 때 
@@ -432,6 +451,7 @@ public class UI_Canvas : MonoBehaviour
         if(_SujiEndingTest.canMove)
         {
             BackGround.gameObject.SetActive(true);
+            BackGround_Confirm.gameObject.SetActive(false);
             UnableRawImage(Ch03_SleepOut);
 
             ChangeMessage(messageText, "수지를 따라가자!");
@@ -439,6 +459,7 @@ public class UI_Canvas : MonoBehaviour
         if(_SujiEndingTest.IsReachedEndPoint)
         {
             BackGround.gameObject.SetActive(false);
+            BackGround_Confirm.gameObject.SetActive(true);
             UnableRawImage(Ch03_SleepOut);
         }
 
