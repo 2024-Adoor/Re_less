@@ -5,6 +5,7 @@ using Reless.VR;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Reless.Chapter;
+using Logger = Reless.Debug.Logger;
 
 public class ChapterControl : MonoBehaviour
 {   
@@ -42,6 +43,9 @@ public class ChapterControl : MonoBehaviour
     [Header("References")]
     [SerializeField]
     private RoomLighting roomLighting;
+    
+    [SerializeField]
+    private PlayerState playerState;
 
     /// <summary>
     /// 현재 챕터
@@ -51,6 +55,7 @@ public class ChapterControl : MonoBehaviour
         get => _currentChapter;
         set
         {
+            if (_currentChapter == value) return;
             _currentChapter = value;
             GameManager.CurrentPhase = (GamePhase)value;
             switch (_currentChapter)
@@ -101,8 +106,7 @@ public class ChapterControl : MonoBehaviour
         foreach (var spawner in ch02ObjectSpawners) { spawner.StartSpawn(); }
         
         // 열매 카운트 초기화
-        PlayerState _PlayerState = GetComponent<PlayerState>();
-        _PlayerState.FruitCount = -1;
+        playerState.FruitCount = -1;
 
         // 챕터 2 오브젝트가 아닌 오브젝트 비활성화 
         SetActiveFalse(Ch01_Objects);
@@ -194,6 +198,7 @@ public class ChapterControl : MonoBehaviour
     private void OnValidate()
     {
         if (roomLighting.IsUnityNull()) { roomLighting = FindAnyObjectByType<RoomLighting>(); }
+        if (playerState.IsUnityNull()) { playerState = FindAnyObjectByType<PlayerState>(); }
     }
     
     /// <summary>
@@ -201,16 +206,15 @@ public class ChapterControl : MonoBehaviour
     /// </summary>
     private void OnSetChapterChanged()
     {
-        Debug.Log($"{nameof(ChapterControl)}: Changing chapter to <b>{setChapterTo}</b>");
+        Logger.Log($"{nameof(ChapterControl)}: Changing chapter to <b>{setChapterTo}</b>");
         CurrentChapter = setChapterTo;
         
         // 챕터 변경시 플레이어 위치 변경
-        // NOTE: 게임 자체는 챕터 변경시 플레이어 위치를 변경하지 않도록 기획이 수정되었으므로 이는 테스트용입니다.
         var spawnParams = setChapterTo switch
         {
-            Chapter.Chapter1 => (point :SpawnPoint01, direction: Ch01SpawnDirection),
-            Chapter.Chapter2 => (point :SpawnPoint02, direction: Ch02SpawnDirection),
-            Chapter.Chapter3 => (point :SpawnPoint03, direction: Ch03SpawnDirection),
+            Chapter1 => (point: SpawnPoint01, direction: Ch01SpawnDirection),
+            Chapter2 => (point: SpawnPoint02, direction: Ch02SpawnDirection),
+            Chapter3 => (point: SpawnPoint03, direction: Ch03SpawnDirection),
             _ => throw new ArgumentOutOfRangeException()
         };
         SpawnPlayer(spawnParams.point, spawnParams.direction);
