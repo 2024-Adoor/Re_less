@@ -1,3 +1,4 @@
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -49,7 +50,7 @@ namespace Reless
         }
 
         // Start is called before the first frame update
-        void Start()
+        private IEnumerator Start()
         {
             _moveAction = GameManager.InputActions.VR.Move;
             _jumpAction = GameManager.InputActions.VR.Jump;
@@ -64,8 +65,9 @@ namespace Reless
             
             // 꿈에서 나가는 액션은 추후 조건 달성 시 활성화될 것입니다.
             _exitAction.Disable();
-            
-            // 시작 시 중심을 재조정합니다.
+
+            // 트래킹되도록 한 프레임을 기다리고 중심을 재조정합니다.
+            yield return null;
             Recenter();
         }
         
