@@ -21,7 +21,6 @@ namespace Reless
         
         }
 
-        // 캐릭터 충돌시 캐릭터가 타겟을 향하게 회전시키기
         void OnTriggerEnter(Collider other)
         {
             if(other.CompareTag("Player"))

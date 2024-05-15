@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using Reless;
+using Reless.VR;
 
 public class UI_Canvas : MonoBehaviour
 {
@@ -59,12 +60,14 @@ public class UI_Canvas : MonoBehaviour
     bool canSleepOutSuji = false;
     bool isEnterUIFin = false;
     bool isSujiUIFin = false;
+    bool isEndFin = false;
 
     // 여러번 확인을 눌러야 할 때 bool 값 
     bool canWatchUiChange = false;
     int WatchBcount = 0;
     int StartBcount1 = 0;
     int MonitorBcount = 0;
+    int EndBcount = 0;
     
     // 챕터 초반 UI 제어 bool 값
     bool Ch01Fin = false;
@@ -91,6 +94,10 @@ public class UI_Canvas : MonoBehaviour
     SleepingSuji _SleepingSuji;
     public GameObject Suji;
     SujiEndingTest _SujiEndingTest;
+
+    // Ending
+    [SerializeField]
+    EndingBehaviour _EndingBehaviour;
 
     void Start()
     {
@@ -280,20 +287,7 @@ public class UI_Canvas : MonoBehaviour
                     WatchUIFin = true;
                 }
             }
-            
         }
-
-        // 챕터 1 - 패스스루로 돌아가지 않고 또 충돌했을 때 
-        // if(_ChapterControl.CH02_RespawnCount > 1)
-        // {
-        //     BackGround.gameObject.SetActive(true);
-        //     ChangeMessage(messageText, "양쪽 조이스틱을 눌러 볼을 꼬집자!\n꿈에서 깰 수 있을지 몰라");
-        //     
-        //     if(_PlayerControl.isBdown)
-        //     {
-        //         BackGround.gameObject.SetActive(false);
-        //     }
-        // }
 
         // 챕터 2 - 문 앞에 왔을 때, 문 UI (텍스트 변환으로 처리)
         if(_PlayerState.isDoorUI && !DoorUIFin)
@@ -463,17 +457,45 @@ public class UI_Canvas : MonoBehaviour
             UnableRawImage(Ch03_SleepOut);
         }
 
-        // 모든 챕터 - FruitCount < 0 일때 캐릭터와 충돌, disAwake 활성화 
-        // if(_PlayerState.FruitCount < 0 && _PlayerState.isDisawakeUI_Trigger)
+        // 모든 챕터 - SleepOut trigger 충돌했을 때, FruitCount가 없으면 열매없이는 못 깨운다는 UI 활성화 & 트리거 색상 복구
+        // if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && !Clock_AniManage.isSleepOut)
         // {
-        //     // 텍스트 변환
-        //     BackGround.gameObject.SetActive(true);
-        //     ChangeMessage("열매 없이는\n친구를 깨울 수 없어~");
+        //     // 챕터 1 - 시계토끼 아직 깨어나지 않음
+        // 
         // }
-        // else
-        // {
-        //     
-        // }
+
+        // 엔딩 캐릭터 대사 이후 나오는 UI 
+        if(_EndingBehaviour._isEndChatFin && !isEndFin)
+        {
+            if(_PlayerControl.isBdown)
+            {
+                EndBcount ++;
+                _PlayerControl.isBdown = false;
+            }
+
+            if(EndBcount == 0)
+            {
+                BackGround.gameObject.SetActive(true);
+                ChangeMessage(messageText, "무사히 친구들을 깨웠어!");
+            }
+            else if(EndBcount == 1)
+            {
+                BackGround.gameObject.SetActive(true);
+                ChangeMessage(messageText, "그 까만 아이는\n왜 친구들을 재운걸까?");
+            }
+            else if(EndBcount == 2)
+            {
+                BackGround.gameObject.SetActive(true);
+                ChangeMessage(messageText, "사이좋게 지내면 좋을텐데");
+            }
+            else if(EndBcount == 3)
+            {
+                BackGround.gameObject.SetActive(false);
+                isEndFin = true;
+                _EndingBehaviour._isEndUIFin = true;
+            }
+            
+        }
     }
 
     /**************************************************************************************************/

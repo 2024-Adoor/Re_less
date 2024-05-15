@@ -76,6 +76,14 @@ public class PlayerState : MonoBehaviour
         _endingBehaviour = FindAnyObjectByType<EndingBehaviour>();
     }
 
+    void FixedUpdate()
+    {
+        if(_endingBehaviour._isEndUIFin)
+        {
+            _endingBehaviour.StartEnding();
+        }
+    }
+
     // NOTE: 업데이트 함수에 있는 엔딩 진행 EndingBehaviour.StartEnding()으로 이동
 
     void OnTriggerEnter(Collider other)
@@ -106,7 +114,7 @@ public class PlayerState : MonoBehaviour
 
             otherRend.material = EndMaterial;
 
-            _endingBehaviour.StartEnding();
+            _endingBehaviour.StartEndChat();
         }
 
         if(other.gameObject.name == "UI_JumpTutorial_Trigger")
@@ -141,26 +149,6 @@ public class PlayerState : MonoBehaviour
         if(collision.gameObject.CompareTag("Character") && FruitCount > 0)
         {
             isCharacter = true;
-        }
-
-        if(collision.gameObject.CompareTag("Character"))
-        {
-            if(collision.gameObject.name != "Character_Suji")
-            {
-                isDisawakeUI_Trigger = true;
-            }
-        }
-    }
-
-    // 콜라이더랑 충돌 안할때 
-    void OnCollisionExit(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Character"))
-        {
-            if(collision.gameObject.name != "Character_Suji")
-            {
-                isDisawakeUI_Trigger = false;
-            }
         }
     }
 }

@@ -50,7 +50,8 @@ namespace Reless.VR
         /// 엔딩 중인지 여부
         /// </summary>
         private bool _isInEnding;
-        
+        public bool _isEndChatFin = false;
+        public bool _isEndUIFin = false;
         
         private void Start()
         {
@@ -64,7 +65,7 @@ namespace Reless.VR
         }
 
         [Button(enabledMode: EButtonEnableMode.Playmode)]
-        public void StartEnding()
+        public void StartEndChat()
         {
             if (_isInEnding) return;
             _isInEnding = true;
@@ -74,34 +75,37 @@ namespace Reless.VR
             // 엔딩 앰비언트 라이팅 적용
             FindAnyObjectByType<RoomLighting>().ApplyEndingAmbientColor();
             
-            StartCoroutine(Ending());
-
-            IEnumerator Ending()
-            {
-                yield return ShowEndChat();
-                yield return new WaitForSeconds(2f);
-                _playerRigidbody.useGravity = false;
-                
-                // 기존 엔딩 캐릭터 제거
-                Destroy(suji);
-                Destroy(FindAnyObjectByType<SujiEndingTest>().endingCharacters);
-                
-                // 놀라는 캐릭터 생성
-                //// : 프리팹에 정해진 위치를 불러와서 위치를 정하면 위치가 바뀌면 안맞을수도 있음... 가능하면 수정 필요
-                Instantiate(sujiSurprisedPrefab, sujiSurprisedPrefab.transform.position, sujiSurprisedPrefab.transform.rotation);
-                Instantiate(CharactersSurprisedPrefab, CharactersSurprisedPrefab.transform.position, CharactersSurprisedPrefab.transform.rotation);
-
-                while (_playerState.transform.position.y < endRespawnTrigger.position.y)
-                {
-                    UpPlayerToward(endRespawnTrigger);
-                    yield return null;
-                }
-
-                // 메인 씬으로 이동
-                GameManager.LoadMainScene();
-            }
+            StartCoroutine(ShowEndChat());
         }
         
+        public void StartEnding()
+        {
+            StartCoroutine(Ending());
+        }
+
+        private IEnumerator Ending()
+        {
+            _playerRigidbody.useGravity = false;
+            
+            // 기존 엔딩 캐릭터 제거
+            Destroy(suji);
+            Destroy(FindAnyObjectByType<SujiEndingTest>().endingCharacters);
+            
+            // 놀라는 캐릭터 생성
+            //// : 프리팹에 정해진 위치를 불러와서 위치를 정하면 위치가 바뀌면 안맞을수도 있음... 가능하면 수정 필요
+            Instantiate(sujiSurprisedPrefab, sujiSurprisedPrefab.transform.position, sujiSurprisedPrefab.transform.rotation);
+            Instantiate(CharactersSurprisedPrefab, CharactersSurprisedPrefab.transform.position, CharactersSurprisedPrefab.transform.rotation);
+
+            while (_playerState.transform.position.y < endRespawnTrigger.position.y)
+            {
+                UpPlayerToward(endRespawnTrigger);
+                yield return null;
+            }
+
+            // 메인 씬으로 이동
+            GameManager.LoadMainScene();
+        }
+
         private IEnumerator ShowEndChat()
         {
             // 대사를 보여줄 시간
@@ -125,7 +129,9 @@ namespace Reless.VR
             // 4. 선인장 대사
             endChatCactus.SetActive(true);
             yield return showingDuration;
-            endChatCactus.SetActive(false);        
+            endChatCactus.SetActive(false); 
+            
+            _isEndChatFin = true;
         }
         
         private void UpPlayerToward(Transform target)
