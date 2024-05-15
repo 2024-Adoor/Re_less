@@ -10,8 +10,7 @@ public class Broken_Watch : MonoBehaviour
     public Vector3 RotationOffset;              // 변경할 프리팹 위치 
     public bool isBroken = false;
 
-    public GameObject CH02_OBJ_SpawnOBJ1;
-    public GameObject CH02_OBJ_SpawnOBJ2;
+    public Ch02ObjectSpawner[] ch02ObjectSpawners;
 
     GameObject newObject_1;
 
@@ -42,11 +41,7 @@ public class Broken_Watch : MonoBehaviour
 
                 isBroken = true;
 
-                Ch02ObjectSpawner spawnCH02Obj1 = CH02_OBJ_SpawnOBJ1.GetComponent<Ch02ObjectSpawner>();
-                Ch02ObjectSpawner spawnCH02Obj2 = CH02_OBJ_SpawnOBJ2.GetComponent<Ch02ObjectSpawner>();
-
-                spawnCH02Obj1.StopSpawn();
-                spawnCH02Obj2.StopSpawn();
+                foreach (var spawner in ch02ObjectSpawners) { spawner.StopSpawn(); }
             }
         }
     }
