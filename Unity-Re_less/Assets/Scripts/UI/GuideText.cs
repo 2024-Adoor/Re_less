@@ -29,15 +29,11 @@ namespace Reless.UI
         
         private void Awake()
         {
-            if (Instance.IsUnityNull())
-            {
-                Instance = this;
-            }
-            else
+            if (Instance != this)
             {
                 Logger.LogError("GuideText is already exists.");
+                return;
             }
-            
             ClearText();
         }
 

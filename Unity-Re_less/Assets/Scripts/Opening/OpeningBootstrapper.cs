@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using NaughtyAttributes;
 using Reless.MR;
+using Reless.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -84,6 +85,12 @@ namespace Reless.Opening
                 // 1초 기다리고 패스스루를 어둡게 합니다.
                 yield return new WaitForSeconds(1f);
                 yield return DarkenPassthrough();
+
+                // 이 시점에 플레이어가 뒤를 보고 있다면
+                if (GameManager.EyeAnchor.forward.z > 0)
+                {
+                    GuideText.SetText("뒤를 돌아보세요.", duration: 3f);
+                }
             
                 // 오프닝 씬을 활성화합니다.
                 asyncLoad.allowSceneActivation = true;

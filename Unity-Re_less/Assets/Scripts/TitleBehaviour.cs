@@ -138,7 +138,10 @@ namespace Reless
                 var distance = _roomManager.ClosestDoorDistance(GameManager.EyeAnchor.position, out _);
                 if (distance == 0f)
                 {
-                    Logger.LogWarning("Door not found.");
+                    Logger.LogWarning($"{nameof(TitleBehaviour)}: Door not found.");
+                    
+                    // 문이 없으면 바로 실행합니다.
+                    onApproach?.Invoke();
                     yield break;
                 }
                 
