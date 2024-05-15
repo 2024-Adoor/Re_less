@@ -8,6 +8,10 @@ public class SleepingSuji : MonoBehaviour
     public GameObject Ch03Fruit;
     public GameObject SleepOut_SujiPrefab;
 
+    // 오디오 관리
+    public AudioClip fruit_get;
+    private AudioSource audioSource;
+
     public bool isSleepOut = false;
     public bool isDetected = false;
 
@@ -18,6 +22,7 @@ public class SleepingSuji : MonoBehaviour
     void Start()
     {
         SleepOut_SujiPrefab.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -44,6 +49,7 @@ public class SleepingSuji : MonoBehaviour
         if (other.gameObject.CompareTag("Fruit"))
         {   
             isDetected = true;
+            audioSource.PlayOneShot(fruit_get);
         }
     }
 }
