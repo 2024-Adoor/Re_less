@@ -93,7 +93,11 @@ namespace Reless.UI
         private IEnumerator FadeOutTextAfter(float duration)
         {
             yield return new WaitForSeconds(duration);
-            
+            yield return FadeOutText();
+        }
+        
+        private IEnumerator FadeOutText()
+        {
             const float fadeOutDuration = 1f;
             
             for (float time = 0; time < fadeOutDuration; time += Time.deltaTime)
@@ -103,6 +107,17 @@ namespace Reless.UI
             }
             
             ClearText();
+        }
+
+        public static void StartFadeOutText(float after = 0)
+        {
+            if (Instance._currentCoroutine is not null)
+            {
+                Instance.StopCoroutine(Instance._currentCoroutine);
+                ClearText();
+            }
+                
+            Instance._currentCoroutine = Instance.StartCoroutine(Instance.FadeOutTextAfter(after));
         }
         
         public static void ClearText()

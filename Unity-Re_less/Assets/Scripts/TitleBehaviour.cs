@@ -80,7 +80,11 @@ namespace Reless
                 
                 // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingApproachDoor(
-                    onApproach: () => { GameManager.CurrentPhase = GamePhase.Opening; },
+                    onApproach: () =>
+                    {
+                        GuideText.StartFadeOutText(after: 0.5f);
+                        GameManager.CurrentPhase = GamePhase.Opening;
+                    },
                     until: () => GameManager.CurrentPhase is not GamePhase.Title));
             }
             else
@@ -91,7 +95,11 @@ namespace Reless
                 
                 // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingEnterRoom(
-                    onEnter: () => { GameManager.CurrentPhase = GamePhase.Opening; },
+                    onEnter: () =>
+                    {
+                        GuideText.StartFadeOutText(after: 0.5f);
+                        GameManager.CurrentPhase = GamePhase.Opening;
+                    },
                     until: () => GameManager.CurrentPhase is not GamePhase.Title));
             }
         }
