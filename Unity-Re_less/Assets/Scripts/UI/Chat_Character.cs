@@ -1,5 +1,6 @@
 using System.Collections;
 using Reless;
+using Reless.VR;
 using UnityEngine;
 
 public class Chat_Character : MonoBehaviour
@@ -23,8 +24,13 @@ public class Chat_Character : MonoBehaviour
     private Renderer _renderer;
 
     // 챕터 클리어용 
-
     public bool isClear = false;
+
+    // 라이팅 변경용
+    [Header("References")]
+    [SerializeField]
+    private RoomLighting roomLighting;
+
 
     private void Awake()
     {
@@ -35,12 +41,6 @@ public class Chat_Character : MonoBehaviour
     void Start()
     {
         _ChapterControl = Player.GetComponent<ChapterControl>();
-
-
-
-
-
-
         
         if(Character.name == "Character_Cat")
         {
@@ -99,6 +99,9 @@ public class Chat_Character : MonoBehaviour
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
 
+                // 앰비언트 라이팅 조정
+                roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter2);
+
                 isClear =  true;
             }
         }
@@ -108,6 +111,9 @@ public class Chat_Character : MonoBehaviour
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
+
+                // 앰비언트 라이팅 조정
+                roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter3);
 
                 isClear =  true;
             }
