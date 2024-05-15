@@ -258,6 +258,9 @@ public class UI_Canvas : MonoBehaviour
             {
                 BackGround.gameObject.SetActive(false);
                 WatchUIFin = true;
+                
+                // 패스스루로 나갈 수 있게 활성화
+                _PlayerControl.EnableExitAction();
             }
         }
 
@@ -394,6 +397,9 @@ public class UI_Canvas : MonoBehaviour
                 MonitorCheckFin = true;
 
                 EnableRawImage(Ch03_Sleeping);
+
+                // 패스스루로 나갈 수 있게 활성화
+                _PlayerControl.EnableExitAction();
             }
         }
 

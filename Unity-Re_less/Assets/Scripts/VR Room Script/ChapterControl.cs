@@ -132,7 +132,7 @@ public class ChapterControl : MonoBehaviour
     {
         foreach(GameObject gameObject in ChapterObjects) // Material 배열 순회
         {
-            if(gameObject != null) // GameObject가 null이 아닌 경우에만 활성화
+            if(gameObject != null) // GameObject가 null이 아닌 경우에만 비활성화
             {
                 gameObject.SetActive(false);
             }
