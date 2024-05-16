@@ -120,12 +120,20 @@ namespace Reless
         {
             // 그릴 오브젝트를 생성합니다.
             _currentSketchOutline = Instantiate(sketchOutlinePrefab);
-            
+            Assert.IsNotNull(_currentSketchOutline);
+
             // 그릴 오브젝트를 플레이어의 시야에 배치합니다.
-            _currentSketchOutline!.transform.position = GameManager.EyeAnchor.position + GameManager.EyeAnchor.forward * 0.5f;
+            StartCoroutine(PlaceToEye());
             
             // 그릴 오브젝트가 그려졌을 때 얻을 오브젝트를 획득하게 합니다.
             _currentSketchOutline.DrawingCompleted += ObtainObject;
+
+            IEnumerator PlaceToEye()
+            {
+                // 시작 프레임에서 바로 배치하면 트래킹되지 않아 제대로 배치되지 않으므로 한 프레임 대기합니다.
+                yield return new WaitForEndOfFrame();
+                _currentSketchOutline!.transform.position = GameManager.EyeAnchor.position + GameManager.EyeAnchor.forward * 0.5f;
+            }
         }
         
         /// <summary>
