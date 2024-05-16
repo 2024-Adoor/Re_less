@@ -638,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 0
-  MeshMaterial: {fileID: -5922275872616413151, guid: 2c0534cd6c694784fa8c5ab0acee3266, type: 3}
+  MeshMaterial: {fileID: 2100000, guid: 0092bc4fb51a69f459966983d004f8bf, type: 2}
   BorderSize: 0
   Colliders: 0
   CutHoles: 0
@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 0
-  MeshMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  MeshMaterial: {fileID: 2100000, guid: 0aae4e3b2f57e9840ab72a1e49aa0b47, type: 2}
   BorderSize: 0
   Colliders: 0
   CutHoles: 0
@@ -979,7 +979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 0
-  MeshMaterial: {fileID: -1255982633427224767, guid: 2c0534cd6c694784fa8c5ab0acee3266, type: 3}
+  MeshMaterial: {fileID: 2100000, guid: be1ee07b62ac3ea49b6451be0cd941ff, type: 2}
   BorderSize: 0
   Colliders: 0
   CutHoles: 0

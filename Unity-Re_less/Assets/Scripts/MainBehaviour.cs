@@ -7,6 +7,7 @@ using Meta.XR.MRUtilityKit;
 using NaughtyAttributes;
 using Reless.Game;
 using Reless.MR;
+using Reless.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -173,11 +174,14 @@ namespace Reless
 
             IEnumerator Routine()
             {
+                GuideText.SetText("팝업북에 오브젝트가 붙었다.");
+                yield return new WaitForSeconds(1f);
+                
                 roomManager.HidePassthroughEffectMesh = true;
                 roomManager.CreateVirtualRoomEffectMeshes();
                 roomManager.PopupBookTable.SetActive(true);
                 
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1f);
                 
                 // 방에서 작아지기
                 yield return roomManager.roomEnlarger.EnlargingRoom();
