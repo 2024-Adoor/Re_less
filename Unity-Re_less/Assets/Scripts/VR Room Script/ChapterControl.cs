@@ -75,9 +75,12 @@ public class ChapterControl : MonoBehaviour
         CurrentChapter = GameManager.CurrentChapter ?? Chapter1;
         
 #if UNITY_EDITOR
-        if (setChapterTo != CurrentChapter)
+        if (GameManager.CurrentChapter is null)
         {
-            OnSetChapterChanged();
+            if (setChapterTo != CurrentChapter)
+            {
+                OnSetChapterChanged();
+            }
         }
 #endif
     }
