@@ -85,8 +85,8 @@ namespace Reless.MR
         public ReadOnlyCollection<GameObject> PassthroughEffectMeshes => _passthroughEffectMeshes.AsReadOnly();
         private readonly List<GameObject> _passthroughEffectMeshes = new();
 
-        public ReadOnlyCollection<GameObject> SppPassThroughMeshes => _sppPassThroughMeshes.AsReadOnly();
-        private readonly List<GameObject> _sppPassThroughMeshes = new();
+        public ReadOnlyCollection<GameObject> DoorSppPassthroughMeshes => _doorSppPassthroughMeshes.AsReadOnly();
+        private readonly List<GameObject> _doorSppPassthroughMeshes = new();
         
         /// <summary>
         /// MRUK의 keyWall을 반환합니다.
@@ -182,9 +182,12 @@ namespace Reless.MR
             sppPassThroughRoom.CreateMesh();
 
             // 생성된 SPP 패스스루 메시들을 찾아 리스트에 저장합니다.
-            FindAndAddSppPassThroughMesh(Room.CeilingAnchor);
-            FindAndAddSppPassThroughMesh(Room.FloorAnchor);
-            Room.WallAnchors.ForEach(FindAndAddSppPassThroughMesh);
+            // SUSPENDED: SPP 패스스루 메시는 이제 문만 찾으면 됩니다.
+            // FindAndAddSppPassThroughMesh(Room.CeilingAnchor);
+            // FindAndAddSppPassThroughMesh(Room.FloorAnchor);
+            Room.Anchors.Where(anchor => anchor.GetLabelsAsEnum() == MRUKAnchor.SceneLabels.DOOR_FRAME).ToList()
+                .ForEach(FindAndAddSppPassThroughMesh);
+            // Room.WallAnchors.ForEach(FindAndAddSppPassThroughMesh);
             
             void FindAndAddSppPassThroughMesh(MRUKAnchor anchor)
             {
@@ -197,7 +200,7 @@ namespace Reless.MR
                     if (childMesh.GetComponent<MeshRenderer>() == null)
                     {
                         Logger.Log($"SPP PassThrough Mesh Found. Adding to list.");
-                        _sppPassThroughMeshes.Add(anchor.transform.GetChild(i).gameObject);
+                        _doorSppPassthroughMeshes.Add(anchor.transform.GetChild(i).gameObject);
                     }
                 }
             }

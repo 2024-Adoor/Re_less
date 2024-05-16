@@ -347,7 +347,7 @@ MonoBehaviour:
   - WallU: 0
     WallV: 0
     AnchorUV: 0
-  Labels: 7
+  Labels: 32
 --- !u!1 &765793483
 GameObject:
   m_ObjectHideFlags: 0

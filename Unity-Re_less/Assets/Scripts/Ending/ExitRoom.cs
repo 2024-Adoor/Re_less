@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Linq;
+using NaughtyAttributes;
 using Reless.MR;
 using UnityEngine;
 
@@ -13,10 +15,13 @@ namespace Reless.Ending
         /// 룸 메쉬에 대한 surface-projected 패스스루 레이어
         /// </summary>
         [SerializeField]
-        private OVRPassthroughLayer roomPassthrough;
+        private OVRPassthroughLayer doorSppPassthrough;
+
+        private OVRPassthroughLayer _mainPassthrough;
 
         private float _initialPlayerToDoorDistance;
         
+        [ShowNonSerializedField]
         private bool _isPlayerExited;
 
         private void Awake()
@@ -31,14 +36,17 @@ namespace Reless.Ending
 
         private void Setup(RoomManager roomManager)
         {
+            _mainPassthrough = FindObjectsByType<OVRPassthroughLayer>(FindObjectsSortMode.None).ToList()
+                .Single(layer => layer != doorSppPassthrough);
+            
             // 시작 시점의 플레이어 위치와 가장 가까운 문 위치 사이의 거리를 저장합니다.
             _initialPlayerToDoorDistance = roomManager.ClosestDoorDistance(GameManager.EyeAnchor.localPosition, out _);
             Debug.Logger.Log($"{nameof(ExitRoom)}: Initial player to door distance = <b>{_initialPlayerToDoorDistance}<b/>");
 
-            // 패스스루 이펙트 메쉬를 룸 패스스루 레이어에 추가합니다.
-            foreach (var sppPassthroughMesh in roomManager.SppPassThroughMeshes)
+            // 패스스루 이펙트 메쉬를 문 패스스루 레이어에 추가합니다.
+            foreach (var sppPassthroughMesh in roomManager.DoorSppPassthroughMeshes)
             {
-                roomPassthrough.AddSurfaceGeometry(sppPassthroughMesh);
+                doorSppPassthrough.AddSurfaceGeometry(sppPassthroughMesh);
 
                 /*Debug.Log($"Add Passthrough Mesh of {sppPassthroughMesh.transform.parent.name}");
                 roomPassthrough.AddSurfaceGeometry(sppPassthroughMesh);*/
@@ -64,15 +72,18 @@ namespace Reless.Ending
 
                         const float initialBrightness = -0.5f;
 
-                        // 플레이어가 문에 가까워질수록 패스스루가 밝아집니다.
-                        roomPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(initialBrightness, 0, nearness));
+                        // 플레이어가 문에 가까워질수록 문 패스스루가 하얗게 밝아집니다.
+                        doorSppPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(0, 0.5f, nearness));
+                        
+                        // 플레이어가 문에 가까워질수록 패스스루가 어두움에서 밝아집니다.
+                        _mainPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(initialBrightness, 0, nearness));
                     }
 
                     yield return null;
                 }
 
-                // 룸 패스스루 밝기는 기본값으로 설정합니다.
-                roomPassthrough.SetBrightnessContrastSaturation(brightness: 0);
+                // 패스스루 밝기는 기본값으로 설정합니다.
+                _mainPassthrough.SetBrightnessContrastSaturation(brightness: 0);
 
                 _isPlayerExited = true;
             }

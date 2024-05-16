@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26cd3e2fbc64922926e8ccb3d28f800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPassthrough: {fileID: 1303694170}
+  doorSppPassthrough: {fileID: 1303694170}
 --- !u!4 &64334449
 Transform:
   m_ObjectHideFlags: 0
@@ -989,7 +989,7 @@ GameObject:
   - component: {fileID: 1303694171}
   - component: {fileID: 1303694170}
   m_Layer: 0
-  m_Name: RoomPassthorugh
+  m_Name: DoorPassthorugh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

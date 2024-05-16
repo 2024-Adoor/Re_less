@@ -55,6 +55,9 @@ namespace Reless.Ending
                 // 팝업북 위치에 빌런이 생성
                 var villain = Instantiate(villainPrefab , popupBook.position, popupBook.rotation, popupBook.parent);
                 
+                // 팝업북 제거
+                Destroy(popupBook.gameObject);
+                
                 if (RoomManager.Instance.UniqueDoor is MRUKAnchor door)
                 {
                     // 빌런이가 문을 바라보도록 회전
