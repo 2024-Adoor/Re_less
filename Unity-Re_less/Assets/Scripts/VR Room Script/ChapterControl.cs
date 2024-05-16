@@ -72,8 +72,6 @@ public class ChapterControl : MonoBehaviour
 
     private void Awake()
     {
-        CurrentChapter = GameManager.CurrentChapter ?? Chapter1;
-        
 #if UNITY_EDITOR
         if (GameManager.CurrentChapter is null)
         {
@@ -83,6 +81,8 @@ public class ChapterControl : MonoBehaviour
             }
         }
 #endif
+        
+        CurrentChapter = GameManager.CurrentChapter ?? Chapter1;
     }
 
     private void SetupChapter01()
