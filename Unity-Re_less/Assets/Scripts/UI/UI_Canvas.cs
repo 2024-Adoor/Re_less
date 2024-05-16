@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using Reless;
 using Reless.VR;
+using UnityEngine.Assertions;
 
 public class UI_Canvas : MonoBehaviour
 {
@@ -101,8 +102,27 @@ public class UI_Canvas : MonoBehaviour
 
     void Start()
     {
+        Assert.IsNotNull(Player);
         _ChapterControl = Player.GetComponent<ChapterControl>();
+        _PlayerState = Player.GetComponent<PlayerState>();
+        _PlayerControl = Player.GetComponent<PlayerControl>();
+        
+        if(Suji != null) { _SujiEndingTest = Suji.GetComponent<SujiEndingTest>(); }
+        
+        if(Clock_Chat != null)
+        {
+            _Clock_Chat = Clock_Chat.GetComponent<Chat_Character>();
+        }
+        
+        if(Cactus_Chat != null)
+        {
+            _Cactus_Chat = Cactus_Chat.GetComponent<Chat_Character>();
+        }
 
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        
+        
         // 전체 RawImage 비활성화
         BackGround.gameObject.SetActive(false);
         BackGround_Fruit.gameObject.SetActive(false);
@@ -124,37 +144,14 @@ public class UI_Canvas : MonoBehaviour
 
     void Update()
     {
-        ////REVIEW: GetComponent를 Start or Awkae로 옮기기
-        if(Player != null)
-        {
-            _PlayerState = Player.GetComponent<PlayerState>();
-            _PlayerControl = Player.GetComponent<PlayerControl>();
-        }
-
-        if(Suji != null)
-        {
-            _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
-        }
-
-        if(Clock_Chat != null)
-        {
-            _Clock_Chat = Clock_Chat.GetComponent<Chat_Character>();
-        }
-        
-        if(Cactus_Chat != null)
-        {
-            _Cactus_Chat = Cactus_Chat.GetComponent<Chat_Character>();
-        }
-
         ////REVIEW: 이미 UI는 카메라를 따라가고 있는데 아래 코드가 필요한지 확인 필요
         // 카메라의 전방 벡터와 거리를 곱하여 원하는 위치를 계산합니다.
-        Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
+        /*Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
 
         // 계산된 위치로 Canvas를 이동시킵니다.
         transform.position = desiredPosition;
-        transform.rotation = cameraTransform.rotation;
+        transform.rotation = cameraTransform.rotation;*/
 
-        ////REVIEW: Start로 이동 예정
         // 챕터 1 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && !Ch01Fin)
         {
