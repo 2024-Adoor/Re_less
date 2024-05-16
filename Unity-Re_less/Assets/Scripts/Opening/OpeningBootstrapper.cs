@@ -100,6 +100,9 @@ namespace Reless.Opening
                     GuideText.SetText("뒤를 돌아보세요.", duration: 3f);
                 }
                 
+                // 오프닝 동안 SpaceWarp 켜기
+                OVRManager.SetSpaceWarp(true);
+                
                 // 2초 기다리고 오프닝 애니메이션을 재생합니다.
                 yield return new WaitForSeconds(2);
                 _openingAnimator = FindAnyObjectByType<OpeningAnimator>();
@@ -124,6 +127,7 @@ namespace Reless.Opening
                 // 오프닝에서 했던 일을 되돌립니다.
                 RoomManager.Instance.RevertRoomTransform();
                 ResetTransformOpeningWall();
+                OVRManager.SetSpaceWarp(false);
                 
                 IsInOpening = false;
             }

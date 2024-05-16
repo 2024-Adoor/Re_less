@@ -194,6 +194,9 @@ namespace Reless
         {
             // 메인 씬을 로드할 때는 현실 룸을 다시 활성화합니다.
             if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = true;
+            
+            // 메인 씬에서 SpaceWarp 비활성화
+            OVRManager.SetSpaceWarp(false);
 
             var asyncLoad = SceneManager.LoadAsync(MainScene);
             asyncLoad.completed += operation =>
@@ -207,6 +210,9 @@ namespace Reless
         {
             // VR 씬을 로드할 때는 현실 룸을 비활성화합니다.
             if (RoomManager.Instance is not null) RoomManager.Instance.RoomObjectActive = false;
+            
+            // VR 씬에서 SpaceWarp 활성화
+            OVRManager.SetSpaceWarp(true);
             
             var asyncLoad = SceneManager.LoadAsync(VRRoom);
             asyncLoad.completed += operation =>
