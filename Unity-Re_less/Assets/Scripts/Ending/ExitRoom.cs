@@ -2,6 +2,7 @@
 using System.Linq;
 using NaughtyAttributes;
 using Reless.MR;
+using Reless.UI;
 using UnityEngine;
 
 namespace Reless.Ending
@@ -21,8 +22,7 @@ namespace Reless.Ending
 
         private float _initialPlayerToDoorDistance;
         
-        [ShowNonSerializedField]
-        private bool _isPlayerExited;
+        public bool IsPlayerExited { get; set; }
 
         private void Awake()
         {
@@ -85,7 +85,9 @@ namespace Reless.Ending
                 // 패스스루 밝기는 기본값으로 설정합니다.
                 _mainPassthrough.SetBrightnessContrastSaturation(brightness: 0);
 
-                _isPlayerExited = true;
+                IsPlayerExited = true;
+                
+                GuideText.SetText("THE END");
             }
         }
     }
