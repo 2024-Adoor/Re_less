@@ -490,9 +490,7 @@ public class UI_Canvas : MonoBehaviour
             }
             else if(EndBcount == 3)
             {
-                BackGround.gameObject.SetActive(false);
-                isEndFin = true;
-                _EndingBehaviour._isEndUIFin = true;
+                StartCoroutine(EndingFinalUI(1.5f));
             }
             
         }
@@ -593,5 +591,20 @@ public class UI_Canvas : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         canSleepOutSuji = true;
+    }
+
+    private IEnumerator EndingFinalUI(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        _EndingBehaviour._isEndUIFin = true;
+        BackGround.gameObject.SetActive(true);
+        BackGround_Confirm.gameObject.SetActive(false);
+        ChangeMessage(messageText, "어라?\n몸이 커지고 있어!");
+
+        yield return new WaitForSeconds(delay);
+
+        BackGround.gameObject.SetActive(false);
+        isEndFin = true;
     }
 }
