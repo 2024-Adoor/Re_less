@@ -78,8 +78,10 @@ public class Ch02ObjectSpawner : MonoBehaviour
 
     private void SpawnObj()
     {
+        if (_ch02ObjectPool.Count == 0) return;
+        
         // 풀에서 랜덤 오브젝트 가져오기
-        var ch02Obj = _ch02ObjectPool.ElementAt(Random.Range(0, _ch02ObjectPool.Count));
+        var ch02Obj = _ch02ObjectPool.ElementAt(Random.Range(0, _ch02ObjectPool.Count - 1));
         ch02Obj.gameObject.SetActive(true);
         _ch02ObjectPool.Remove(ch02Obj);
         
