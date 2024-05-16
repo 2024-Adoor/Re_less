@@ -76,7 +76,7 @@ namespace Reless
             {
                 Logger.Log($"{nameof(TitleBehaviour)}: Player is started in the room, checking approach door...");
                 
-                GuideText.SetText("문으로 다가가 게임 시작...");
+                GuideText.SetText("문으로 다가가 게임 시작하기...");
                 
                 // 방 안에서 시작했다면 문에 다가갔을 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingApproachDoor(
@@ -91,7 +91,7 @@ namespace Reless
             {
                 Logger.Log($"{nameof(TitleBehaviour)}: Player is not started in the room, checking enter room...");
                 
-                GuideText.SetText("방 안으로 들어가 게임 시작...");
+                GuideText.SetText("방 안으로 들어가 게임 시작하기...");
                 
                 // 방 안에서 시작하지 않았다면 방을 들어갈 때 오프닝을 시작합니다.
                 StartCoroutine(CheckingEnterRoom(

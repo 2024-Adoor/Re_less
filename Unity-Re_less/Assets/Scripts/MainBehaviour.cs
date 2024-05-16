@@ -175,6 +175,7 @@ namespace Reless
             {
                 roomManager.HidePassthroughEffectMesh = true;
                 roomManager.CreateVirtualRoomEffectMeshes();
+                roomManager.PopupBookTable.SetActive(true);
                 
                 yield return new WaitForSeconds(2f);
                 
@@ -192,6 +193,7 @@ namespace Reless
                 // 작아지는 중에 했던 일을 되돌립니다.
                 roomManager.HidePassthroughEffectMesh = false;
                 roomManager.DestroyVirtualRoomEffectMeshes();
+                roomManager.PopupBookTable.SetActive(false);
                 roomManager.roomEnlarger.RestoreRoomScale();
             }
         }

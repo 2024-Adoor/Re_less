@@ -87,7 +87,7 @@ namespace Reless.Opening
                 yield return DarkenPassthrough();
 
                 // 이 시점에 플레이어가 뒤를 보고 있다면
-                if (GameManager.EyeAnchor.forward.z > 0)
+                if (GameManager.EyeAnchor.forward.z < 0)
                 {
                     GuideText.SetText("뒤를 돌아보세요.", duration: 3f);
                 }

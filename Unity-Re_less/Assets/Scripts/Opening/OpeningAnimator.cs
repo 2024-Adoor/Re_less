@@ -51,6 +51,10 @@ namespace Reless.Opening
         [SerializeField] 
         private AnimationCurve wallClosing;
 
+        [Header("References")] 
+        [SerializeField]
+        private GameObject sky;
+
         private void Awake()
         {
             // 오프닝 씬 목록에 null이 있어서는 안 됩니다.
@@ -85,6 +89,11 @@ namespace Reless.Opening
             // 오프닝 씬 반복
             foreach (var scene in scenes)
             {
+                if (scene == scenes[3])
+                {
+                    sky.SetActive(false);
+                }
+                
                 // 현재 오프닝 씬 활성화
                 SetActiveScene(scene);
                 
