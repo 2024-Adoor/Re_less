@@ -179,7 +179,7 @@ namespace Reless.Opening
         private IEnumerator DarkenPassthrough()
         {
             const float duration = 4f;
-            const float darkenBrightness = -0.5f;
+            const float darkenBrightness = -0.425f;
             const float darkenContrast = -0.5f;
             const float darkenSaturation = -0.8f;
             
