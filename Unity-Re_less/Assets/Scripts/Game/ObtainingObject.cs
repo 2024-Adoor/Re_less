@@ -43,6 +43,14 @@ namespace Reless.Game
         {
             StopCoroutine(_respawnCheckCoroutine);
         }
+
+        private void Update()
+        {
+            if (OVRInput.GetDown(OVRInput.RawButton.B))
+            {
+                transform.position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+            }
+        }
         
         /// <summary>
         /// 리스폰이 필요한지 체크합니다.
