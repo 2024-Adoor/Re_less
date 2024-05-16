@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -75,6 +76,41 @@ namespace Reless.VR
             RenderSettings.ambientSkyColor = color.sky;
             RenderSettings.ambientEquatorColor = color.equator;
             RenderSettings.ambientGroundColor = color.ground;
+        }
+
+        /// <summary>
+        /// 현재 챕터를 받아 다음 챕터의 앰비언트 라이팅으로 전환합니다.
+        /// </summary>
+        /// <param name="current">현재 챕터</param>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="current"/>가 유효하지 않은 챕터입니다.</exception>
+        public void TransitAmbientColorToNext(Chapter current)
+        {
+            (AmbientColor from, AmbientColor to) ambientPair = current switch
+            {
+                Chapter.Chapter1 => (ch01AmbientColor, ch02AmbientColor),
+                Chapter.Chapter2 => (ch02AmbientColor, ch03AmbientColor),
+                Chapter.Chapter3 => (ch03AmbientColor, endingAmbientColor),
+                _ => throw new ArgumentOutOfRangeException(nameof(current), current, null)
+            };
+
+            StartCoroutine(TransitAmbientColor(ambientPair.from, ambientPair.to, 3f));
+        }
+        
+        private IEnumerator TransitAmbientColor(AmbientColor from, AmbientColor to, float duration)
+        {
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                var t = elapsed / duration;
+                ApplyAmbientColor(new AmbientColor(
+                    Color.Lerp(from.sky, to.sky, t),
+                    Color.Lerp(from.equator, to.equator, t),
+                    Color.Lerp(from.ground, to.ground, t)
+                ));
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            ApplyAmbientColor(to);
         }
         
         
