@@ -7,12 +7,13 @@ namespace Reless
     public class Trigger_SleepOut : MonoBehaviour
     {
         public GameObject Character;
+        public GameObject NextTrigger;
         public float delayInSeconds = 3f; // 딜레이 초 설정 
 
         // Start is called before the first frame update
         void Start()
         {
-        
+
         }
 
         // Update is called once per frame

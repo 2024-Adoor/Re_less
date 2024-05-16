@@ -27,6 +27,11 @@ public class Trigger_ChangeMaterial : MonoBehaviour
         {
             rendMaterial.material = newMaterial;
             GetComponent<CreateTrigger>()?.Create();
+
+            if(gameObject.name == "UI_MonitorTrigger")
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

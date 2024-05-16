@@ -9,10 +9,14 @@ namespace Reless
         public Canvas  UI;
         UI_Canvas _UI_Canvas;
 
+        public GameObject MonitorOn;
+        public GameObject MonitorOff;
+
         // Start is called before the first frame update
         void Start()
         {
             _UI_Canvas = UI.GetComponent<UI_Canvas>();
+            MonitorOn.SetActive(false);
         }
 
         // Update is called once per frame
@@ -28,6 +32,9 @@ namespace Reless
                 // 챕터 3 시작 세팅
                 // 모니터 보라는 챕터3 시작 UI 제어용 bool값 처리 
                 _UI_Canvas.MonitorOn = true;
+
+                MonitorOn.SetActive(true); 
+                MonitorOff.SetActive(false);
             }
         }
     }
