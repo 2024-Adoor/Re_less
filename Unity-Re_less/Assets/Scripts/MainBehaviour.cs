@@ -87,6 +87,21 @@ namespace Reless
                 _currentChapterObtainingObjectPrefab = obtainingObjectPrefabs.Single(obtaining => obtaining.chapter == (Chapter)phase);
                 
                 SetupSketchObject(chapterSketchOutlinePrefab);
+
+                if (phase is GamePhase.Chapter1)
+                {
+                    StartCoroutine(ShowingChapter1Message());
+                    
+                    IEnumerator ShowingChapter1Message()
+                    {
+                        yield return new WaitForSeconds(1f);
+                        GuideText.SetText("벽 너머의 세계에서 팝업북이 넘어왔다!", 4);
+                        yield return new WaitForSeconds(5f);
+                        GuideText.SetText("가운데 손가락 버튼으로 팝업북의 페이지를 잡고 넘겨보세요.", 4);
+                        yield return new WaitForSeconds(5f);
+                        GuideText.SetText("검지 손가락 버튼으로 그림을 상상해 보세요.", 4);
+                    }
+                }
             }
             // 챕터 중이 아닌 경우
             else
@@ -145,6 +160,9 @@ namespace Reless
             // 그릴 오브젝트 위치에 얻을 오브젝트를 생성하고 그릴 오브젝트를 제거합니다.
             _currentObtainedObject = Instantiate(_currentChapterObtainingObjectPrefab, sketchObject.transform.position, Quaternion.identity);
             Destroy(sketchObject.gameObject);
+            
+            GuideText.SetText("그림이 실체화되었다!");
+            GuideText.SetText("가운데 손가락 버튼으로 잡아 팝업북에 배치해 보세요.", setAfter: 3f);
         }
         
         private void EnableCloseEyesToSleepPose()

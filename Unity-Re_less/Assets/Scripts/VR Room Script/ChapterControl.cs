@@ -134,6 +134,8 @@ public class ChapterControl : MonoBehaviour
         SetActiveFalse(Ch02_Objects);
         
         SetActiveTrue(Ch03_Objects);
+        
+        OVRManager.SetSpaceWarp(false);
     }
 
     void SetActiveFalse(GameObject[] ChapterObjects)
