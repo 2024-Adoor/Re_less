@@ -26,6 +26,10 @@ public class Chat_Character : MonoBehaviour
     // 챕터 클리어용 
     public bool isClear = false;
 
+    // 오디오 재생
+    public AudioClip stone_broken;
+    private AudioSource audioSource;
+
     // 라이팅 변경용
     [Header("References")]
     [SerializeField]
@@ -43,6 +47,7 @@ public class Chat_Character : MonoBehaviour
     void Start()
     {
         _ChapterControl = Player.GetComponent<ChapterControl>();
+        audioSource = GetComponent<AudioSource>();
         
         if(Character.name == "Character_Cat")
         {
@@ -100,6 +105,7 @@ public class Chat_Character : MonoBehaviour
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
+                audioSource.PlayOneShot(stone_broken);
 
                 // 앰비언트 라이팅 조정
                 roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter2);
@@ -117,6 +123,7 @@ public class Chat_Character : MonoBehaviour
             {
                 // 길을 막는 오브젝트 비활성화
                 Obstacle.SetActive(false);
+                audioSource.PlayOneShot(stone_broken);
 
                 // 앰비언트 라이팅 조정
                 roomLighting.ApplyAmbientColorByChapter(Chapter.Chapter3);
