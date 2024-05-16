@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Logger = Reless.Debug.Logger;
 
 public class SujiManage : MonoBehaviour
 {
@@ -84,7 +85,7 @@ public class SujiManage : MonoBehaviour
                 // 회전 로직
                 if (isRotate && !isRotateFin)
                 {
-                    Debug.Log("회전 로직 진행중");
+                    Logger.Log("회전 로직 진행중");
 
                     // Lerp 함수를 사용하여 부드럽게 회전합니다.
                     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -102,14 +103,14 @@ public class SujiManage : MonoBehaviour
                             animationComponent.clip = JumpInAni;
                         }
 
-                        Debug.Log("isRotateFin = true");
+                        Logger.Log("isRotateFin = true");
                     }
                 }
 
                 // 회전 끝남 & 점프와 이동 시작
                 if(isMove && !isMoveFin)
                 {
-                    Debug.Log("target으로 이동중");
+                    Logger.Log("target으로 이동중");
 
                     if(isJumpInAni)
                     {

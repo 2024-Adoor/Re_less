@@ -7,6 +7,7 @@ using System;
 using Reless;
 using Reless.VR;
 using UnityEngine.Assertions;
+using Logger = Reless.Debug.Logger;
 
 public class UI_Canvas : MonoBehaviour
 {
@@ -252,7 +253,7 @@ public class UI_Canvas : MonoBehaviour
                 _PlayerControl.isBdown = false;
             }
 
-            Debug.Log(WatchBcount);
+            Logger.Log(WatchBcount);
 
             if(_ChapterControl.CurrentChapter is Chapter.Chapter1)
             {
