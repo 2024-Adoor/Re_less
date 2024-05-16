@@ -56,12 +56,8 @@ namespace Reless
             _jumpAction = GameManager.InputActions.VR.Jump;
             _exitAction = GameManager.InputActions.VR.Exit;
             
-            _jumpAction.performed += _ =>
-            {
-                if (!hasJumped) _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                hasJumped = true;
-            };
-            _exitAction.performed += _ => FindAnyObjectByType<ChapterControl>().ExitDream();
+            _jumpAction.performed += Jump;
+            _exitAction.performed += ExitDream;
             
             // 꿈에서 나가는 액션은 추후 조건 달성 시 활성화될 것입니다.
             _exitAction.Disable();
@@ -70,7 +66,13 @@ namespace Reless
             yield return null;
             Recenter();
         }
-        
+
+        private void OnDestroy()
+        {
+            _jumpAction.performed -= Jump;
+            _exitAction.performed -= ExitDream;
+        }
+
         private void FixedUpdate()
         {
             RotatePlayerToHMD();
@@ -89,6 +91,18 @@ namespace Reless
             var trackingSpace = GameManager.CameraRig.trackingSpace;
             
             trackingSpace.position -= new Vector3(eye.position.x - transform.position.x, 0, eye.position.z - transform.position.z);
+        }
+        
+                
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (!hasJumped) _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            hasJumped = true;
+        }
+        
+        private void ExitDream(InputAction.CallbackContext context)
+        {
+            FindAnyObjectByType<ChapterControl>().ExitDream();
         }
 
         // 정확히 뭐 하는거고 왜 필요한지 아직 모르겠음..
