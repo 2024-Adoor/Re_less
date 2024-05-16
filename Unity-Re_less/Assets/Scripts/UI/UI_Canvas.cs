@@ -124,6 +124,7 @@ public class UI_Canvas : MonoBehaviour
 
     void Update()
     {
+        ////REVIEW: GetComponent를 Start or Awkae로 옮기기
         if(Player != null)
         {
             _PlayerState = Player.GetComponent<PlayerState>();
@@ -145,6 +146,7 @@ public class UI_Canvas : MonoBehaviour
             _Cactus_Chat = Cactus_Chat.GetComponent<Chat_Character>();
         }
 
+        ////REVIEW: 이미 UI는 카메라를 따라가고 있는데 아래 코드가 필요한지 확인 필요
         // 카메라의 전방 벡터와 거리를 곱하여 원하는 위치를 계산합니다.
         Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
 
@@ -152,6 +154,7 @@ public class UI_Canvas : MonoBehaviour
         transform.position = desiredPosition;
         transform.rotation = cameraTransform.rotation;
 
+        ////REVIEW: Start로 이동 예정
         // 챕터 1 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && !Ch01Fin)
         {
