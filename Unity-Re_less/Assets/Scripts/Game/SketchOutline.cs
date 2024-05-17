@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Logger = Reless.Debug.Logger;
 
 namespace Reless.Game
@@ -29,6 +30,8 @@ namespace Reless.Game
         private float _maxEdgeLength = 0.5f;
         private float _edgeInset = 0.01f;
         
+        private InputAction _respawnAction;
+        
         public event Action<SketchOutline> DrawingCompleted;
         
         [ShowNativeProperty]
@@ -43,15 +46,18 @@ namespace Reless.Game
         private void Start()
         {
             GenerateEdgeColliders();
+            
+            _respawnAction = GameManager.InputActions.MR.Respawn;
+            _respawnAction.performed += Respawn;
+        }
+        
+        private void OnDestroy()
+        {
+            _respawnAction.performed -= Respawn;
         }
 
         private void Update()
         {
-            if (OVRInput.GetDown(OVRInput.RawButton.B))
-            {
-                transform.position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
-            }
-            
             // 모든 DrawingChecker가 체크되었는지 확인합니다.
             if (_drawingCheckers.Count > 0)
             {
@@ -79,6 +85,29 @@ namespace Reless.Game
         {
             DrawingCompleted?.Invoke(this);
         }
+        
+        /// <summary>
+        /// 리스폰합니다.
+        /// </summary>
+        [Button(enabledMode: EButtonEnableMode.Editor)]
+        public void Respawn()
+        {
+            Respawn(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
+        }
+        
+        /// <summary>
+        /// 대상 위치에 리스폰합니다.
+        /// </summary>
+        /// <param name="position">리스폰할 위치</param>
+        private void Respawn(Vector3 position)
+        {
+            transform.position = position;
+        }
+        
+        /// <summary>
+        /// 리스폰 액션
+        /// </summary>
+        private void Respawn(InputAction.CallbackContext context) => Respawn();
 
         private void GenerateEdgeColliders()
         {
