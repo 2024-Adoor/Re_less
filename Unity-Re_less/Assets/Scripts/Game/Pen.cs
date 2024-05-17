@@ -159,7 +159,7 @@ namespace Reless.Game
 
         public void ClearLines()
         {
-            for (int i = 0; i < this.transform.childCount; i++)
+            for (int i = 0; i < drawnLineContiner.transform.childCount; i++)
             {
                 Destroy(drawnLineContiner.transform.GetChild(i).gameObject);
             }
