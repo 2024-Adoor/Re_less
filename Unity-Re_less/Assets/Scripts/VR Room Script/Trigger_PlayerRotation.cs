@@ -10,6 +10,7 @@ namespace Reless
         public float rotationSpeed = 5f; // 회전 속도
 
         bool isRotate = false;
+        bool RotateFin = false;
         Quaternion targetRotation;
 
         // Start is called before the first frame update
@@ -21,9 +22,10 @@ namespace Reless
         // Update is called once per frame
         void Update()
         {
-            if(isRotate)
+            if(isRotate && !RotateFin)
             {
                 RotatePlayer();
+                
             }
         }
 
@@ -48,6 +50,7 @@ namespace Reless
             if(Quaternion.Angle(Player.transform.rotation, targetRotation) < 1.0f)
             {
                 isRotate = false;
+                RotateFin = true;
             }
         }
 

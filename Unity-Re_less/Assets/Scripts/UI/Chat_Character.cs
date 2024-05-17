@@ -18,6 +18,10 @@ public class Chat_Character : MonoBehaviour
     public AnimationClip doorAni;
     int Chat = 0;
     
+    // VFX 제어
+    public ParticleSystem CactusSleepParticle;
+    public ParticleSystem CatSleepParticle;
+
     // é�� Ŭ����� 
     public GameObject Obstacle;
     
@@ -55,6 +59,11 @@ public class Chat_Character : MonoBehaviour
         }
         else
         {
+            if(Character.name == "Character_Clock")
+            {
+                CactusSleepParticle.Stop();
+                CatSleepParticle.Stop();
+            }
             _AniManage = Character.GetComponent<AniManage>();
         }
     }
@@ -113,6 +122,9 @@ public class Chat_Character : MonoBehaviour
                 // 오브젝트 지나다니는거 활성화
                 // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
                 foreach (var spawner in ch02ObjectSpawners) { spawner.StartSpawn(); }
+
+                CactusSleepParticle.Play();
+                CatSleepParticle.Play();
 
                 isClear =  true;
             }

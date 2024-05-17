@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using Reless;
+using Reless.VR;
 
 public class Cat_AniManage : MonoBehaviour
 {
     public Animation animationComponent;    // Animation 컴포넌트 참조
     public GameObject Player;               // Player
+    ChapterControl _ChapterControl;
     public bool isSleepOut = false;
 
     // VFX
@@ -30,8 +33,12 @@ public class Cat_AniManage : MonoBehaviour
     void Start()
     {
         HealingAudioSource = GetComponent<AudioSource>();
+        _ChapterControl = Player.GetComponent<ChapterControl>();
 
-        SleepingEffect.Play();
+        if(_ChapterControl.CurrentChapter is Chapter.Chapter2)
+        {
+            SleepingEffect.Play();
+        }
         SleepOutEffect.Stop();
 
         eyes1.SetActive(false);
