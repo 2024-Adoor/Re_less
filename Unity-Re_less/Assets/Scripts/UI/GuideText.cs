@@ -53,13 +53,7 @@ namespace Reless.UI
         {
             if (setAfter is not null)
             {
-                if (Instance._currentCoroutine is not null)
-                {
-                    Instance.StopCoroutine(Instance._currentCoroutine);
-                    ClearText();
-                }
-                
-                Instance._currentCoroutine = Instance.StartCoroutine(SetTextAfter(text, setAfter.Value));
+                Instance.StartCoroutine(SetTextAfter(setAfter.Value));
                 return;
             }
             
@@ -79,9 +73,15 @@ namespace Reless.UI
             
             return;
             
-            IEnumerator SetTextAfter(string text, float waitTime)
+            IEnumerator SetTextAfter(float waitTime)
             {
                 yield return new WaitForSeconds(waitTime);
+                if (Instance._currentCoroutine is not null)
+                {
+                    Instance.StopCoroutine(Instance._currentCoroutine);
+                    ClearText();
+                }
+                
                 SetText(text, duration);
             }
         }

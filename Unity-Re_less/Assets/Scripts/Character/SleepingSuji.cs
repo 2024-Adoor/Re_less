@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class SleepingSuji : MonoBehaviour
@@ -8,14 +7,16 @@ public class SleepingSuji : MonoBehaviour
     public GameObject Ch03Fruit;
     public GameObject SleepOut_SujiPrefab;
 
-    // ¿Àµğ¿À °ü¸®
+    // ì˜¤ë””ì˜¤ ê´€ë¦¬
     public AudioClip fruit_get;
     private AudioSource audioSource;
 
     public bool isSleepOut = false;
     public bool isDetected = false;
 
-    // ¾Ö´Ï¸ŞÀÌ¼Ç Á¦¾î
+    public event Action TriggerFruitEntered;
+
+    // ì• ë‹ˆë©”ì´ì…˜ ì œì–´
     bool isChange = false;
 
     // Start is called before the first frame update
@@ -30,7 +31,7 @@ public class SleepingSuji : MonoBehaviour
     {
         Keyboard _Keyboard = KeyboardEnter.GetComponent<Keyboard>();
 
-        // ¿­¸Å ºÎµúÇûÀ»¶§ SleepOut ¾Ö´Ï¸ŞÀÌ¼Ç ÇÁ¸®ÆÕÀ¸·Î ÀüÈ¯ 
+        // ì—´ë§¤ ë¶€ë”ªí˜”ì„ë•Œ SleepOut ì• ë‹ˆë©”ì´ì…˜ í”„ë¦¬íŒ¹ìœ¼ë¡œ ì „í™˜ 
         if(isDetected && _Keyboard.enterDown)
         {
             SleepOut_SujiPrefab.SetActive(true);
@@ -45,9 +46,10 @@ public class SleepingSuji : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {   
-        // ¼öÁöÇÑÅ× Fruit ÅÂ±× Ãæµ¹½Ã isDetected = true
+        // ìˆ˜ì§€í•œí…Œ Fruit íƒœê·¸ ì¶©ëŒì‹œ isDetected = true
         if (other.gameObject.CompareTag("Fruit"))
         {   
+            TriggerFruitEntered?.Invoke();
             isDetected = true;
             audioSource.PlayOneShot(fruit_get);
         }

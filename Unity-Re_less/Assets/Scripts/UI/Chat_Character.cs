@@ -108,7 +108,7 @@ public class Chat_Character : MonoBehaviour
                 audioSource.PlayOneShot(stone_broken);
 
                 // 앰비언트 라이팅 조정
-                roomLighting.TransitAmbientColorToNext(Chapter.Chapter2);
+                roomLighting.TransitAmbientColorToNext(Chapter.Chapter1);
 
                 // 오브젝트 지나다니는거 활성화
                 // OBJspawn's SpawnCH02obj.cs -> isSpawn True 
@@ -126,7 +126,7 @@ public class Chat_Character : MonoBehaviour
                 audioSource.PlayOneShot(stone_broken);
 
                 // 앰비언트 라이팅 조정
-                roomLighting.TransitAmbientColorToNext(Chapter.Chapter3);
+                roomLighting.TransitAmbientColorToNext(Chapter.Chapter2);
 
                 isClear =  true;
             }

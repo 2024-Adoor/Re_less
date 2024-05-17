@@ -34,9 +34,9 @@ namespace Reless.Game
             transform.localScale = Vector3.one * 5;
             
             // 리스폰 체크 루틴을 시작합니다.
-            _respawnCheckCoroutine = StartCoroutine(CheckRespawnNeeded(
+            /*_respawnCheckCoroutine = StartCoroutine(CheckRespawnNeeded(
                 respawnCondition: () => this.transform.position.y < -10, 
-                onNeeded: () => Respawn(GameManager.EyeAnchor.position)));
+                onNeeded: () => Respawn(GameManager.EyeAnchor.position)));*/
         }
 
         private void OnDestroy()
