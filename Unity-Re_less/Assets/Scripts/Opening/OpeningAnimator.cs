@@ -54,6 +54,9 @@ namespace Reless.Opening
         [Header("References")] 
         [SerializeField]
         private GameObject sky;
+        
+        [SerializeField]
+        private Light mainDirectionalLight;
 
         private void Awake()
         {
@@ -92,6 +95,7 @@ namespace Reless.Opening
                 if (scene == scenes[3])
                 {
                     sky.SetActive(false);
+                    mainDirectionalLight.intensity = 0.2f;
                 }
                 
                 // 현재 오프닝 씬 활성화
