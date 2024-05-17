@@ -67,12 +67,14 @@ namespace Reless.MR
                 // Finally, actually perform the scale/translation
                 RoomManager.Room.transform.localScale = Vector3.one * scale;
                 RoomManager.Room.transform.localPosition = newPosition;
-                
+
                 yield return null;
             }
-            
+
             // 최종 값으로 방의 크기 변경
             RoomManager.Room.transform.localScale = Vector3.one * enlargedScale;
+            
+            yield return new WaitForSeconds(2f);
         }
         
         public void RestoreRoomScale()

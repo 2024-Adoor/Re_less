@@ -227,13 +227,13 @@ namespace Reless
                 // 방에서 작아지기
                 yield return roomManager.roomEnlarger.EnlargingRoom();
                 
-                // VR 씬 로드
-                var asyncLoad = GameManager.LoadVRScene();
-                asyncLoad.allowSceneActivation = false;
+                FindAnyObjectByType<OVRPassthroughLayer>().textureOpacity = 0f;
                 
-                // 2초 대기 후 VR 씬 활성화
-                yield return new WaitForSeconds(2f);
-                asyncLoad.allowSceneActivation = true;
+                GuideText.SetText("꿈 속으로 들어갑니다...");
+                
+                // VR 씬 로드
+                GameManager.LoadVRScene();
+               
                 
                 // 작아지는 중에 했던 일을 되돌립니다.
                 roomManager.HidePassthroughEffectMesh = false;
