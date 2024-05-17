@@ -552,7 +552,7 @@ public class UI_Canvas : MonoBehaviour
     {
         BackGround.gameObject.SetActive(true);
         _PlayerControl.speed = 0f;
-        ChangeMessage(messageText, "마우스로 밀어 열매를 드래그해보자!");
+        ChangeMessage(messageText, "모니터 속 열매를 움직이려면\n마우스에 부딪혀서 밀어보자!");
 
         // 확인 눌렀을 때 비활성화 
         if(_PlayerControl.isBdown)
