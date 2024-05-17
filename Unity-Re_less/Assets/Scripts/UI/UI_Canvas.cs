@@ -107,6 +107,9 @@ public class UI_Canvas : MonoBehaviour
         _ChapterControl = Player.GetComponent<ChapterControl>();
         _PlayerState = Player.GetComponent<PlayerState>();
         _PlayerControl = Player.GetComponent<PlayerControl>();
+        Clock_AniManage = Clock.GetComponent<AniManage>();
+        Cat_AniManage = Cat.GetComponent<Cat_AniManage>();
+        Cactus_AniManage = Cactus.GetComponent<AniManage>();
         
         if(Suji != null) { _SujiEndingTest = Suji.GetComponent<SujiEndingTest>(); }
         
@@ -118,6 +121,11 @@ public class UI_Canvas : MonoBehaviour
         if(Cactus_Chat != null)
         {
             _Cactus_Chat = Cactus_Chat.GetComponent<Chat_Character>();
+        }
+        
+        if(SleepingSuji != null)
+        {
+            _SleepingSuji = SleepingSuji.GetComponent<SleepingSuji>();
         }
 
         transform.localPosition = Vector3.zero;
@@ -141,18 +149,37 @@ public class UI_Canvas : MonoBehaviour
         {
             Chapter02_StartUI();
         }
+        
+        // 챕터 3 - 수지랑 열매 닿았을 때
+        _SleepingSuji.TriggerFruitEntered += () =>
+        {
+            UnableRawImage(Ch03_Sleeping);
+            EnableRawImage(Ch03_SleepOut);
+
+            // 2초 딜레이 후 canSleepOutSuji true
+            StartCoroutine(SetCanSleepOutSujiAfterDelay(2.0f));
+        };
+        
+        _SujiEndingTest.MoveStarted += () =>
+        {
+            // 수지가 움직일 때, 수지를 따라가자 활성화 & 깨운 캐릭터 UI 비활성화
+            BackGround.gameObject.SetActive(true);
+            BackGround_Confirm.gameObject.SetActive(false);
+            UnableRawImage(Ch03_SleepOut);
+
+            ChangeMessage(messageText, "수지를 따라가자!");
+        };
+
+        _SujiEndingTest.EndPointReached += () =>
+        {
+            BackGround.gameObject.SetActive(false);
+            BackGround_Confirm.gameObject.SetActive(true);
+            UnableRawImage(Ch03_SleepOut);
+        };
     }
 
     void Update()
     {
-        ////REVIEW: 이미 UI는 카메라를 따라가고 있는데 아래 코드가 필요한지 확인 필요
-        // 카메라의 전방 벡터와 거리를 곱하여 원하는 위치를 계산합니다.
-        /*Vector3 desiredPosition = cameraTransform.position + cameraTransform.forward * distanceFromCamera;
-
-        // 계산된 위치로 Canvas를 이동시킵니다.
-        transform.position = desiredPosition;
-        transform.rotation = cameraTransform.rotation;*/
-
         // 챕터 1 시작시 UI 창 
         if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && !Ch01Fin)
         {
@@ -207,7 +234,6 @@ public class UI_Canvas : MonoBehaviour
 
         // 챕터 1 - 열매 전달해줬을 때 UI 변경 (이미지로 처리)
         // Clock AniManage.cs isSleepOut == true
-        Clock_AniManage = Clock.GetComponent<AniManage>();
         if(Clock_AniManage.isSleepOut && !SleepOutClock)
         {
             BackGround_Fruit.gameObject.SetActive(false);
@@ -338,8 +364,7 @@ public class UI_Canvas : MonoBehaviour
         // 챕터 2 - 열매 전달해줬을 때 UI 변경 
         // Cat Cat_AniManage.cs isSleepOut == true
         // Cactus AniManage.cs isSleepOut == true
-        Cat_AniManage = Cat.GetComponent<Cat_AniManage>();
-        Cactus_AniManage = Cactus.GetComponent<AniManage>();
+        
         if(Cat_AniManage.isSleepOut && !SleepOutCat)
         {
             ChangeMessage(fruitText, "1/1");
@@ -417,19 +442,7 @@ public class UI_Canvas : MonoBehaviour
             }
         }
 
-        // 챕터 3 - 수지랑 열매 닿았을 때
-        if(SleepingSuji != null)
-        {
-            _SleepingSuji = SleepingSuji.GetComponent<SleepingSuji>();
-        }
-        if(_SleepingSuji.isDetected)
-        {
-            UnableRawImage(Ch03_Sleeping);
-            EnableRawImage(Ch03_SleepOut);
-
-            // 2초 딜레이 후 canSleepOutSuji true
-            StartCoroutine(SetCanSleepOutSujiAfterDelay(2.0f));
-        }
+        
         if(canSleepOutSuji && !isEnterUIFin)
         {
             BackGround.gameObject.SetActive(true);
@@ -442,21 +455,7 @@ public class UI_Canvas : MonoBehaviour
             }
         }
 
-        // 챕터 3 - 수지가 움직일 때, 수지를 따라가자 활성화 & 깨운 캐릭터 UI 비활성화
-        if(_SujiEndingTest.canMove)
-        {
-            BackGround.gameObject.SetActive(true);
-            BackGround_Confirm.gameObject.SetActive(false);
-            UnableRawImage(Ch03_SleepOut);
-
-            ChangeMessage(messageText, "수지를 따라가자!");
-        }
-        if(_SujiEndingTest.IsReachedEndPoint)
-        {
-            BackGround.gameObject.SetActive(false);
-            BackGround_Confirm.gameObject.SetActive(true);
-            UnableRawImage(Ch03_SleepOut);
-        }
+        
 
         // 모든 챕터 - SleepOut trigger 충돌했을 때, FruitCount가 없으면 열매없이는 못 깨운다는 UI 활성화 & 트리거 색상 복구
         // if(_ChapterControl.CurrentChapter is Chapter.Chapter1 && !Clock_AniManage.isSleepOut)

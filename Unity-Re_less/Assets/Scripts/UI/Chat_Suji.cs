@@ -53,8 +53,6 @@ public class Chat_Suji : MonoBehaviour
                 if (elapsedTime >= delayTime)
                 {
                     Debug.Log("Suji can Move");
-                    // 딜레이가 종료되면 실행할 코드
-                    _SujiEndingTest.canMove = true;
                     _SujiEndingTest.WakeUp();
                     
                     //Debug.Log("Delayed action after " + delayTime + " seconds.");
