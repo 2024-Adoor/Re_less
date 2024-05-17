@@ -88,7 +88,7 @@ namespace Reless.Game
         /// <summary>
         /// 리스폰합니다.
         /// </summary>
-        [Button(enabledMode: EButtonEnableMode.Editor)]
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
         public void Respawn()
         {
             // 오른쪽 컨트롤러 위치에 리스폰.

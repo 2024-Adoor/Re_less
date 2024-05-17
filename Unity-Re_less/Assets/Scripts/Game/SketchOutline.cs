@@ -89,7 +89,7 @@ namespace Reless.Game
         /// <summary>
         /// 리스폰합니다.
         /// </summary>
-        [Button(enabledMode: EButtonEnableMode.Editor)]
+        [Button(enabledMode: EButtonEnableMode.Playmode)]
         public void Respawn()
         {
             Respawn(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
