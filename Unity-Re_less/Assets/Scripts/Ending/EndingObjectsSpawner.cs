@@ -49,11 +49,16 @@ namespace Reless.Ending
                 
                 Transform popupBook = GameManager.Instance.PopupBook.transform;
 
+                // 팝업북의 180도 y축 회전한 값
+                var rotation = popupBook.rotation.eulerAngles;
+                rotation.y += 180;
+                var popupBookBack=  Quaternion.Euler(rotation);
+                
                 // 팝업북 위치에 폴라로이드 생성
-                Instantiate(polaroidsPrefab, popupBook.position, popupBook.rotation, popupBook.parent);
+                Instantiate(polaroidsPrefab, popupBook.position, popupBookBack, popupBook.parent);
                 
                 // 팝업북 위치에 빌런이 생성
-                var villain = Instantiate(villainPrefab , popupBook.position, popupBook.rotation, popupBook.parent);
+                var villain = Instantiate(villainPrefab , popupBook.position, popupBookBack, popupBook.parent);
                 
                 // 팝업북 제거
                 Destroy(popupBook.gameObject);
@@ -62,6 +67,7 @@ namespace Reless.Ending
                 {
                     // 빌런이가 문을 바라보도록 회전
                     villain.transform.LookAt(new Vector3(door.transform.position.x, villain.transform.position.y, door.transform.position.z));
+                    villain.transform.Rotate(Vector3.up, 180);
                 }
                 else
                 {
