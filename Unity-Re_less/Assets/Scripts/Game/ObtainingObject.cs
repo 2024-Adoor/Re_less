@@ -57,7 +57,7 @@ namespace Reless.Game
         private void OnDestroy()
         {
             _respawnAction.performed -= Respawn;
-            StopCoroutine(_respawnCheckCoroutine);
+            //StopCoroutine(_respawnCheckCoroutine);
         }
 
         /// <summary>
