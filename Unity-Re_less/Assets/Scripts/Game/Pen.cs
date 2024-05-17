@@ -161,7 +161,7 @@ namespace Reless.Game
         {
             for (int i = 0; i < this.transform.childCount; i++)
             {
-                Destroy(this.transform.GetChild(i).gameObject);
+                Destroy(drawnLineContiner.transform.GetChild(i).gameObject);
             }
         }
 
