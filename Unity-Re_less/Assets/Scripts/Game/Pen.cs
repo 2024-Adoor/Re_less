@@ -122,7 +122,6 @@ namespace Reless.Game
             _currentLine.SetPosition(0, position);
             _pointPositions.Clear();
             _pointPositions.Add(position);
-            _currentLine.transform.parent = this.transform;
         }
 
         private void UpdateLine(Vector3 position)

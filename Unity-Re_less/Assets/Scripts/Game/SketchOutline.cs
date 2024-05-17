@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Logger = Reless.Debug.Logger;
@@ -31,6 +33,22 @@ namespace Reless.Game
         private float _edgeInset = 0.01f;
         
         private InputAction _respawnAction;
+
+        public TMP_Text ProgressLabel
+        {
+            set
+            {
+                if (_progressLabel != null)
+                {
+                    Logger.LogWarning($"{this.name}: Progress label is already set.");
+                    return;
+                }
+                _progressLabel = value;
+            }
+        }
+        
+        [CanBeNull] 
+        private TMP_Text _progressLabel;
         
         public event Action<SketchOutline> DrawingCompleted;
         
@@ -49,15 +67,30 @@ namespace Reless.Game
             
             _respawnAction = GameManager.InputActions.MR.Respawn;
             _respawnAction.performed += Respawn;
+            
+            if (_progressLabel is null)
+            {
+                Logger.LogWarning($"{this.name}: Progress label is not set.");
+            }
+            else
+            {
+                _progressLabel?.gameObject.SetActive(true);
+            }
         }
         
         private void OnDestroy()
         {
             _respawnAction.performed -= Respawn;
+            _progressLabel?.gameObject.SetActive(false);
         }
 
         private void Update()
         {
+            if (_progressLabel is not null)
+            {
+                _progressLabel.text = $"{_fillRatio * 100:F0}%";
+            }
+            
             // 모든 DrawingChecker가 체크되었는지 확인합니다.
             if (_drawingCheckers.Count > 0)
             {
