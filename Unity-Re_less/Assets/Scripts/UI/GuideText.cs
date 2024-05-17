@@ -53,6 +53,7 @@ namespace Reless.UI
         {
             if (setAfter is not null)
             {
+                Logger.Log($"Setting text after {setAfter.Value} seconds.");
                 Instance.StartCoroutine(SetTextAfter(setAfter.Value));
                 return;
             }
@@ -68,6 +69,8 @@ namespace Reless.UI
                     ClearText();
                 }
                 
+                Instance.text.enabled = true;
+                Instance.text.text = text;
                 Instance._currentCoroutine = Instance.StartCoroutine(Instance.FadeOutTextAfter(duration));
             }
             
@@ -78,6 +81,7 @@ namespace Reless.UI
                 yield return new WaitForSeconds(waitTime);
                 if (Instance._currentCoroutine is not null)
                 {
+                    Logger.LogWarning($"{nameof(GuideText)}: Coroutine is already running. Stopping the current coroutine.");
                     Instance.StopCoroutine(Instance._currentCoroutine);
                     ClearText();
                 }
