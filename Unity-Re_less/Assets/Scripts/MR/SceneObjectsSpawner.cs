@@ -57,9 +57,6 @@ namespace Reless.MR
         [SerializeField]
         private GameObject popupBookPrefab;
 
-        [SerializeField]
-        private List<GameObject> wallHintPrefabs;
-
         [SerializeField] 
         private GameObject popupBookTable;
         
@@ -89,7 +86,6 @@ namespace Reless.MR
             Logger.Log("Spawning all scene objects.");
             SpawnOuterPrefabs();
             SpawnPopupBook();
-            SpawnWallHint();
         }
         
         private void SpawnOuterPrefabs()
@@ -205,41 +201,6 @@ namespace Reless.MR
             
             // 처음 스폰 시 비활성화
             book.SetActive(false);
-        }
-
-        private void SpawnWallHint()
-        {
-            {
-                var hint = Spawn(wallHintPrefabs[0], RoomManager.KeyWall);
-                hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(0.75f, 0.05f, 0);
-                GameManager.Instance.spawnedWallHints.Add(hint);
-                hint.SetActive(false);
-            }
-            {
-                var hint = Spawn(wallHintPrefabs[1], RoomManager.KeyWall);
-                hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(0.25f, 0.05f, 0);
-                GameManager.Instance.spawnedWallHints.Add(hint);
-                hint.SetActive(false);
-
-            }
-            {
-                var hint = Spawn(wallHintPrefabs[2], RoomManager.KeyWall);
-                hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(-0.25f, 0.05f, 0);
-                GameManager.Instance.spawnedWallHints.Add(hint);
-                hint.SetActive(false);
-
-            }
-            {
-                var hint = Spawn(wallHintPrefabs[3], RoomManager.KeyWall);
-                hint.transform.Rotate(Vector3.right, 90);
-                hint.transform.Translate(-0.75f, 0.05f, 0);
-                GameManager.Instance.spawnedWallHints.Add(hint);
-                hint.SetActive(false);
-
-            }
         }
         
         private static GameObject Spawn(GameObject prefab, MRUKAnchor anchor)

@@ -835,7 +835,6 @@ MonoBehaviour:
     logoRight: {fileID: 0}
   popupBookPrefab: {fileID: 1624372773800141203, guid: b2a812b88164701428201b83a355d5b1, type: 3}
   wallHintPrefabs:
-  - {fileID: 2503534191352518296, guid: 9facbc04becca6641ad4b43d4fa5ab78, type: 3}
   - {fileID: 2503534191352518296, guid: d0568a66823d7cc4fae2d224808a685c, type: 3}
   - {fileID: 2503534191352518296, guid: f34816eef21f8d34b9ca511dcb5c7640, type: 3}
   - {fileID: 2503534191352518296, guid: e22d487ba390652498e4a5bc17e9d515, type: 3}
