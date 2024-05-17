@@ -286,7 +286,7 @@ public class UI_Canvas : MonoBehaviour
                 // 챕터 1일 때만 실행
                 if(WatchBcount == 0)
                 {
-                    ChangeMessage(messageText, "시간을 멈추면 건널 수 있지 않을까?\n여기서 나가자 시계를 그려오자!");
+                    ChangeMessage(messageText, "시간을 멈추면 건널 수 있지 않을까?\n여기서 나가서 시계를 그려오자!");
                 }
                 else if(WatchBcount == 1)
                 {
@@ -306,7 +306,7 @@ public class UI_Canvas : MonoBehaviour
                 // 챕터 2로 넘어와서 충돌했을 경우
                 if(WatchBcount == 0)
                 {
-                    ChangeMessage(messageText, "시계를 부숴보자!");
+                    ChangeMessage(messageText, "시계와 부딪혀서\n시계를 부숴보자!");
                 }
                 else if(WatchBcount == 1)
                 {
@@ -320,7 +320,7 @@ public class UI_Canvas : MonoBehaviour
         if(_PlayerState.isDoorUI && !DoorUIFin)
         {
             BackGround.gameObject.SetActive(true);
-            ChangeMessage(messageText, "세번째 손가락으로 버튼을 눌러\n문을 당겨보자!");
+            ChangeMessage(messageText, "세번째 손가락 버튼으로\n문고리를 잡고 문을 열어보자!");
             _PlayerControl.speed = 0f;
 
             // 확인 누르면 실행으로 변경 
@@ -416,7 +416,7 @@ public class UI_Canvas : MonoBehaviour
             if(MonitorBcount == 0)
             {
                 BackGround.gameObject.SetActive(true);
-                ChangeMessage(messageText, "마우스로 밀어 열매를 드래그해보자!");
+                ChangeMessage(messageText, "마우스로 열매를 드래그해보자!");
                 _PlayerControl.speed = 0f;
             }
             else if(MonitorBcount == 1)
@@ -446,7 +446,7 @@ public class UI_Canvas : MonoBehaviour
         if(canSleepOutSuji && !isEnterUIFin)
         {
             BackGround.gameObject.SetActive(true);
-            ChangeMessage(messageText, "수지에게 열매를 주려면\nenter키를 밟아보자!");
+            ChangeMessage(messageText, "수지에게 열매를 주려면\nenter키 위를 밟아보자!");
             
             if(_PlayerControl.isBdown)
             {
