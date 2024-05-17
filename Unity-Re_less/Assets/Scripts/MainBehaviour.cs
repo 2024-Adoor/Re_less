@@ -99,11 +99,15 @@ namespace Reless
                     IEnumerator ShowingChapter1Message()
                     {
                         yield return new WaitForSeconds(1f);
-                        GuideText.SetText("벽 너머의 세계에서 팝업북이 넘어왔다!", 4);
+                        GuideText.SetText("테이블 위에 팝업북이 생겼다!", 4);
                         yield return new WaitForSeconds(5f);
-                        GuideText.SetText("가운데 손가락 버튼으로 팝업북의 페이지를 잡고 넘겨보세요.", 4);
+                        GuideText.SetText("팝업북에는 그림을 그려서 꿈에 배치할 수 있다고 한다. 친구들을 도와주러 가보자!", 4);
                         yield return new WaitForSeconds(5f);
-                        GuideText.SetText("검지 손가락 버튼으로 그림을 상상해 보세요.", 4);
+                        GuideText.SetText("검지 버튼으로 그림을 그릴 수 있습니다. 그려보세요!", 4);
+                        yield return new WaitForSeconds(5f);
+                        GuideText.SetText("그려야 할 그림 물체를 찾아보세요. B 버튼으로 가져오고, 잡아서 움직일 수 있습니다.", 4);
+                        yield return new WaitForSeconds(5f);
+                        GuideText.SetText("왼쪽 컨트롤러의 위에 진행률이 표시됩니다.", 4);
                     }
                 }
             }
@@ -172,7 +176,7 @@ namespace Reless
             pen.ClearLines();
             pen.gameObject.SetActive(false);
             
-            _currentObtainedObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+            _currentObtainedObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 1f, ForceMode.Impulse);
                 
             GuideText.SetText("그림이 그려졌어요!", duration: 2f);
             
@@ -215,7 +219,7 @@ namespace Reless
 
             IEnumerator Routine()
             {
-                GuideText.SetText("팝업북에 오브젝트가 붙었다.");
+                GuideText.ClearText();
                 yield return new WaitForSeconds(1f);
                 
                 roomManager.HidePassthroughEffectMesh = true;

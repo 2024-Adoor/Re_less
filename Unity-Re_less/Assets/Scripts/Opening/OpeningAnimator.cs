@@ -95,7 +95,7 @@ namespace Reless.Opening
                 if (scene == scenes[3])
                 {
                     sky.SetActive(false);
-                    mainDirectionalLight.intensity = 0.2f;
+                    mainDirectionalLight.intensity = 0.1f;
                 }
                 
                 // 현재 오프닝 씬 활성화
