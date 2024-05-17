@@ -108,7 +108,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""38330ab1-2ec5-472a-9204-e8892ae7d611"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Respawn"",
                     ""type"": ""Button"",
                     ""id"": ""2727453c-bd60-41b5-9907-d7855511c6f6"",
                     ""expectedControlType"": """",
@@ -121,11 +121,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""abcd9772-7122-4c75-86a6-9daa17669fb5"",
-                    ""path"": """",
+                    ""path"": ""<OculusTouchController>{RightHand}/secondaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""groups"": "";Meta Quest"",
+                    ""action"": ""Respawn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -192,7 +192,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_VR_Exit = m_VR.FindAction("Exit", throwIfNotFound: true);
         // MR
         m_MR = asset.FindActionMap("MR", throwIfNotFound: true);
-        m_MR_Newaction = m_MR.FindAction("New action", throwIfNotFound: true);
+        m_MR_Respawn = m_MR.FindAction("Respawn", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         // Constant
@@ -329,12 +329,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // MR
     private readonly InputActionMap m_MR;
     private List<IMRActions> m_MRActionsCallbackInterfaces = new List<IMRActions>();
-    private readonly InputAction m_MR_Newaction;
+    private readonly InputAction m_MR_Respawn;
     public struct MRActions
     {
         private @InputActions m_Wrapper;
         public MRActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_MR_Newaction;
+        public InputAction @Respawn => m_Wrapper.m_MR_Respawn;
         public InputActionMap Get() { return m_Wrapper.m_MR; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -344,16 +344,16 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MRActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MRActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Respawn.started += instance.OnRespawn;
+            @Respawn.performed += instance.OnRespawn;
+            @Respawn.canceled += instance.OnRespawn;
         }
 
         private void UnregisterCallbacks(IMRActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Respawn.started -= instance.OnRespawn;
+            @Respawn.performed -= instance.OnRespawn;
+            @Respawn.canceled -= instance.OnRespawn;
         }
 
         public void RemoveCallbacks(IMRActions instance)
@@ -472,7 +472,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     }
     public interface IMRActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using NaughtyAttributes;
 using Reless.MR;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
 using Logger = Reless.Debug.Logger;
 
 namespace Reless.Game
@@ -24,14 +26,27 @@ namespace Reless.Game
         
         private MainBehaviour _mainBehaviour;
         
-        public bool IsSnapped { get; private set; }
+        private Rigidbody _rigidbody;
         
+        private InputAction _respawnAction;
+        
+        public bool IsSnapped { get; private set; }
+
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+            
+            transform.localScale = Vector3.one * 5;
+        }
+
         private void Start()
         {
             _mainBehaviour = FindAnyObjectByType<MainBehaviour>();
             Assert.IsNotNull(_mainBehaviour, $"{nameof(ObtainingObject)}: There is no MainBehaviour in the scene.");
             
-            transform.localScale = Vector3.one * 5;
+            // 리스폰 액션을 등록합니다.
+            _respawnAction = GameManager.InputActions.MR.Respawn;
+            _respawnAction.performed += Respawn;
             
             // 리스폰 체크 루틴을 시작합니다.
             /*_respawnCheckCoroutine = StartCoroutine(CheckRespawnNeeded(
@@ -41,17 +56,10 @@ namespace Reless.Game
 
         private void OnDestroy()
         {
+            _respawnAction.performed -= Respawn;
             StopCoroutine(_respawnCheckCoroutine);
         }
 
-        private void Update()
-        {
-            if (OVRInput.GetDown(OVRInput.RawButton.B))
-            {
-                transform.position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
-            }
-        }
-        
         /// <summary>
         /// 리스폰이 필요한지 체크합니다.
         /// </summary>
@@ -70,15 +78,35 @@ namespace Reless.Game
                 }
             }
         }
+
+        /// <summary>
+        /// 리스폰 액션
+        /// </summary>
+        /// <param name="context"></param>
+        private void Respawn(InputAction.CallbackContext context) => Respawn();
         
         /// <summary>
         /// 리스폰합니다.
         /// </summary>
-        /// <param name="position">리스폰할 위치</param>
-        public void Respawn(Vector3 position)
+        [Button(enabledMode: EButtonEnableMode.Editor)]
+        public void Respawn()
         {
-            // 단순히 위치를 옮깁니다.
+            // 오른쪽 컨트롤러 위치에 리스폰.
+            Respawn(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
+        }
+        
+        /// <summary>
+        /// 대상 위치에 리스폰합니다.
+        /// </summary>
+        /// <param name="position">리스폰할 위치</param>
+        private void Respawn(Vector3 position)
+        {
+            // 위치를 옮깁니다.
             transform.position = position;
+            
+            // 리스폰 시 속도를 초기화합니다. (방 밖으로 떨어진 경우 중력가속도를 없애는 등)
+            _rigidbody.velocity = Vector3.zero; 
+            _rigidbody.angularVelocity = Vector3.zero;
         }
         
         public void OnSnapped()

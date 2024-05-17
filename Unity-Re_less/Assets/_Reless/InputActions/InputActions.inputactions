@@ -85,7 +85,7 @@
             "id": "38330ab1-2ec5-472a-9204-e8892ae7d611",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Respawn",
                     "type": "Button",
                     "id": "2727453c-bd60-41b5-9907-d7855511c6f6",
                     "expectedControlType": "",
@@ -98,11 +98,11 @@
                 {
                     "name": "",
                     "id": "abcd9772-7122-4c75-86a6-9daa17669fb5",
-                    "path": "",
+                    "path": "<OculusTouchController>{RightHand}/secondaryButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": ";Meta Quest",
+                    "action": "Respawn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
