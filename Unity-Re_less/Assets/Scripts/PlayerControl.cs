@@ -38,10 +38,16 @@ namespace Reless
         
         private bool _readyToSnapTurn;
         
+        private bool _exitReady;
+        
         /// <summary>
         /// 꿈에서 나가기 액션을 활성화합니다.
         /// </summary>
-        public void EnableExitAction() => _exitAction.Enable();
+        public void EnableExitAction() 
+        {
+            _exitReady = true;
+            _exitAction.Enable();
+        }
         
         private void Awake()
         {
@@ -102,7 +108,10 @@ namespace Reless
         
         private void ExitDream(InputAction.CallbackContext context)
         {
-            FindAnyObjectByType<ChapterControl>().ExitDream();
+            if (_exitReady)
+            {
+                FindAnyObjectByType<ChapterControl>().ExitDream();
+            }
         }
 
         // 정확히 뭐 하는거고 왜 필요한지 아직 모르겠음..
