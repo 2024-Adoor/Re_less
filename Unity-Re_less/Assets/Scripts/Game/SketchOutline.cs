@@ -96,8 +96,8 @@ namespace Reless.Game
             {
                 _fillRatio = (float)_drawingCheckers.Count(checker => checker.Checked) / _drawingCheckers.Count;
 
-                // 임시: 100%를 충족하는게 너무 어려울 것으로 기대되므로 60% 이상이면 완성으로 간주합니다.
-                if (_fillRatio > 0.6)
+                // 임시: 100%를 충족하는게 너무 어려울 것으로 기대되므로 90% 이상이면 완성으로 간주합니다.
+                if (_fillRatio > 0.9)
                 {
                     _isCompleted = true;
                     OnDrawingComplete();
