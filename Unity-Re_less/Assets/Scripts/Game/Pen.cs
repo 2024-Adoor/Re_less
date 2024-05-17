@@ -158,7 +158,7 @@ namespace Reless.Game
             _drawingMeshColliders.Add(drawingMeshCollider);
         }
 
-        private void ClearLines()
+        public void ClearLines()
         {
             for (int i = 0; i < this.transform.childCount; i++)
             {

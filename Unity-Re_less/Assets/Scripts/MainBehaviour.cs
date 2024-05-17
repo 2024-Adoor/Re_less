@@ -161,6 +161,10 @@ namespace Reless
             _currentObtainedObject = Instantiate(_currentChapterObtainingObjectPrefab, sketchObject.transform.position, Quaternion.identity);
             Destroy(sketchObject.gameObject);
             
+            // 그려진 선을 제거하고 펜을 비활성화합니다.
+            pen.ClearLines();
+            pen.gameObject.SetActive(false);
+            
             GuideText.SetText("그림이 실체화되었다!");
             GuideText.SetText("가운데 손가락 버튼으로 잡아 팝업북에 배치해 보세요.", setAfter: 3f);
         }
