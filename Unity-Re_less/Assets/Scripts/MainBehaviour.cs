@@ -159,14 +159,19 @@ namespace Reless
         {
             // 그릴 오브젝트 위치에 얻을 오브젝트를 생성하고 그릴 오브젝트를 제거합니다.
             _currentObtainedObject = Instantiate(_currentChapterObtainingObjectPrefab, sketchObject.transform.position, Quaternion.identity);
+            Assert.IsNotNull(_currentObtainedObject);
             Destroy(sketchObject.gameObject);
             
             // 그려진 선을 제거하고 펜을 비활성화합니다.
             pen.ClearLines();
             pen.gameObject.SetActive(false);
             
-            GuideText.SetText("그림이 실체화되었다!");
-            GuideText.SetText("가운데 손가락 버튼으로 잡아 팝업북에 배치해 보세요.", setAfter: 3f);
+            _currentObtainedObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+                
+            GuideText.SetText("그림이 그려졌어요!", duration: 2f);
+            
+            int page = _currentObtainedObject.chapter switch { Chapter1 => 1, Chapter2 => 2, Chapter3 => 3, _ => 0 };
+            GuideText.SetText($"그려진 오브젝트를 잡아서 팝업북의 {page}번째 페이지에 배치해 보세요.", setAfter: 3f);
         }
         
         private void EnableCloseEyesToSleepPose()
