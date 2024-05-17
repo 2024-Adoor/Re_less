@@ -8,6 +8,7 @@ using NaughtyAttributes;
 using Reless.Game;
 using Reless.MR;
 using Reless.UI;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -32,6 +33,9 @@ namespace Reless
         /// </summary>
         [SerializeField]
         private Pen pen;
+        
+        [SerializeField]
+        private TMP_Text drawingProgressLabel;
 
         /// <summary>
         /// 그릴 오브젝트 프리팹들
@@ -136,6 +140,8 @@ namespace Reless
             // 그릴 오브젝트를 생성합니다.
             _currentSketchOutline = Instantiate(sketchOutlinePrefab);
             Assert.IsNotNull(_currentSketchOutline);
+            
+            _currentSketchOutline.ProgressLabel = drawingProgressLabel;
 
             // 그릴 오브젝트를 플레이어의 시야에 배치합니다.
             StartCoroutine(PlaceToEye());
