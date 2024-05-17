@@ -120,14 +120,15 @@ namespace Reless.Opening
                 
                 // 튜토리얼 생략
                 
-                yield return new WaitForSeconds(4f);
+                //yield return new WaitForSeconds(4f);
                 GameManager.CurrentPhase = GamePhase.Chapter1;
-                GameManager.LoadMainScene();
+                //GameManager.LoadMainScene();
                 
                 // 오프닝에서 했던 일을 되돌립니다.
                 RoomManager.Instance.RevertRoomTransform();
                 ResetTransformOpeningWall();
                 OVRManager.SetSpaceWarp(false);
+                FindAnyObjectByType<OVRPassthroughLayer>().SetBrightnessContrastSaturation();
                 
                 IsInOpening = false;
             }
