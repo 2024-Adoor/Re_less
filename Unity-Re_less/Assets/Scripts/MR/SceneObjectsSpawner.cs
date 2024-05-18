@@ -153,7 +153,9 @@ namespace Reless.MR
                     };
                     mesh.RecalculateNormals();
                     wall.AddComponent<MeshFilter>().mesh = mesh;
-                    wall.AddComponent<MeshRenderer>().material = outerPrefabs.WallMaterial;
+                    var meshRenderer = wall.AddComponent<MeshRenderer>();
+                    meshRenderer.material = outerPrefabs.WallMaterial;
+                    meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 wall.transform.position = wallPosition;
             }
             
