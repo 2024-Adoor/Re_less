@@ -9,12 +9,12 @@ namespace Reless.Ending
         private IEnumerator Start()
         {
             yield return new WaitForSeconds(1f);
-            GuideText.SetText("팝업북이 사라졌어요. 대신 다른 것이 보이네요.", duration: 4f);
-            yield return new WaitForSeconds(5f);
+            GuideText.SetText("팝업북이 사라졌어요. 대신 다른 것이 보이네요.", duration: 3f);
+            yield return new WaitForSeconds(4f);
             GuideText.SetText("이 사진들은 뭘까요?", duration: 3f);
             
-            // 10초가 지나도 플레이어가 방을 나가지 않았다면 안내 메시지를 띄웁니다.
-            yield return new WaitForSeconds(10f);
+            // 9초가 지나도 플레이어가 방을 나가지 않았다면 안내 메시지를 띄웁니다.
+            yield return new WaitForSeconds(9f);
             if (FindAnyObjectByType<ExitRoom>().IsPlayerExited is false)
             {
                 GuideText.SetText("빌런이가 문 밖을 가리키고 있어요. 밖으로 나가볼까요?");

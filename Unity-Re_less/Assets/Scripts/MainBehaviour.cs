@@ -99,15 +99,17 @@ namespace Reless
                     IEnumerator ShowingChapter1Message()
                     {
                         yield return new WaitForSeconds(1f);
-                        GuideText.SetText("테이블 위에 팝업북이 생겼다!", 4);
+                        GuideText.SetText("테이블 위에 팝업북이 생겼다!", 3);
+                        yield return new WaitForSeconds(4f);
+                        GuideText.SetText("팝업북에는 그림을 그려서 꿈에 배치할 수 있다고 한다.<br>친구들을 도와주러 가보자!", 4);
                         yield return new WaitForSeconds(5f);
-                        GuideText.SetText("팝업북에는 그림을 그려서 꿈에 배치할 수 있다고 한다. 친구들을 도와주러 가보자!", 4);
-                        yield return new WaitForSeconds(5f);
-                        GuideText.SetText("검지 버튼으로 그림을 그릴 수 있습니다. 그려보세요!", 4);
-                        yield return new WaitForSeconds(5f);
-                        GuideText.SetText("그려야 할 그림 물체를 찾아보세요. B 버튼으로 가져오고, 잡아서 움직일 수 있습니다.", 4);
-                        yield return new WaitForSeconds(5f);
-                        GuideText.SetText("왼쪽 컨트롤러의 위에 진행률이 표시됩니다.", 4);
+                        GuideText.SetText("검지 손가락 버튼으로 그림을 그릴 수 있습니다.<br>버튼을 누른 채로 컨트롤러를 움직여 보세요!", 5);
+                        yield return new WaitForSeconds(6f);
+                        GuideText.SetText("방에서 그려야 할 파란 물체를 찾아보세요.", 3);
+                        yield return new WaitForSeconds(4f);
+                        GuideText.SetText("물체를 찾았다면, 물체를 여러 방향에서 둘러보면서 그림을 그려보세요", 5);
+                        yield return new WaitForSeconds(6f);
+                        GuideText.SetText("진행률은 왼쪽 컨트롤러의 위에 표시됩니다.", 4);
                     }
                 }
             }
@@ -176,12 +178,16 @@ namespace Reless
             pen.ClearLines();
             pen.gameObject.SetActive(false);
             
-            _currentObtainedObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 1f, ForceMode.Impulse);
+            _currentObtainedObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 1f, ForceMode.VelocityChange);
                 
             GuideText.SetText("그림이 그려졌어요!", duration: 2f);
             
             int page = _currentObtainedObject.chapter switch { Chapter1 => 1, Chapter2 => 2, Chapter3 => 3, _ => 0 };
             GuideText.SetText($"그려진 오브젝트를 잡아서 팝업북의 {page}번째 페이지에 배치해 보세요.", setAfter: 3f);
+            if (page > 1)
+            {
+                GuideText.SetText($"팝업북의 페이지도 잡아서 넘길 수 있습니다.", setAfter: 7f);
+            }
         }
         
         private void EnableCloseEyesToSleepPose()
