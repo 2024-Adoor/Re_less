@@ -18,6 +18,8 @@ public class Chat_Character : MonoBehaviour
     public AnimationClip doorAni;
     int Chat = 0;
     
+    public float DelayTime = 1.5f;
+
     // VFX 제어
     public ParticleSystem CactusSleepParticle;
     public ParticleSystem CatSleepParticle;
@@ -75,7 +77,7 @@ public class Chat_Character : MonoBehaviour
             if (_Cat_AniManage.isChange && !isChatFin)
             {   
                 _renderer.enabled = true;
-                StartCoroutine(Delay_Change(1.5f));
+                StartCoroutine(Delay_Change(DelayTime));
 
                 isChatFin = true;
             }
@@ -94,7 +96,7 @@ public class Chat_Character : MonoBehaviour
             if (_AniManage.isChange && !isChatFin)
             {   
                 GetComponent<Renderer>().enabled = true;
-                StartCoroutine(Delay_Change(1.5f));
+                StartCoroutine(Delay_Change(DelayTime));
 
                 isChatFin = true;
             }
