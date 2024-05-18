@@ -12,12 +12,12 @@ public class EndCharacterChange : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("Player");
+        _PlayerState = Player.GetComponent<PlayerState>();
     }
 
     // _PlayerState isTeleport true -> Destroy & New Prefab 
     void Update()
     {
-        _PlayerState = Player.GetComponent<PlayerState>();
 
         if(_PlayerState.isTeleport)
         {
@@ -26,14 +26,14 @@ public class EndCharacterChange : MonoBehaviour
         }
     }
 
-    // ÇÁ¸®ÆÕ »ı¼º 
+    // í”„ë¦¬íŒ¹ ìƒì„± 
     void CreatePrefabInstance(GameObject prefabToCreate)
     {
-        // »õ·Î Ãß°¡ÇÒ ÇÁ¸®ÆÕÀÇ À§Ä¡¿Í È¸Àü°ªÀ» °¡Á®¿É´Ï´Ù.
+        // ìƒˆë¡œ ì¶”ê°€í•  í”„ë¦¬íŒ¹ì˜ ìœ„ì¹˜ì™€ íšŒì „ê°’ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
         Vector3 prefabPosition = prefabToCreate.transform.position;
         Quaternion prefabRotation = prefabToCreate.transform.rotation;
 
-        // ÇÁ¸®ÆÕÀ» ÇØ´ç À§Ä¡¿Í È¸Àü°ªÀ¸·Î »ı¼ºÇÕ´Ï´Ù.
+        // í”„ë¦¬íŒ¹ì„ í•´ë‹¹ ìœ„ì¹˜ì™€ íšŒì „ê°’ìœ¼ë¡œ ìƒì„±í•©ë‹ˆë‹¤.
         Instantiate(prefabToCreate, prefabPosition, prefabRotation);
     }
 }

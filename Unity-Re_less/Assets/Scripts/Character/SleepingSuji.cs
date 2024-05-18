@@ -18,19 +18,20 @@ public class SleepingSuji : MonoBehaviour
 
     // 애니메이션 제어
     bool isChange = false;
+    
+    private Keyboard _Keyboard;
 
     // Start is called before the first frame update
     void Start()
     {
         SleepOut_SujiPrefab.SetActive(false);
         audioSource = GetComponent<AudioSource>();
+        _Keyboard = KeyboardEnter.GetComponent<Keyboard>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Keyboard _Keyboard = KeyboardEnter.GetComponent<Keyboard>();
-
         // 열매 부딪혔을때 SleepOut 애니메이션 프리팹으로 전환 
         if(isDetected && _Keyboard.enterDown)
         {

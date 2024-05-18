@@ -4,35 +4,34 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    public float minScale = 0.5f; // ¾Æ·¡·Î ³»·Á°¥ ¶§ÀÇ ÃÖ¼Ò ½ºÄÉÀÏ
-    public float speed = 5.0f; // Áøµ¿ ¼Óµµ
+    public float minScale = 0.5f; // ì•„ë˜ë¡œ ë‚´ë ¤ê°ˆ ë•Œì˜ ìµœì†Œ ìŠ¤ì¼€ì¼
+    public float speed = 5.0f; // ì§„ë™ ì†ë„
 
-    // ÇÃ·¹ÀÌ¾î
+    // í”Œë ˆì´ì–´
     public GameObject Player;
     PlayerState _PlayerState;
 
-    private Vector3 originalScale; // ¿ÀºêÁ§Æ®ÀÇ ¿ø·¡ ½ºÄÉÀÏ
+    private Vector3 originalScale; // ì˜¤ë¸Œì íŠ¸ì˜ ì›ë˜ ìŠ¤ì¼€ì¼
 
     void Start()
     {
-        originalScale = transform.localScale; // ¿ÀºêÁ§Æ®ÀÇ ¿ø·¡ ½ºÄÉÀÏ ÀúÀå
+        _PlayerState = Player.GetComponent<PlayerState>();
+        originalScale = transform.localScale; // ì˜¤ë¸Œì íŠ¸ì˜ ì›ë˜ ìŠ¤ì¼€ì¼ ì €ì¥
     }
 
     void Update()
     {
-        _PlayerState = Player.GetComponent<PlayerState>();
+        /*// ì˜¤ë¸Œì íŠ¸ê°€ ìœ„ ì•„ë˜ë¡œ ì§„ë™í•˜ëŠ” ê²ƒì„ ì‹œë®¬ë ˆì´ì…˜í•˜ê¸° ìœ„í•œ Sin í•¨ìˆ˜ ì‚¬ìš©
+        float newY = Mathf.Sin(Time.time * speed) * 0.5f; // ë†’ì´ ë³€í™” ê³„ì‚°
 
-        // ¿ÀºêÁ§Æ®°¡ À§ ¾Æ·¡·Î Áøµ¿ÇÏ´Â °ÍÀ» ½Ã¹Ä·¹ÀÌ¼ÇÇÏ±â À§ÇÑ Sin ÇÔ¼ö »ç¿ë
-        float newY = Mathf.Sin(Time.time * speed) * 0.5f; // ³ôÀÌ º¯È­ °è»ê
-
-        // »õ·Î¿î ½ºÄÉÀÏ °è»ê
-        float scale = Mathf.Lerp(minScale, 1.0f, newY + 0.5f); // Sin ÇÔ¼öÀÇ °ªÀÌ -1 ~ 1ÀÌ¹Ç·Î 0 ~ 1 ¹üÀ§·Î º¯È¯
+        // ìƒˆë¡œìš´ ìŠ¤ì¼€ì¼ ê³„ì‚°
+        float scale = Mathf.Lerp(minScale, 1.0f, newY + 0.5f); // Sin í•¨ìˆ˜ì˜ ê°’ì´ -1 ~ 1ì´ë¯€ë¡œ 0 ~ 1 ë²”ìœ„ë¡œ ë³€í™˜
         Vector3 newScale = originalScale * scale;
 
-        // »õ·Î¿î ½ºÄÉÀÏ Àû¿ë
-        transform.localScale = newScale;
+        // ìƒˆë¡œìš´ ìŠ¤ì¼€ì¼ ì ìš©
+        transform.localScale = newScale;*/
 
-        // Destroy - Player Æ®¸®°Å isFriendUI
+        // Destroy - Player íŠ¸ë¦¬ê±° isFriendUI
         if(_PlayerState.isFriendUI)
         {
             Destroy(gameObject);

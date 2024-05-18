@@ -24,7 +24,7 @@ public class FruitArrow : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // 오브젝트가 위 아래로 진동하는 것을 시뮬레이션하기 위한 Sin 함수 사용
+        /*// 오브젝트가 위 아래로 진동하는 것을 시뮬레이션하기 위한 Sin 함수 사용
         float newY = Mathf.Sin(Time.time * speed) * 0.5f; // 높이 변화 계산
 
         // 새로운 스케일 계산
@@ -32,6 +32,6 @@ public class FruitArrow : MonoBehaviour
         Vector3 newScale = originalScale * scale;
 
         // 새로운 스케일 적용
-        transform.localScale = newScale;
+        transform.localScale = newScale;*/
     }
 }

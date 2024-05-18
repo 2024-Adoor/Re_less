@@ -46,6 +46,8 @@ public class SujiManage : MonoBehaviour
     // Sound
     public AudioClip HealingSound;
     private AudioSource HealingAudioSource;
+    
+    private PlayerState _playerState;
 
     void Start()
     {
@@ -53,12 +55,11 @@ public class SujiManage : MonoBehaviour
         gameObject.SetActive(false);
         SleepOutEffect.Play();
         HealingAudioSource = GetComponent<AudioSource>();
+        _playerState = Player.GetComponent<PlayerState>();
     }
 
     void Update()
     {
-        _PlayerState = Player.GetComponent<PlayerState>();
-
         // SleepOut 애니메이션 끝나면 이펙트 종료 & 키보드 앞으로 점프 + 이동
         if (animationComponent.IsPlaying("SleepOut") == false && !isChange)
         {

@@ -14,16 +14,16 @@ namespace Reless
         // Start is called before the first frame update
         void Start()
         {
+            _ChapterControl = Player.GetComponent<ChapterControl>();
+            _PlayerState = Player.GetComponent<PlayerState>();
             Door2.SetActive(false);
+            if (_ChapterControl.CurrentChapter is not Chapter.Chapter2) this.enabled = false;
         }
 
         // Update is called once per frame
         void Update()
         {
-            _ChapterControl = Player.GetComponent<ChapterControl>();
-            _PlayerState = Player.GetComponent<PlayerState>();
-
-            if(_ChapterControl.CurrentChapter is Chapter.Chapter2 && _PlayerState.FruitCount == 2)
+            if(_PlayerState.FruitCount == 2)
             {
                 Door2.SetActive(true);
                 if(Door2.activeSelf)

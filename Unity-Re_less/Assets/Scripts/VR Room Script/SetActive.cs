@@ -13,10 +13,13 @@ namespace Reless
         [SerializeField]
         EndingBehaviour _EndingBehaviour;
         
+        private Renderer _renderer;
+        
         // Start is called before the first frame update
         void Start()
         {
-            GetComponent<Renderer>().enabled = false;
+            _renderer = GetComponent<Renderer>();
+            _renderer.enabled = false;
         }
 
         // Update is called once per frame
@@ -24,7 +27,7 @@ namespace Reless
         {
             if(endingCharacters.activeSelf)
             {
-                GetComponent<Renderer>().enabled = true;
+                _renderer.enabled = true;
             }
 
             if(_EndingBehaviour._isEndChatFin)

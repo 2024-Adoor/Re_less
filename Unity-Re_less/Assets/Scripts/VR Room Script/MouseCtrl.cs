@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Reless;
+using Unity.VisualScripting;
 
 public class MouseCtrl : MonoBehaviour
 {
@@ -19,17 +20,23 @@ public class MouseCtrl : MonoBehaviour
     private bool collisionDetected = false; // 충돌 감지 여부를 저장하는 변수
 
     public GameObject Ch03_Fruit;
+    
+    private Ch03_FruitSnap Ch03FruitScript;
 
     void Start()
     {
         lastPositionA = transform.position; // 초기 위치 설정
+
+        if (Ch03_Fruit != null)
+        {
+            Ch03FruitScript = Ch03_Fruit.GetComponent<Ch03_FruitSnap>();
+        }
     }
 
     void Update()
     {
-        if (Ch03_Fruit != null)
+        if (!Ch03FruitScript.IsUnityNull())
         {
-            Ch03_FruitSnap Ch03FruitScript = Ch03_Fruit.GetComponent<Ch03_FruitSnap>();
             collisionDetected = Ch03FruitScript.isDetected;
 
             if (!collisionDetected) // 충돌이 감지되지 않은 경우에만 움직임 처리
