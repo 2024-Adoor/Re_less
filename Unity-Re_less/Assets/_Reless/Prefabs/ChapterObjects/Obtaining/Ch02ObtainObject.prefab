@@ -114,10 +114,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactorView: {fileID: 597148409014762665}
-  _renderer: {fileID: 0}
+  _renderer: {fileID: 121017260088712189}
   _normalColor: {r: 1, g: 1, b: 1, a: 1}
-  _hoverColor: {r: 0, g: 0, b: 1, a: 1}
-  _selectColor: {r: 0, g: 1, b: 0, a: 1}
+  _hoverColor: {r: 0.5529412, g: 0.74509805, b: 0.92941177, a: 1}
+  _selectColor: {r: 1, g: 1, b: 1, a: 1}
   _disabledColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &5628168206714019189
 GameObject:
@@ -414,6 +414,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4618025269896610232, guid: cd0f70aaa1a57b6419493e5335bb1249, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cd0f70aaa1a57b6419493e5335bb1249, type: 3}
       propertyPath: m_Name
       value: Chapter02_Watch
@@ -422,11 +426,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4101161180453605438, guid: cd0f70aaa1a57b6419493e5335bb1249, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd0f70aaa1a57b6419493e5335bb1249, type: 3}
+--- !u!23 &121017260088712189 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4684600263410887734, guid: cd0f70aaa1a57b6419493e5335bb1249, type: 3}
+  m_PrefabInstance: {fileID: 4562432776182564919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4097076173602516956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cd0f70aaa1a57b6419493e5335bb1249, type: 3}

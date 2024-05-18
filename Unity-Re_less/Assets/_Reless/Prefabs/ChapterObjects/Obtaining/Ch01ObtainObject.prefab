@@ -114,10 +114,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactorView: {fileID: 597148409014762665}
-  _renderer: {fileID: 0}
+  _renderer: {fileID: 5450011287213387715}
   _normalColor: {r: 1, g: 1, b: 1, a: 1}
-  _hoverColor: {r: 0, g: 0, b: 1, a: 1}
-  _selectColor: {r: 0, g: 1, b: 0, a: 1}
+  _hoverColor: {r: 0.5522873, g: 0.7443225, b: 0.9292453, a: 1}
+  _selectColor: {r: 1, g: 1, b: 1, a: 1}
   _disabledColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &5628168206714019189
 GameObject:
@@ -423,6 +423,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 659383f2ff221c74cb0838259bc94c96, type: 3}
+--- !u!23 &5450011287213387715 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 659383f2ff221c74cb0838259bc94c96, type: 3}
+  m_PrefabInstance: {fileID: 6657377714201932615}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6622957489835398316 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 659383f2ff221c74cb0838259bc94c96, type: 3}

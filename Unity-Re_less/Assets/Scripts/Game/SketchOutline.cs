@@ -26,7 +26,7 @@ namespace Reless.Game
         /// </summary>
         private const float ColliderThickness = 0.01f;
 
-        private readonly List<DrawingChecker> _drawingCheckers = new();
+        private List<DrawingChecker> _drawingCheckers = new();
         
         private float _minEdgeLength = 0.05f;
         private float _maxEdgeLength = 0.5f;
@@ -86,9 +86,11 @@ namespace Reless.Game
 
         private void Update()
         {
+            const float completionThreshold = 0.9f;
+            
             if (_progressLabel is not null)
             {
-                _progressLabel.text = $"{_fillRatio * 100:F0}%";
+                _progressLabel.text = $"{Mathf.Lerp(0f, 100f, _fillRatio == 0 ? 0 : _fillRatio / completionThreshold):F1}%";
             }
             
             // 모든 DrawingChecker가 체크되었는지 확인합니다.
@@ -96,20 +98,23 @@ namespace Reless.Game
             {
                 _fillRatio = (float)_drawingCheckers.Count(checker => checker.Checked) / _drawingCheckers.Count;
 
-                // 임시: 100%를 충족하는게 너무 어려울 것으로 기대되므로 90% 이상이면 완성으로 간주합니다.
-                if (_fillRatio > 0.9)
+                if (_fillRatio > completionThreshold)
                 {
                     _isCompleted = true;
                     OnDrawingComplete();
                 }
                 
-                if (_drawingCheckers.TrueForAll(checker => checker.Checked))
+                /*if (_drawingCheckers.TrueForAll(checker => checker.Checked))
                 {
                     // 플레이어가 그린 선이 모든 DrawingChecker에 닿았습니다 - 그림이 완성되었습니다.
                     Logger.Log($"Drawing {this.gameObject.name} is completed!");
                     _isCompleted = true;
                     OnDrawingComplete();
-                }
+                }*/
+            }
+            else
+            {
+                _fillRatio = 0;
             }
         }
 

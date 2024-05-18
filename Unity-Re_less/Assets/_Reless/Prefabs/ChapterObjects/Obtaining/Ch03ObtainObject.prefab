@@ -114,10 +114,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactorView: {fileID: 597148409014762665}
-  _renderer: {fileID: 0}
+  _renderer: {fileID: 7998711489450094594}
   _normalColor: {r: 1, g: 1, b: 1, a: 1}
-  _hoverColor: {r: 0, g: 0, b: 1, a: 1}
-  _selectColor: {r: 0, g: 1, b: 0, a: 1}
+  _hoverColor: {r: 0.5529412, g: 0.74509805, b: 0.92941177, a: 1}
+  _selectColor: {r: 1, g: 1, b: 1, a: 1}
   _disabledColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &5628168206714019189
 GameObject:
@@ -410,6 +410,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1324559776419546722, guid: 3e1a628c360f88c48a2d3f685831cd3b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3e1a628c360f88c48a2d3f685831cd3b, type: 3}
       propertyPath: m_Name
       value: Chater03_Mouse
@@ -419,6 +423,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e1a628c360f88c48a2d3f685831cd3b, type: 3}
+--- !u!23 &7998711489450094594 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 3e1a628c360f88c48a2d3f685831cd3b, type: 3}
+  m_PrefabInstance: {fileID: 8701152502485134470}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9172158317758106477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3e1a628c360f88c48a2d3f685831cd3b, type: 3}
