@@ -7,7 +7,7 @@ namespace Reless
     public class CreateTrigger : MonoBehaviour
     {
         public GameObject nextTrigger;
-        public float delayInSeconds = 3f; // µô·¹ÀÌ ÃÊ ¼³Á¤ 
+        public float delayInSeconds = 3f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 
         // Start is called before the first frame update
         void Start()
@@ -17,7 +17,7 @@ namespace Reless
 
         public void Create()
         {
-            // ´ÙÀ½ Æ®¸®°Å¸¦ È°¼ºÈ­
+            // ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½Å¸ï¿½ È°ï¿½ï¿½È­
             nextTrigger.SetActive(true);
             StartCoroutine(TriggerSequence());
         }
