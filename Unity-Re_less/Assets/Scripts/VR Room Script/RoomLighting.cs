@@ -71,6 +71,11 @@ namespace Reless.VR
             endingLight.gameObject.SetActive(true);
         }
         
+        /// <summary>
+        /// 엔딩 Directional Light를 활성화합니다.
+        /// </summary>
+        public void EnableEndingDirectionalLight() => endingLight.gameObject.SetActive(true);
+        
         private void ApplyAmbientColor(AmbientColor color)
         {
             RenderSettings.ambientSkyColor = color.sky;

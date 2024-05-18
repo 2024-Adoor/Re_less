@@ -73,7 +73,9 @@ namespace Reless.VR
             GameManager.CurrentPhase = GamePhase.Ending;
             
             // 엔딩 앰비언트 라이팅 적용
-            FindAnyObjectByType<RoomLighting>().TransitAmbientColorToNext(Chapter.Chapter3);
+            var roomLighting = FindAnyObjectByType<RoomLighting>();
+            roomLighting.TransitAmbientColorToNext(Chapter.Chapter3);
+            roomLighting.EnableEndingDirectionalLight();
             
             StartCoroutine(ShowEndChat());
         }
