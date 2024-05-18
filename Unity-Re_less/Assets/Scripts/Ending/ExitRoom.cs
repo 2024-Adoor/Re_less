@@ -70,10 +70,10 @@ namespace Reless.Ending
                         // 플레이어가 문과 가까운 정도를 계산합니다.
                         float nearness = 1f - Mathf.Clamp01(distance / _initialPlayerToDoorDistance);
 
-                        const float initialBrightness = -0.5f;
+                        const float initialBrightness = -0.3f;
 
                         // 플레이어가 문에 가까워질수록 문 패스스루가 하얗게 밝아집니다.
-                        doorSppPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(0, 0.5f, nearness));
+                        doorSppPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(0, 0.8f, nearness));
                         
                         // 플레이어가 문에 가까워질수록 패스스루가 어두움에서 밝아집니다.
                         _mainPassthrough.SetBrightnessContrastSaturation(brightness: Mathf.Lerp(initialBrightness, 0, nearness));
