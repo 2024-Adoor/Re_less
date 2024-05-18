@@ -33,6 +33,12 @@ namespace Reless.Opening
         private OpeningAnimator _openingAnimator;
         
         /// <summary>
+        /// Main 씬의 주 Directional Light
+        /// </summary>
+        [SerializeField]
+        private Light mainDirectionalLight;
+        
+        /// <summary>
         /// 오프닝 중인지 여부
         /// </summary>
         [ShowNativeProperty]
@@ -94,6 +100,9 @@ namespace Reless.Opening
                 // 룸을 오프닝 씬이 보여지도록 변환합니다.
                 TransformToOpeningScene();
                 
+                // 메인 씬의 라이트를 끕니다.
+                mainDirectionalLight.enabled = false;
+                
                 // 이 시점에 플레이어가 뒤를 보고 있다면
                 if (GameManager.EyeAnchor.forward.z < 0)
                 {
@@ -129,6 +138,7 @@ namespace Reless.Opening
                 ResetTransformOpeningWall();
                 OVRManager.SetSpaceWarp(false);
                 FindAnyObjectByType<OVRPassthroughLayer>().SetBrightnessContrastSaturation();
+                mainDirectionalLight.enabled = true;
                 
                 IsInOpening = false;
             }
