@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Reless;
 using Reless.VR;
@@ -84,6 +85,8 @@ public class PlayerState : MonoBehaviour
         }
     }
 
+    public GameObject[] fruits;
+
     // NOTE: 업데이트 함수에 있는 엔딩 진행 EndingBehaviour.StartEnding()으로 이동
 
     void OnTriggerEnter(Collider other)
@@ -91,7 +94,7 @@ public class PlayerState : MonoBehaviour
         if(Suji != null)
            _SujiEndingTest = Suji.GetComponent<SujiEndingTest>();
 
-        if(other.CompareTag("Fruit"))
+        if(fruits.ToList().Contains(other.gameObject))
         {
             if(FruitCount == -1)
             {
