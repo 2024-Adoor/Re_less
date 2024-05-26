@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Logger = Reless.Debug.Logger;
 
 namespace Reless
 {
@@ -18,6 +17,7 @@ namespace Reless
             _ChapterControl = Player.GetComponent<ChapterControl>();
             _PlayerState = Player.GetComponent<PlayerState>();
             Door2.SetActive(false);
+            if (_ChapterControl.CurrentChapter is not Chapter.Chapter2) this.enabled = false;
         }
 
         // Update is called once per frame
@@ -25,11 +25,9 @@ namespace Reless
         {
             if(_PlayerState.FruitCount == 2)
             {
-                Logger.Log("FruitCount is 2");
                 Door2.SetActive(true);
                 if(Door2.activeSelf)
                 {
-                    Logger.Log("Door2 is active, this door is destroyed.");
                     gameObject.SetActive(false);
                 }
             }
