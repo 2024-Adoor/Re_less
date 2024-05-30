@@ -1,4 +1,4 @@
-# <p align="center"><img alt="logo of reless" src="resource/logo/reless_logo_yb.svg" width=213px> <br> <kbd>[아카이브](https://github.com/2024-Adoor/Re_less/discussions/categories/%EC%95%84%EC%B9%B4%EC%9D%B4%EB%B8%8C)</kbd> <kbd>[졸업전시 회고](https://github.com/2024-Adoor/Re_less/discussions/categories/%EC%95%84%EC%B9%B4%EC%9D%B4%EB%B8%8C)</kbd> <kbd>[연습 리포지토리](https://github.com/2024-Adoor/practice)</kbd> <kbd>[프로젝트](https://github.com/orgs/2024-Adoor/projects/3)</kbd> </p>
+# <p align="center"><img alt="logo of reless" src="resource/logo/reless_logo_yb.svg" width=213px> <br> <kbd>[아카이브](https://github.com/2024-Adoor/Re_less/discussions/categories/%EC%95%84%EC%B9%B4%EC%9D%B4%EB%B8%8C)</kbd> <kbd>[졸업전시 회고](https://github.com/2024-Adoor/Re_less/discussions/categories/%EC%A1%B8%EC%97%85%EC%A0%84%EC%8B%9C-%ED%9A%8C%EA%B3%A0)</kbd> <kbd>[연습 리포지토리](https://github.com/2024-Adoor/practice)</kbd> <kbd>[프로젝트](https://github.com/orgs/2024-Adoor/projects/3)</kbd> </p>
 
 <img align="right" width="300" src="resource/spofeed_variation1.png">
 숭실대학교 글로벌미디어학부 2024 졸업전시 Adoor 팀 졸업작품 Re□less입니다.
@@ -9,27 +9,10 @@
 
 > <Re□less>는 책을 매개체로 꿈 속을 넘나들며 잠에 빠진 친구들을 구하는 혼합 현실(MR) 게임입니다. 작아진 몸으로 거대한 방을 탐험하는 꿈 같은 여정을 경험해 보세요.
 
-### 게임 방법
-
-#### 준비 사항
-
-- 공간 설정이 완료된 메타 퀘스트 디바이스
-  - 플레이하려면 하나 이상의 테이블과 한 개의 문이 설정되어 있어야 합니다. 여러 개의 문은 지원되지 않습니다.
-
-게임은 공간 밖에서 시작해서 문으로 입장하여 시작합니다[^1].
-[^1]: 문 밖에서 시작할 수 없는 경우 공간 내부에서 시작할 수 있습니다. 이 경우 문으로 다가가면 게임이 시작됩니다.
-
-#### 진행
-
-현실의 방 안으로 들어오면 게임이 시작됩니다. 주변이 어두워지고 한쪽 벽이 책처럼 열리며 꿈 속 세계가 나타나며 오프닝이 진행됩니다.
-
-오프닝이 끝나면 테이블 위에 팝업북이 나타납니다. 이 팝업북에 오브젝트를 그리고 배치해 꿈 속으로 보내야 합니다.
-
-꿈 속에서는 잠에서 깨는 열매를 얻어 잠에 빠진 친구들을 구해줘야 합니다.
-
-#### 스토리
-
-##
+#### Links
+- 🎞️ [시연 영상](https://www.youtube.com/watch?v=jNOlHoWs5Wk)
+- 🗒️ [게임 방법](https://github.com/2024-Adoor/Re_less/discussions/28)
+- 📖 스토리
 
 ## 제작
 
