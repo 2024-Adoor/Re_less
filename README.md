@@ -1,4 +1,4 @@
-# <p align="center"><img alt="logo of reless" src="resource/logo/reless_logo_yb.svg" width=213px> </p>
+# <p align="center"><img alt="logo of reless" src="resource/logo/reless_logo_yb.svg" width=213px> <br> <kbd>[아카이브](https://github.com/2024-Adoor/Re_less/discussions/categories/%EC%95%84%EC%B9%B4%EC%9D%B4%EB%B8%8C)</kbd> <kbd>[졸업전시 회고](https://github.com/2024-Adoor/Re_less/discussions/categories/%EC%95%84%EC%B9%B4%EC%9D%B4%EB%B8%8C)</kbd> <kbd>[연습 리포지토리](https://github.com/2024-Adoor/practice)</kbd> <kbd>[프로젝트](https://github.com/orgs/2024-Adoor/projects/3)</kbd> </p>
 
 <img align="right" width="300" src="resource/spofeed_variation1.png">
 숭실대학교 글로벌미디어학부 2024 졸업전시 Adoor 팀 졸업작품 Re□less입니다.
@@ -34,6 +34,14 @@
 ## 제작
 
 ### 팀
+
+- 팀장 **송아정**
+
+- 팀원 **서수민**
+
+- 팀원 **김준영** [@plwast-ints](https://github.com/plwast-ints)
+  - 글로벌미디어학부 21학번
+  - 주로 MR 파트 개발(그리기, 패스스루, 퀘스트 API 관련), 게임 구조 & 코드 정리, 로고 제작
 
 ### 환경
 
