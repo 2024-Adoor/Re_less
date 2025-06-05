@@ -13,6 +13,7 @@
 - 🎞️ [시연 영상](https://www.youtube.com/watch?v=jNOlHoWs5Wk)
 - 🗒️ [게임 방법](https://github.com/2024-Adoor/Re_less/discussions/28)
 - 📖 스토리
+- 📸 [회고](https://www.figma.com/proto/wCBExf5MYM2ITPpGmrHxHP/etc?node-id=505-2&t=g6qSz0bIovcaYLxx-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=505%3A2&show-proto-sidebar=1)
 
 ## 제작
 
@@ -20,8 +21,8 @@
 
 - 팀장 **송아정** [@dkwjd-21](https://github.com/dkwjd-21)
   - 글로벌미디어학부 21학번
-  - VR 파트 전반 개발 담당: UI 구성, 챕터 연결 및 클리어 조건 설정, 맵 레벨 디자인, 플레이어 설정 및 게임 로직 구현
-  - 스토리보드 제작, 굿즈 디자인 
+  - VR 파트 전반 개발 담당: UI 디자인 및 설계, 챕터 연결 및 클리어 조건 설정, 맵 레벨 디자인, 플레이어 설정 및 게임 로직 구현
+  - 스토리보드 제작, 굿즈 디자인, 전시공간 설계, 
 
 - 팀원 **서수민**
 
